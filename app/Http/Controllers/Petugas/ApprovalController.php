@@ -45,7 +45,8 @@ class ApprovalController extends Controller
                     DB::rollBack();
                     return back()->with('error', "Stok {$alat->nama_alat} tidak mencukupi ({$alat->stok} tersisa, {$detail->jumlah} dibutuhkan).");
                 }
-                $alat->decrement('stok', $detail->jumlah);
+                $alat->stok -= $detail->jumlah;
+                $alat->save();
             }
 
             $peminjaman->update([

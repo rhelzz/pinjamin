@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('pengembalian', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('peminjaman_id')->constrained('peminjaman')->onDelete('cascade');
+            $table->foreignId('peminjaman_id')->constrained('peminjaman')->cascadeOnDelete();
             $table->date('tanggal_dikembalikan');
             $table->decimal('denda', 12, 2)->default(0);
             $table->enum('kondisi', ['Baik', 'Rusak'])->default('Baik');

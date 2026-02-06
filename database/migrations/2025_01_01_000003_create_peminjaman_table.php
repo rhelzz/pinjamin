@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('peminjaman', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->date('tanggal_pinjam')->nullable();
             $table->date('tanggal_kembali');
             $table->enum('status', ['Pending', 'Dipinjam', 'Ditolak', 'Selesai'])->default('Pending');

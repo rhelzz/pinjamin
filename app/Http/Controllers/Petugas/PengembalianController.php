@@ -64,15 +64,18 @@ class PengembalianController extends Controller
 
             // Return stock
             foreach ($peminjaman->detail as $detail) {
-                $alat = Alat::find($detail->alat_id);
-                $alat->increment('stok', $detail->jumlah);
+                $alat = Alat::lockForUpdate()->find($detail->alat_id);
+                if ($alat) {
+                    $alat->stok += $detail->jumlah;
+                    $alat->save();
 
-                // Log damaged items
-                if ($request->kondisi === 'Rusak') {
-                    LogAktivitas::create([
-                        'user_id' => Auth::id(),
-                        'aktivitas' => "Alat {$alat->nama_alat} dikembalikan dalam kondisi RUSAK (Peminjaman #{$peminjaman->id})",
-                    ]);
+                    // Log damaged items
+                    if ($request->kondisi === 'Rusak') {
+                        LogAktivitas::create([
+                            'user_id' => Auth::id(),
+                            'aktivitas' => "Alat {$alat->nama_alat} dikembalikan dalam kondisi RUSAK (Peminjaman #{$peminjaman->id})",
+                        ]);
+                    }
                 }
             }
 

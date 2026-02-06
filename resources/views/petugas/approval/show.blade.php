@@ -67,7 +67,6 @@
                         <form action="{{ route('petugas.approval.approve', $peminjaman) }}" method="POST"
                             onsubmit="return confirm('Setujui peminjaman ini?')">
                             @csrf
-                            @method('PATCH')
                             <button type="submit" class="inline-flex items-center px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 font-medium">
                                 Setujui
                             </button>
@@ -77,7 +76,6 @@
                         <form action="{{ route('petugas.approval.reject', $peminjaman) }}" method="POST" class="flex-1"
                             onsubmit="return confirm('Tolak peminjaman ini?')">
                             @csrf
-                            @method('PATCH')
                             <div class="flex items-end space-x-3">
                                 <div class="flex-1">
                                     <label for="alasan_tolak" class="block text-sm font-medium text-gray-700 mb-1">Alasan Penolakan</label>

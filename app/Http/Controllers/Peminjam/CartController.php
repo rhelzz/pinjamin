@@ -94,7 +94,8 @@ class CartController extends Controller
                 $alat = Alat::lockForUpdate()->find($alatId);
                 if (!$alat || $alat->stok < $item['jumlah']) {
                     DB::rollBack();
-                    return back()->with('error', "Stok {$alat?->nama_alat ?? 'alat'} tidak mencukupi.");
+                    $namaAlat = $alat ? $alat->nama_alat : 'alat';
+                    return back()->with('error', "Stok {$namaAlat} tidak mencukupi.");
                 }
             }
 
