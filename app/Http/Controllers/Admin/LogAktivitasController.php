@@ -10,10 +10,13 @@ class LogAktivitasController extends Controller
 {
     public function index(Request $request)
     {
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        
         $logs = LogAktivitas::with('user')
             ->when($request->search, fn ($q) => $q->where('aktivitas', 'like', "%{$request->search}%"))
-            ->latest('timestamp')
-            ->paginate(20)
+            ->orderBy($sortBy, $sortDirection)
+            ->paginate(7)
             ->withQueryString();
 
         return view('admin.log.index', compact('logs'));

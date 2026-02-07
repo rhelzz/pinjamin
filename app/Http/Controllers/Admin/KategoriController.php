@@ -10,9 +10,16 @@ use Illuminate\Support\Facades\Auth;
 
 class KategoriController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kategoris = Kategori::withCount('alat')->latest()->paginate(10);
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        
+        $kategoris = Kategori::withCount('alat')
+            ->orderBy($sortBy, $sortDirection)
+            ->paginate(7)
+            ->withQueryString();
+            
         return view('admin.kategori.index', compact('kategoris'));
     }
 

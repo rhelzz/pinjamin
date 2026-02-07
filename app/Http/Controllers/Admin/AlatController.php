@@ -14,11 +14,14 @@ class AlatController extends Controller
 {
     public function index(Request $request)
     {
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        
         $alats = Alat::with('kategori')
             ->search($request->search)
             ->byKategori($request->kategori_id)
-            ->latest()
-            ->paginate(10)
+            ->orderBy($sortBy, $sortDirection)
+            ->paginate(7)
             ->withQueryString();
 
         $kategoris = Kategori::all();

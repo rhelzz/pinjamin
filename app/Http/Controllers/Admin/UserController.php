@@ -14,12 +14,15 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        
         $users = User::with('role')
             ->when($request->search, fn ($q) => $q->where('name', 'like', "%{$request->search}%")
                 ->orWhere('username', 'like', "%{$request->search}%")
                 ->orWhere('email', 'like', "%{$request->search}%"))
-            ->latest()
-            ->paginate(10)
+            ->orderBy($sortBy, $sortDirection)
+            ->paginate(7)
             ->withQueryString();
 
         return view('admin.user.index', compact('users'));
