@@ -23,7 +23,7 @@
                             <p class="font-medium {{ $peminjaman->tanggal_kembali->isPast() ? 'text-red-600' : 'text-gray-900' }}">
                                 {{ $peminjaman->tanggal_kembali->format('d M Y') }}
                                 @if($peminjaman->tanggal_kembali->isPast())
-                                    (Terlambat {{ now()->diffInDays($peminjaman->tanggal_kembali) }} hari)
+                                    (Terlambat {{ $hariTerlambat }} hari)
                                 @endif
                             </p>
                         </div>
@@ -68,13 +68,56 @@
                             @enderror
                         </div>
 
-                        <div class="mb-4">
-                            <label for="denda" class="block text-sm font-medium text-gray-700 mb-1">Denda (Rp)</label>
-                            <input type="number" name="denda" id="denda" value="{{ old('denda', 0) }}" min="0" step="1000"
-                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            @error('denda')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                        <!-- Denda Section -->
+                        <div class="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <h4 class="text-sm font-semibold text-gray-700 mb-3">Denda</h4>
+                            
+                            @if($hariTerlambat > 0)
+                                <div class="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                    <p class="text-sm text-yellow-800">
+                                        <strong>Perhatian:</strong> Peminjaman ini terlambat <strong>{{ $hariTerlambat }} hari</strong>.
+                                    </p>
+                                </div>
+                            @endif
+
+                            <div class="mb-3">
+                                <label for="denda_id" class="block text-sm font-medium text-gray-700 mb-1">Pilih Jenis Denda</label>
+                                <select name="denda_id" id="denda_id"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                    onchange="hitungDenda()">
+                                    <option value="">-- Tidak Ada Denda --</option>
+                                    @foreach($dendas as $d)
+                                        <option value="{{ $d->id }}" 
+                                            data-tipe="{{ $d->tipe }}" 
+                                            data-nominal="{{ $d->nominal }}"
+                                            {{ old('denda_id') == $d->id ? 'selected' : '' }}>
+                                            {{ $d->nama_denda }} - Rp {{ number_format($d->nominal, 0, ',', '.') }}
+                                            @if($d->tipe === 'per_hari') /hari @endif
+                                        </option>
+                                    @endforeach
+                                    <option value="custom" {{ old('denda_id') === 'custom' ? 'selected' : '' }}>-- Denda Custom --</option>
+                                </select>
+                            </div>
+
+                            @if($hariTerlambat > 0)
+                                <div id="hari-terlambat-info" class="mb-3 hidden">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Hari Terlambat</label>
+                                    <input type="number" id="hari_terlambat" name="hari_terlambat" value="{{ $hariTerlambat }}" min="0"
+                                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        onchange="hitungDenda()">
+                                </div>
+                            @endif
+
+                            <div class="mb-3">
+                                <label for="denda" class="block text-sm font-medium text-gray-700 mb-1">Total Denda (Rp)</label>
+                                <input type="number" name="denda" id="denda" value="{{ old('denda', 0) }}" min="0" step="1000"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                @error('denda')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <p id="denda-kalkulasi" class="text-xs text-gray-500 hidden"></p>
                         </div>
 
                         <div class="mb-6">
@@ -98,4 +141,55 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const hariTerlambat = {{ $hariTerlambat }};
+
+        function hitungDenda() {
+            const select = document.getElementById('denda_id');
+            const dendaInput = document.getElementById('denda');
+            const kalkulasiText = document.getElementById('denda-kalkulasi');
+            const hariInfo = document.getElementById('hari-terlambat-info');
+            
+            if (select.value === '' || select.value === 'custom') {
+                if (hariInfo) hariInfo.classList.add('hidden');
+                kalkulasiText.classList.add('hidden');
+                if (select.value === '') {
+                    dendaInput.value = 0;
+                }
+                dendaInput.readOnly = false;
+                return;
+            }
+
+            const option = select.options[select.selectedIndex];
+            const tipe = option.dataset.tipe;
+            const nominal = parseFloat(option.dataset.nominal);
+
+            if (tipe === 'per_hari') {
+                if (hariInfo) hariInfo.classList.remove('hidden');
+                const inputHari = document.getElementById('hari_terlambat');
+                const hari = inputHari ? parseInt(inputHari.value) || 0 : hariTerlambat;
+                const total = nominal * hari;
+                dendaInput.value = total;
+                kalkulasiText.textContent = `Kalkulasi: Rp ${numberFormat(nominal)} x ${hari} hari = Rp ${numberFormat(total)}`;
+                kalkulasiText.classList.remove('hidden');
+            } else {
+                if (hariInfo) hariInfo.classList.add('hidden');
+                dendaInput.value = nominal;
+                kalkulasiText.textContent = `Denda tetap: Rp ${numberFormat(nominal)}`;
+                kalkulasiText.classList.remove('hidden');
+            }
+            
+            dendaInput.readOnly = true;
+        }
+
+        function numberFormat(num) {
+            return new Intl.NumberFormat('id-ID').format(num);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            hitungDenda();
+        });
+    </script>
 </x-app-layout>

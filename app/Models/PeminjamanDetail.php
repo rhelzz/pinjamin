@@ -15,6 +15,12 @@ class PeminjamanDetail extends Model
         'jumlah',
     ];
 
+    protected $casts = [
+        'peminjaman_id' => 'integer',
+        'alat_id' => 'integer',
+        'jumlah' => 'integer',
+    ];
+
     public function peminjaman(): BelongsTo
     {
         return $this->belongsTo(Peminjaman::class, 'peminjaman_id');

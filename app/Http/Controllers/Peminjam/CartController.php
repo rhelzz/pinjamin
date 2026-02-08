@@ -30,17 +30,17 @@ class CartController extends Controller
             'jumlah' => 'nullable|integer|min:1|max:' . $alat->stok,
         ]);
 
-        $jumlah = $request->input('jumlah', 1);
+        $jumlah = (int)$request->input('jumlah', 1);
         $cart = session('cart', []);
 
         if (isset($cart[$alat->id])) {
-            $cart[$alat->id]['jumlah'] += $jumlah;
+            $cart[$alat->id]['jumlah'] = (int)$cart[$alat->id]['jumlah'] + $jumlah;
             if ($cart[$alat->id]['jumlah'] > $alat->stok) {
-                $cart[$alat->id]['jumlah'] = $alat->stok;
+                $cart[$alat->id]['jumlah'] = (int)$alat->stok;
             }
         } else {
             $cart[$alat->id] = [
-                'jumlah' => min($jumlah, $alat->stok),
+                'jumlah' => (int)min($jumlah, $alat->stok),
             ];
         }
 
@@ -58,7 +58,7 @@ class CartController extends Controller
         $cart = session('cart', []);
 
         if (isset($cart[$alat->id])) {
-            $cart[$alat->id]['jumlah'] = $request->jumlah;
+            $cart[$alat->id]['jumlah'] = (int)$request->jumlah;
             session(['cart' => $cart]);
         }
 
@@ -91,8 +91,10 @@ class CartController extends Controller
         try {
             // Verify stock availability (race condition prevention)
             foreach ($cart as $alatId => $item) {
+                $jumlah = is_array($item) ? (int)($item['jumlah'] ?? 1) : (int)$item;
                 $alat = Alat::lockForUpdate()->find($alatId);
-                if (!$alat || $alat->stok < $item['jumlah']) {
+                
+                if (!$alat || $alat->stok < $jumlah) {
                     DB::rollBack();
                     $namaAlat = $alat ? $alat->nama_alat : 'alat';
                     return back()->with('error', "Stok {$namaAlat} tidak mencukupi.");
@@ -108,10 +110,13 @@ class CartController extends Controller
 
             // Create details (stock is reduced when approved by petugas)
             foreach ($cart as $alatId => $item) {
+                // Ensure jumlah is properly extracted
+                $jumlah = is_array($item) ? (int)($item['jumlah'] ?? 1) : (int)$item;
+                
                 PeminjamanDetail::create([
                     'peminjaman_id' => $peminjaman->id,
-                    'alat_id' => $alatId,
-                    'jumlah' => $item['jumlah'],
+                    'alat_id' => (int)$alatId,
+                    'jumlah' => $jumlah,
                 ]);
             }
 

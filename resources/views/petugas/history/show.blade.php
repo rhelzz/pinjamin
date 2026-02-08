@@ -29,12 +29,20 @@
                             </span>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-500">Peminjam</p>
+                            <p class="text-sm text-gray-500">Tanggal Pengajuan</p>
+                            <p class="font-medium text-gray-900">{{ $peminjaman->created_at->format('d M Y, H:i') }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Nama Peminjam</p>
                             <p class="font-medium text-gray-900">{{ $peminjaman->user->name }}</p>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-500">Tanggal Pengajuan</p>
-                            <p class="font-medium text-gray-900">{{ $peminjaman->created_at->format('d M Y, H:i') }}</p>
+                            <p class="text-sm text-gray-500">Username</p>
+                            <p class="font-medium text-gray-900">{{ $peminjaman->user->username }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Email</p>
+                            <p class="font-medium text-gray-900">{{ $peminjaman->user->email }}</p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-500">Tanggal Pinjam</p>
@@ -59,43 +67,54 @@
                             </div>
                         </div>
                     @endif
+                </div>
+            </div>
 
-                    @if($peminjaman->status === 'Pending')
-                        <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <!-- Info Petugas (Approver & Returner) -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Informasi Proses</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Approver Info -->
+                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
                             <div class="flex items-start">
-                                <svg class="w-5 h-5 text-yellow-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                <div>
-                                    <p class="text-sm font-medium text-yellow-800">Menunggu Persetujuan</p>
-                                    <p class="text-xs text-yellow-700 mt-1">Peminjaman Anda sedang dalam proses review oleh petugas</p>
+                                <div class="flex-shrink-0 h-10 w-10 bg-blue-500 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm font-semibold text-blue-800">Disetujui/Ditolak Oleh</p>
+                                    @if($peminjaman->approver)
+                                        <p class="text-sm text-blue-900 font-medium">{{ $peminjaman->approver->name }}</p>
+                                        <p class="text-xs text-blue-700">{{ $peminjaman->approved_at?->format('d M Y, H:i') }}</p>
+                                    @else
+                                        <p class="text-sm text-blue-600">Belum diproses</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                    @endif
 
-                    <!-- Info Petugas -->
-                    @if($peminjaman->approver || $peminjaman->returner)
-                        <div class="mt-4 border-t border-gray-200 pt-4">
-                            <h4 class="text-sm font-semibold text-gray-700 mb-3">Informasi Proses</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                @if($peminjaman->approver)
-                                    <div class="p-3 bg-blue-50 rounded-lg">
-                                        <p class="text-xs text-blue-600 font-medium">{{ $peminjaman->status === 'Ditolak' ? 'Ditolak' : 'Disetujui' }} Oleh</p>
-                                        <p class="text-sm font-semibold text-blue-900">{{ $peminjaman->approver->name }}</p>
-                                        <p class="text-xs text-blue-700">{{ $peminjaman->approved_at?->format('d M Y, H:i') }}</p>
-                                    </div>
-                                @endif
-                                @if($peminjaman->returner)
-                                    <div class="p-3 bg-green-50 rounded-lg">
-                                        <p class="text-xs text-green-600 font-medium">Pengembalian Diproses Oleh</p>
-                                        <p class="text-sm font-semibold text-green-900">{{ $peminjaman->returner->name }}</p>
+                        <!-- Returner Info -->
+                        <div class="p-4 bg-green-50 rounded-lg border border-green-200">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 bg-green-500 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm font-semibold text-green-800">Pengembalian Diproses Oleh</p>
+                                    @if($peminjaman->returner)
+                                        <p class="text-sm text-green-900 font-medium">{{ $peminjaman->returner->name }}</p>
                                         <p class="text-xs text-green-700">{{ $peminjaman->returned_at?->format('d M Y, H:i') }}</p>
-                                    </div>
-                                @endif
+                                    @else
+                                        <p class="text-sm text-green-600">Belum dikembalikan</p>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                    @endif
+                    </div>
                 </div>
             </div>
 
@@ -151,12 +170,12 @@
                 </div>
             </div>
 
-            <!-- Pengembalian Info (if returned) -->
+            <!-- Pengembalian Info -->
             @if($peminjaman->pengembalian)
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4">Info Pengembalian</h3>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <div>
                                 <p class="text-sm text-gray-500">Tanggal Dikembalikan</p>
                                 <p class="font-medium text-gray-900">{{ $peminjaman->pengembalian->tanggal_dikembalikan->format('d M Y') }}</p>
@@ -182,7 +201,7 @@
                 </div>
             @endif
 
-            <a href="{{ route('peminjam.peminjaman.index') }}" class="text-indigo-600 hover:text-indigo-800 text-sm">&larr; Kembali ke Riwayat</a>
+            <a href="{{ route('petugas.history.index') }}" class="text-indigo-600 hover:text-indigo-800 text-sm">&larr; Kembali ke History</a>
         </div>
     </div>
 </x-app-layout>

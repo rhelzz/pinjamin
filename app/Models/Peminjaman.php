@@ -17,6 +17,10 @@ class Peminjaman extends Model
         'tanggal_kembali',
         'status',
         'alasan_tolak',
+        'approved_by',
+        'approved_at',
+        'returned_by',
+        'returned_at',
     ];
 
     protected function casts(): array
@@ -24,6 +28,8 @@ class Peminjaman extends Model
         return [
             'tanggal_pinjam' => 'date',
             'tanggal_kembali' => 'date',
+            'approved_at' => 'datetime',
+            'returned_at' => 'datetime',
         ];
     }
 
@@ -40,5 +46,15 @@ class Peminjaman extends Model
     public function pengembalian(): HasOne
     {
         return $this->hasOne(Pengembalian::class, 'peminjaman_id');
+    }
+
+    public function approver(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    public function returner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'returned_by');
     }
 }

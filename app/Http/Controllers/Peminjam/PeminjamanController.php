@@ -25,7 +25,7 @@ class PeminjamanController extends Controller
             abort(403);
         }
 
-        $peminjaman->load(['detail.alat.kategori', 'pengembalian', 'user']);
+        $peminjaman->load(['detail.alat.kategori', 'pengembalian', 'user', 'approver', 'returner']);
 
         return view('peminjam.peminjaman.show', compact('peminjaman'));
     }

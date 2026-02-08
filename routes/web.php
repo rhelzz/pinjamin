@@ -1,15 +1,18 @@
 <?php
 
 use App\Http\Controllers\Admin\AlatController as AdminAlatController;
+use App\Http\Controllers\Admin\DendaController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\LogAktivitasController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\Peminjam\BookingController;
 use App\Http\Controllers\Peminjam\CartController;
 use App\Http\Controllers\Peminjam\KatalogController;
 use App\Http\Controllers\Peminjam\PeminjamanController;
 use App\Http\Controllers\Petugas\ApprovalController;
+use App\Http\Controllers\Petugas\HistoryController;
 use App\Http\Controllers\Petugas\LaporanController;
 use App\Http\Controllers\Petugas\PengembalianController;
 use App\Http\Controllers\ProfileController;
@@ -51,6 +54,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // CRUD User
     Route::resource('user', UserController::class)->except(['show']);
 
+    // CRUD Denda
+    Route::resource('denda', DendaController::class)->except(['show']);
+
     // Log Aktivitas
     Route::get('/log', [LogAktivitasController::class, 'index'])->name('log.index');
 });
@@ -69,6 +75,10 @@ Route::middleware(['auth', 'role:admin,petugas'])->prefix('petugas')->name('petu
     Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
     Route::get('/pengembalian/{peminjaman}/create', [PengembalianController::class, 'create'])->name('pengembalian.create');
     Route::post('/pengembalian/{peminjaman}', [PengembalianController::class, 'store'])->name('pengembalian.store');
+
+    // History Peminjaman untuk Petugas/Admin
+    Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
+    Route::get('/history/{peminjaman}', [HistoryController::class, 'show'])->name('history.show');
 
     // Laporan
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
@@ -89,6 +99,12 @@ Route::middleware(['auth', 'role:admin,petugas,peminjam'])->prefix('peminjam')->
     Route::patch('/cart/update/{alat}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{alat}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+
+    // Booking (untuk barang yang sedang tidak tersedia)
+    Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');
+    Route::get('/booking/create/{alat}', [BookingController::class, 'create'])->name('booking.create');
+    Route::post('/booking/{alat}', [BookingController::class, 'store'])->name('booking.store');
+    Route::delete('/booking/{booking}', [BookingController::class, 'destroy'])->name('booking.destroy');
 
     // Riwayat Peminjaman
     Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');

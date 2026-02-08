@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alat;
+use App\Models\Denda;
 use App\Models\LogAktivitas;
 use App\Models\Notifikasi;
 use App\Models\Peminjaman;
@@ -31,8 +32,17 @@ class PengembalianController extends Controller
         }
 
         $peminjaman->load(['user', 'detail.alat']);
+        
+        // Ambil daftar denda yang aktif
+        $dendas = Denda::aktif()->orderBy('tipe')->orderBy('nama_denda')->get();
+        
+        // Hitung hari keterlambatan
+        $hariTerlambat = 0;
+        if ($peminjaman->tanggal_kembali->isPast()) {
+            $hariTerlambat = now()->diffInDays($peminjaman->tanggal_kembali);
+        }
 
-        return view('petugas.pengembalian.create', compact('peminjaman'));
+        return view('petugas.pengembalian.create', compact('peminjaman', 'dendas', 'hariTerlambat'));
     }
 
     public function store(Request $request, Peminjaman $peminjaman)
@@ -60,7 +70,11 @@ class PengembalianController extends Controller
             ]);
 
             // Update peminjaman status
-            $peminjaman->update(['status' => 'Selesai']);
+            $peminjaman->update([
+                'status' => 'Selesai',
+                'returned_by' => Auth::id(),
+                'returned_at' => now(),
+            ]);
 
             // Return stock
             foreach ($peminjaman->detail as $detail) {

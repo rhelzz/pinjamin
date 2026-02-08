@@ -5,6 +5,7 @@
 
     <div class="py-6">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            
             @if($alats->count() > 0)
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                     <div class="p-6">
@@ -53,17 +54,49 @@
                         <h3 class="text-lg font-semibold text-gray-800 mb-4">Ajukan Peminjaman</h3>
                         <form action="{{ route('peminjam.cart.checkout') }}" method="POST">
                             @csrf
-                            <div class="mb-4">
-                                <label for="tanggal_kembali" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Rencana Kembali</label>
-                                <input type="date" name="tanggal_kembali" id="tanggal_kembali"
-                                    value="{{ old('tanggal_kembali') }}"
-                                    min="{{ date('Y-m-d') }}"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                                @error('tanggal_kembali')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <!-- Tanggal Peminjaman (Readonly) -->
+                                <div>
+                                    <label for="tanggal_pinjam" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Tanggal Peminjaman
+                                    </label>
+                                    <input type="date" id="tanggal_pinjam"
+                                        value="{{ date('Y-m-d') }}"
+                                        readonly
+                                        class="w-full rounded-md border-gray-300 bg-gray-50 text-gray-600 shadow-sm cursor-not-allowed">
+                                    <p class="mt-1 text-xs text-gray-500">Tanggal peminjaman akan dicatat saat petugas menyetujui</p>
+                                </div>
+
+                                <!-- Tanggal Rencana Kembali -->
+                                <div>
+                                    <label for="tanggal_kembali" class="block text-sm font-medium text-gray-700 mb-1">
+                                        Tanggal Rencana Kembali <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="date" name="tanggal_kembali" id="tanggal_kembali"
+                                        value="{{ old('tanggal_kembali') }}"
+                                        min="{{ date('Y-m-d', strtotime('+1 day')) }}"
+                                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                                    @error('tanggal_kembali')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
-                            <button type="submit" class="inline-flex items-center px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 font-medium">
+
+                            <!-- Summary -->
+                            <div class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                <h4 class="text-sm font-semibold text-gray-700 mb-2">Ringkasan Peminjaman</h4>
+                                <div class="space-y-1 text-sm text-gray-600">
+                                    <p>• Total Item: <span class="font-medium text-gray-900">{{ count($cart) }} jenis alat</span></p>
+                                    <p>• Total Unit: <span class="font-medium text-gray-900">{{ array_sum(array_column($cart, 'jumlah')) }} unit</span></p>
+                                    <p class="text-xs text-gray-500 mt-2">Pastikan data sudah benar sebelum mengajukan peminjaman</p>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="inline-flex items-center px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium shadow-sm hover:shadow-md transition-all">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
                                 Ajukan Peminjaman
                             </button>
                         </form>

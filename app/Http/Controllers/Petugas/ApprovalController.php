@@ -41,17 +41,22 @@ class ApprovalController extends Controller
             // Check and reduce stock
             foreach ($peminjaman->detail as $detail) {
                 $alat = Alat::lockForUpdate()->find($detail->alat_id);
-                if ($alat->stok < $detail->jumlah) {
+                $jumlah = (int)$detail->jumlah;
+                
+                if ($alat->stok < $jumlah) {
                     DB::rollBack();
-                    return back()->with('error', "Stok {$alat->nama_alat} tidak mencukupi ({$alat->stok} tersisa, {$detail->jumlah} dibutuhkan).");
+                    return back()->with('error', "Stok {$alat->nama_alat} tidak mencukupi ({$alat->stok} tersisa, {$jumlah} dibutuhkan).");
                 }
-                $alat->stok -= $detail->jumlah;
+                
+                $alat->stok -= $jumlah;
                 $alat->save();
             }
 
             $peminjaman->update([
                 'status' => 'Dipinjam',
                 'tanggal_pinjam' => now()->toDateString(),
+                'approved_by' => Auth::id(),
+                'approved_at' => now(),
             ]);
 
             // Notify borrower
@@ -88,6 +93,8 @@ class ApprovalController extends Controller
         $peminjaman->update([
             'status' => 'Ditolak',
             'alasan_tolak' => $request->alasan_tolak,
+            'approved_by' => Auth::id(),
+            'approved_at' => now(),
         ]);
 
         Notifikasi::create([

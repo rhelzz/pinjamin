@@ -40,19 +40,32 @@
                             <h3 class="font-semibold text-gray-900 mb-1">{{ $alat->nama_alat }}</h3>
                             <p class="text-xs text-indigo-600 font-medium mb-2">{{ $alat->kategori->nama_kategori }}</p>
                             <p class="text-sm text-gray-500 mb-3 flex-1">{{ Str::limit($alat->deskripsi, 80) }}</p>
-                            <div class="flex items-center justify-between">
+                            <div class="space-y-2">
                                 <span class="text-sm font-medium {{ $alat->stok > 0 ? 'text-green-600' : 'text-red-600' }}">
                                     Stok: {{ $alat->stok }}
                                 </span>
-                                <form action="{{ route('peminjam.cart.add', $alat) }}" method="POST">
-                                    @csrf
-                                    <button type="submit"
-                                        class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md text-white
-                                        {{ $alat->stok > 0 ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-400 cursor-not-allowed' }}"
-                                        {{ $alat->stok <= 0 ? 'disabled' : '' }}>
-                                        {{ $alat->stok > 0 ? 'Pinjam' : 'Habis' }}
-                                    </button>
-                                </form>
+                                @if($alat->stok > 0)
+                                    <form action="{{ route('peminjam.cart.add', $alat) }}" method="POST" class="flex items-center space-x-2">
+                                        @csrf
+                                        <input type="number" name="jumlah" value="1" min="1" max="{{ $alat->stok }}"
+                                            class="w-16 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-xs py-1.5">
+                                        <button type="submit"
+                                            class="flex-1 inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                                            <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                            </svg>
+                                            Pinjam
+                                        </button>
+                                    </form>
+                                @else
+                                    <a href="{{ route('peminjam.booking.create', $alat) }}"
+                                        class="inline-flex items-center justify-center w-full px-3 py-1.5 text-xs font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700">
+                                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        </svg>
+                                        Booking
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>
