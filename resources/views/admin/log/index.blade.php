@@ -16,7 +16,7 @@
         </div>
     </x-slot>
 
-    <div class="py-8">
+    <div class="pt-0 pb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <!-- Main Content Card -->
@@ -87,153 +87,94 @@
                     </form>
                 </div>
 
-                <!-- Activity Timeline -->
-                <div class="p-6 md:p-8">
-                    <div class="flow-root">
-                        <ul role="list" class="-mb-8">
+                <!-- Activity Table -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">#</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">User</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Aktivitas</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">Waktu</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 text-sm">
                             @forelse($logs as $log)
-                                <li>
-                                    <div class="relative pb-8">
-                                        @if(!$loop->last)
-                                            <span class="absolute top-12 left-6 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
-                                        @endif
-                                        
-                                        <div class="relative flex items-start space-x-4 group">
-                                            <!-- Number Badge -->
-                                            <div class="flex-shrink-0 w-12 flex items-center justify-center">
-                                                <div class="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 ring-4 ring-white shadow-md group-hover:from-indigo-100 group-hover:to-indigo-200 transition-all duration-200">
-                                                    <span class="text-xs font-bold text-gray-600 group-hover:text-indigo-700">
-                                                        #{{ $loop->iteration + ($logs->currentPage() - 1) * $logs->perPage() }}
-                                                    </span>
-                                                </div>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-xs font-semibold text-indigo-700 bg-indigo-100 px-2.5 py-1 rounded-full font-mono">{{ $log->id }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                                                <span class="text-xs font-bold text-white">
+                                                    {{ strtoupper(substr($log->user->name ?? 'S', 0, 1)) }}
+                                                </span>
                                             </div>
-                                            
-                                            <!-- Content Card -->
-                                            <div class="min-w-0 flex-1">
-                                                <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 group-hover:bg-white group-hover:border-indigo-200 group-hover:shadow-md transition-all duration-200">
-                                                    
-                                                    <!-- User Info & Timestamp -->
-                                                    <div class="flex items-center justify-between mb-3">
-                                                        <div class="flex items-center space-x-3">
-                                                            <!-- User Avatar -->
-                                                            <div class="h-9 w-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm">
-                                                                <span class="text-xs font-bold text-white">
-                                                                    {{ strtoupper(substr($log->user->name ?? 'S', 0, 1)) }}
-                                                                </span>
-                                                            </div>
-                                                            
-                                                            <!-- User Name -->
-                                                            <div>
-                                                                <p class="text-sm font-semibold text-gray-900">
-                                                                    {{ $log->user->name ?? 'System' }}
-                                                                </p>
-                                                                @if($log->user)
-                                                                    <p class="text-xs text-gray-500">
-                                                                        {{ $log->user->role->nama_role ?? '-' }}
-                                                                    </p>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        <!-- Timestamp -->
-                                                        <div class="text-right">
-                                                            <time class="text-xs font-medium text-gray-500 block" title="{{ $log->timestamp->format('d F Y, H:i:s') }}">
-                                                                {{ $log->timestamp->diffForHumans() }}
-                                                            </time>
-                                                            <span class="text-xs text-gray-400">
-                                                                {{ $log->timestamp->format('H:i') }}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <!-- Activity Description -->
-                                                    <div class="flex items-start space-x-2">
-                                                        <div class="flex-shrink-0 mt-0.5">
-                                                            @php
-                                                                $activity = strtolower($log->aktivitas);
-                                                                $iconColor = 'text-gray-400';
-                                                                $iconPath = 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z';
-                                                                
-                                                                if (str_contains($activity, 'login') || str_contains($activity, 'masuk')) {
-                                                                    $iconColor = 'text-green-500';
-                                                                    $iconPath = 'M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1';
-                                                                } elseif (str_contains($activity, 'logout') || str_contains($activity, 'keluar')) {
-                                                                    $iconColor = 'text-red-500';
-                                                                    $iconPath = 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1';
-                                                                } elseif (str_contains($activity, 'tambah') || str_contains($activity, 'buat') || str_contains($activity, 'create')) {
-                                                                    $iconColor = 'text-blue-500';
-                                                                    $iconPath = 'M12 4v16m8-8H4';
-                                                                } elseif (str_contains($activity, 'edit') || str_contains($activity, 'ubah') || str_contains($activity, 'update')) {
-                                                                    $iconColor = 'text-amber-500';
-                                                                    $iconPath = 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z';
-                                                                } elseif (str_contains($activity, 'hapus') || str_contains($activity, 'delete')) {
-                                                                    $iconColor = 'text-red-500';
-                                                                    $iconPath = 'M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16';
-                                                                } elseif (str_contains($activity, 'setuju') || str_contains($activity, 'approve')) {
-                                                                    $iconColor = 'text-green-500';
-                                                                    $iconPath = 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z';
-                                                                } elseif (str_contains($activity, 'tolak') || str_contains($activity, 'reject')) {
-                                                                    $iconColor = 'text-red-500';
-                                                                    $iconPath = 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z';
-                                                                }
-                                                            @endphp
-                                                            
-                                                            <svg class="w-5 h-5 {{ $iconColor }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $iconPath }}"/>
-                                                            </svg>
-                                                        </div>
-                                                        <div class="flex-1">
-                                                            <p class="text-sm text-gray-700 leading-relaxed">
-                                                                {{ $log->aktivitas }}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                </div>
+                                            <div class="min-w-0">
+                                                <p class="text-sm font-semibold text-gray-900 truncate">{{ $log->user->name ?? 'System' }}</p>
+                                                @if($log->user)
+                                                    <p class="text-xs text-gray-500 truncate">{{ $log->user->role->nama_role ?? '-' }}</p>
+                                                @endif
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-gray-700 line-clamp-1">{{ $log->aktivitas }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                                        <div class="text-right">
+                                            <time class="text-xs font-medium text-gray-500 block" title="{{ $log->timestamp->format('d F Y, H:i:s') }}">
+                                                {{ $log->timestamp->diffForHumans() }}
+                                            </time>
+                                            <span class="text-xs text-gray-400">
+                                                {{ $log->timestamp->format('H:i') }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
                             @empty
-                                <li>
-                                    <div class="text-center py-16">
-                                        <div class="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-4">
-                                            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                            </svg>
-                                        </div>
-                                        <h3 class="text-base font-semibold text-gray-900 mb-2">Belum Ada Log Aktivitas</h3>
-                                        <p class="text-sm text-gray-500 max-w-sm mx-auto">
-                                            @if(request('search'))
-                                                Tidak ada hasil untuk pencarian "{{ request('search') }}". Coba kata kunci lain.
-                                            @else
-                                                Log aktivitas akan muncul di sini ketika pengguna melakukan aksi di sistem.
-                                            @endif
-                                        </p>
-                                        @if(request('search'))
-                                            <div class="mt-6">
-                                                <a href="{{ route('admin.log.index') }}" 
-                                                   class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition-all">
-                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                                    </svg>
-                                                    Reset Pencarian
-                                                </a>
+                                <tr>
+                                    <td colspan="4" class="px-6 py-16 text-center">
+                                        <div class="inline-flex flex-col items-center">
+                                            <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+                                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                                </svg>
                                             </div>
-                                        @endif
-                                    </div>
-                                </li>
+                                            <h3 class="text-base font-semibold text-gray-900 mb-2">Belum Ada Log Aktivitas</h3>
+                                            <p class="text-sm text-gray-500 max-w-sm">
+                                                @if(request('search'))
+                                                    Tidak ada hasil untuk pencarian "{{ request('search') }}". Coba kata kunci lain.
+                                                @else
+                                                    Log aktivitas akan muncul di sini ketika pengguna melakukan aksi di sistem.
+                                                @endif
+                                            </p>
+                                            @if(request('search'))
+                                                <div class="mt-6">
+                                                    <a href="{{ route('admin.log.index') }}" 
+                                                       class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition-all">
+                                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                                        </svg>
+                                                        Reset Pencarian
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
                             @endforelse
-                        </ul>
-                    </div>
-
-                    <!-- Pagination -->
-                    @if($logs->hasPages())
-                        <div class="mt-8 pt-6 border-t border-gray-200">
-                            {{ $logs->links() }}
-                        </div>
-                    @endif
+                        </tbody>
+                    </table>
                 </div>
+
+                <!-- Pagination -->
+                @if($logs->hasPages())
+                    <div class="bg-gray-50 border-t border-gray-200 px-6 py-4">
+                        {{ $logs->links() }}
+                    </div>
+                @endif
 
             </div>
         </div>

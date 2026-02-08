@@ -110,79 +110,67 @@
             </div>
 
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                <div class="p-6 md:p-8">
-                    
-                    <!-- Activity Timeline -->
-                    <div class="flow-root">
-                        <ul role="list" class="-mb-8">
-                            @forelse($recentLogs as $index => $log)
-                                <li>
-                                    <div class="relative pb-8">
-                                        @if(!$loop->last)
-                                            <span class="absolute top-10 left-5 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
-                                        @endif
-                                        
-                                        <div class="relative flex items-start space-x-4 group">
-                                            <!-- Avatar -->
-                                            <div class="relative flex-shrink-0">
-                                                <div class="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center ring-4 ring-white shadow-md">
-                                                    <span class="text-sm font-bold text-white">
-                                                        {{ strtoupper(substr($log->user->name ?? 'S', 0, 1)) }}
-                                                    </span>
-                                                </div>
-                                                <span class="absolute -bottom-0.5 -right-1 bg-green-400 rounded-full p-1 ring-2 ring-white">
-                                                    <svg class="h-2.5 w-2.5 text-white" fill="currentColor" viewBox="0 0 8 8">
-                                                        <circle cx="4" cy="4" r="3"/>
-                                                    </svg>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">User</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Aktivitas</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">Waktu</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                            @forelse($recentLogs as $log)
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-xs font-semibold text-indigo-700 bg-indigo-100 px-2.5 py-1 rounded-full font-mono">{{ $log->id }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                                                <span class="text-xs font-bold text-white">
+                                                    {{ strtoupper(substr($log->user->name ?? 'S', 0, 1)) }}
                                                 </span>
                                             </div>
-                                            
-                                            <!-- Content -->
-                                            <div class="min-w-0 flex-1">
-                                                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 group-hover:bg-gray-100 group-hover:border-gray-300 transition-colors duration-200">
-                                                    <div class="flex items-center justify-between mb-2">
-                                                        <p class="text-sm font-semibold text-gray-900">
-                                                            {{ $log->user->name ?? 'System' }}
-                                                        </p>
-                                                        <time class="text-xs font-medium text-gray-500 bg-white px-2 py-1 rounded-full border border-gray-200">
-                                                            {{ $log->timestamp->diffForHumans() }}
-                                                        </time>
-                                                    </div>
-                                                    <p class="text-sm text-gray-700 leading-relaxed">
-                                                        {{ $log->aktivitas }}
-                                                    </p>
-                                                </div>
-                                            </div>
+                                            <span class="text-sm font-medium text-gray-900">{{ $log->user->name ?? 'System' }}</span>
                                         </div>
-                                    </div>
-                                </li>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-gray-700">{{ $log->aktivitas }}</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right">
+                                        <time class="text-xs font-medium text-gray-500" title="{{ $log->timestamp->format('d F Y, H:i:s') }}">
+                                            {{ $log->timestamp->diffForHumans() }}
+                                        </time>
+                                    </td>
+                                </tr>
                             @empty
-                                <li>
-                                    <div class="text-center py-12">
-                                        <svg class="mx-auto h-16 w-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                        </svg>
-                                        <h3 class="mt-4 text-sm font-semibold text-gray-900">Belum ada aktivitas</h3>
-                                        <p class="mt-2 text-sm text-gray-500">Aktivitas pengguna akan muncul di sini</p>
-                                    </div>
-                                </li>
+                                <tr>
+                                    <td colspan="4" class="px-6 py-12 text-center">
+                                        <div class="inline-flex flex-col items-center">
+                                            <svg class="h-12 w-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                            <p class="text-sm font-semibold text-gray-900">Belum ada aktivitas</p>
+                                            <p class="text-xs text-gray-500 mt-1">Aktivitas pengguna akan muncul di sini</p>
+                                        </div>
+                                    </td>
+                                </tr>
                             @endforelse
-                        </ul>
-                    </div>
-
-                    <!-- View All Link -->
-                    @if($recentLogs->isNotEmpty())
-                        <div class="mt-8 pt-6 border-t border-gray-200">
-                            <a href="{{ route('admin.log.index') }}" class="inline-flex items-center justify-center w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
-                                <span>Lihat Semua Log</span>
-                                <svg class="ml-2 -mr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                                </svg>
-                            </a>
-                        </div>
-                    @endif
-
+                        </tbody>
+                    </table>
                 </div>
+                @if($recentLogs->isNotEmpty())
+                    <div class="bg-gray-50 border-t border-gray-200 px-6 py-4">
+                        <a href="{{ route('admin.log.index') }}" class="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+                            Lihat Semua Log
+                            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                        </a>
+                    </div>
+                @endif
             </div>
 
         </div>
