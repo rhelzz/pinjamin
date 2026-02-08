@@ -20,13 +20,13 @@
             @include('layouts.sidebar')
 
             <!-- Main Content -->
-            <div class="flex-1 flex flex-col min-h-screen">
+            <div class="flex-1 flex flex-col min-h-screen ml-64 pt-16">
                 <!-- Top Navigation Bar -->
                 @include('layouts.topbar')
 
                 <!-- Page Heading -->
                 @isset($header)
-                    <header class="bg-white shadow">
+                    <header class="bg-transparent">
                         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                             {{ $header }}
                         </div>
@@ -53,7 +53,7 @@
                 </main>
 
                 <!-- Footer -->
-                <footer class="bg-white border-t border-gray-200 py-4 px-6 text-center text-sm text-gray-500">
+                <footer class="bg-gradient-to-r from-white to-gray-50 border-t border-gray-200 py-4 px-6 text-center text-sm text-gray-700">
                     &copy; {{ date('Y') }} {{ config('app.name', 'Pinjamin') }}. All rights reserved.
                 </footer>
             </div>

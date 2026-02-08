@@ -6,14 +6,14 @@
                 <p class="mt-1 text-sm text-gray-600">Ringkasan sistem peminjaman alat sekolah</p>
             </div>
             <div class="hidden sm:block">
-                <span class="text-xs font-medium text-gray-500 bg-gray-100 px-3 py-1.5 rounded-full">
+                <span class="text-xs font-medium text-gray-700 bg-white border border-gray-200 px-3 py-1.5 rounded-full shadow-sm">
                     {{ now()->isoFormat('dddd, D MMMM Y') }}
                 </span>
             </div>
         </div>
     </x-slot>
 
-    <div class="py-8">
+    <div class="pt-0 pb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <!-- Page Title Section -->
