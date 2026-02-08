@@ -21,7 +21,7 @@ class AlatController extends Controller
             ->search($request->search)
             ->byKategori($request->kategori_id)
             ->orderBy($sortBy, $sortDirection)
-            ->paginate(7)
+            ->paginate(15)
             ->withQueryString();
 
         $kategoris = Kategori::all();

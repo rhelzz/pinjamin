@@ -16,7 +16,7 @@ class LogAktivitasController extends Controller
         $logs = LogAktivitas::with('user')
             ->when($request->search, fn ($q) => $q->where('aktivitas', 'like', "%{$request->search}%"))
             ->orderBy($sortBy, $sortDirection)
-            ->paginate(7)
+            ->paginate(15)
             ->withQueryString();
 
         return view('admin.log.index', compact('logs'));

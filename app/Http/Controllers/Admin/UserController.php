@@ -22,7 +22,7 @@ class UserController extends Controller
                 ->orWhere('username', 'like', "%{$request->search}%")
                 ->orWhere('email', 'like', "%{$request->search}%"))
             ->orderBy($sortBy, $sortDirection)
-            ->paginate(7)
+            ->paginate(15)
             ->withQueryString();
 
         return view('admin.user.index', compact('users'));

@@ -17,7 +17,7 @@ class KategoriController extends Controller
         
         $kategoris = Kategori::withCount('alat')
             ->orderBy($sortBy, $sortDirection)
-            ->paginate(7)
+            ->paginate(15)
             ->withQueryString();
             
         return view('admin.kategori.index', compact('kategoris'));
