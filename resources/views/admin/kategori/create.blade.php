@@ -50,7 +50,7 @@
                                 </div>
                                 <input type="text" name="nama_kategori" id="nama_kategori" value="{{ old('nama_kategori') }}" 
                                     class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all @error('nama_kategori') border-red-500 @enderror" 
-                                    placeholder="Contoh: Alat Laboratorium, Alat Olahraga, Elektronik" 
+                                    placeholder="Contoh: Alat Produktif, Alat Olahraga, Elektronik" 
                                     required>
                             </div>
                             @error('nama_kategori')
@@ -85,7 +85,7 @@
                                         <svg class="w-4 h-4 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                                         </svg>
-                                        Alat Laboratorium
+                                        Alat Produktif
                                     </div>
                                     <div class="flex items-center">
                                         <svg class="w-4 h-4 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">

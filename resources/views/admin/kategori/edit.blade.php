@@ -51,7 +51,7 @@
                                 </div>
                                 <input type="text" name="nama_kategori" id="nama_kategori" value="{{ old('nama_kategori', $kategori->nama_kategori) }}" 
                                     class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all @error('nama_kategori') border-red-500 @enderror" 
-                                    placeholder="Contoh: Alat Laboratorium" 
+                                    placeholder="Contoh: Alat Produktif" 
                                     required>
                             </div>
                             @error('nama_kategori')

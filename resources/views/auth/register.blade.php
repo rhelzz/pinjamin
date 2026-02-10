@@ -86,9 +86,9 @@
     </style>
 </head>
 <body class="font-sans antialiased bg-gray-50">
-    <div class="min-h-screen flex">
+    <div class="h-screen flex overflow-hidden">
         <!-- Left Side - Decorative -->
-        <div class="hidden lg:flex lg:w-1/2 gradient-bg relative overflow-hidden">
+        <div class="hidden lg:flex lg:w-1/2 gradient-bg relative overflow-hidden flex-shrink-0">
             <!-- Logo -->
             <div class="absolute top-8 left-8 z-10">
                 <div class="flex items-center gap-3">
@@ -115,14 +115,14 @@
                     Bergabung dengan<br>Sistem Pinjamin
                 </h1>
                 <p class="text-sky-100 text-lg">
-                    Daftar untuk mulai meminjam alat laboratorium dengan mudah
+                    Daftar untuk mulai meminjam alat produktif dengan mudah
                 </p>
             </div>
         </div>
 
         <!-- Right Side - Register Form -->
-        <div class="w-full lg:w-1/2 flex items-center justify-center p-8 overflow-y-auto">
-            <div class="w-full max-w-md py-8">
+        <div class="w-full lg:w-1/2 flex flex-col overflow-y-auto">
+            <div class="w-full max-w-md mx-auto p-8 py-8">
                 <!-- Mobile Logo -->
                 <div class="lg:hidden flex items-center justify-center gap-3 mb-8">
                     <div class="w-12 h-12 gradient-bg rounded-xl flex items-center justify-center shadow-lg">

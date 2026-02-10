@@ -112,7 +112,7 @@
             <!-- Text Content -->
             <div class="absolute bottom-16 left-8 right-8 z-10">
                 <h1 class="text-white text-3xl font-bold leading-tight mb-4">
-                    Sistem Peminjaman<br>Alat Laboratorium
+                    Sistem Peminjaman<br>Alat Produktif
                 </h1>
                 <p class="text-sky-100 text-lg">
                     Kelola peminjaman alat dengan mudah dan efisien

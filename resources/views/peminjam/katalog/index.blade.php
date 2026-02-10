@@ -3,7 +3,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <h2 class="font-bold text-2xl text-gray-900 leading-tight">Katalog Alat</h2>
-                <p class="mt-1 text-sm text-gray-600">Jelajahi dan pinjam alat laboratorium yang tersedia</p>
+                <p class="mt-1 text-sm text-gray-600">Jelajahi dan pinjam alat produktif yang tersedia</p>
             </div>
             <a href="{{ route('peminjam.cart.index') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
