@@ -118,7 +118,18 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm">
                                             <p class="font-medium text-gray-900">{{ $peminjaman->tanggal_kembali->format('d M Y') }}</p>
-                                            <p class="text-xs text-gray-500">{{ now()->diffInDays($peminjaman->tanggal_kembali) }} hari lagi</p>
+                                            @php
+                                                $deadline = $peminjaman->tanggal_kembali;
+                                                $minutesDiff = $deadline->diffInMinutes(now());
+                                                $sisaJam = max(0, (int) floor($minutesDiff / 60));
+                                                $sisaHari = (int) floor($sisaJam / 24);
+                                                $sisaJamSisa = $sisaJam % 24;
+                                            @endphp
+                                            @if($sisaHari > 0)
+                                                <p class="text-xs text-gray-500">{{ $sisaHari }} hari {{ $sisaJamSisa }} jam lagi</p>
+                                            @else
+                                                <p class="text-xs text-gray-500">{{ $sisaJam }} jam lagi</p>
+                                            @endif
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">

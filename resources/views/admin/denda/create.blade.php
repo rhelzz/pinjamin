@@ -56,6 +56,7 @@
                             class="block w-full px-4 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all @error('tipe') border-red-500 @enderror" 
                             required>
                             <option value="">-- Pilih Tipe --</option>
+                            <option value="per_jam" {{ old('tipe') === 'per_jam' ? 'selected' : '' }}>Per Jam (untuk keterlambatan)</option>
                             <option value="per_hari" {{ old('tipe') === 'per_hari' ? 'selected' : '' }}>Per Hari (untuk keterlambatan)</option>
                             <option value="tetap" {{ old('tipe') === 'tetap' ? 'selected' : '' }}>Tetap (untuk kerusakan)</option>
                         </select>
@@ -63,7 +64,7 @@
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                         <p class="mt-2 text-xs text-gray-500">
-                            <strong>Per Hari:</strong> Nominal × jumlah hari keterlambatan. <strong>Tetap:</strong> Nominal tetap untuk kerusakan.
+                            <strong>Per Jam:</strong> Nominal × jumlah jam keterlambatan. <strong>Per Hari:</strong> Nominal × jumlah hari. <strong>Tetap:</strong> Nominal tetap untuk kerusakan.
                         </p>
                     </div>
 

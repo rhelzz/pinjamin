@@ -26,8 +26,8 @@ class Peminjaman extends Model
     protected function casts(): array
     {
         return [
-            'tanggal_pinjam' => 'date',
-            'tanggal_kembali' => 'date',
+            'tanggal_pinjam' => 'datetime',
+            'tanggal_kembali' => 'datetime',
             'approved_at' => 'datetime',
             'returned_at' => 'datetime',
         ];

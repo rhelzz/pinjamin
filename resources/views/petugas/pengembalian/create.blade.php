@@ -21,9 +21,9 @@
                         <div>
                             <p class="text-sm text-gray-500">Tanggal Rencana Kembali</p>
                             <p class="font-medium {{ $peminjaman->tanggal_kembali->isPast() ? 'text-red-600' : 'text-gray-900' }}">
-                                {{ $peminjaman->tanggal_kembali->format('d M Y') }}
+                                {{ $peminjaman->tanggal_kembali->format('d M Y H:i') }}
                                 @if($peminjaman->tanggal_kembali->isPast())
-                                    (Terlambat {{ $hariTerlambat }} hari)
+                                    (Terlambat {{ $jamTerlambat }} jam)
                                 @endif
                             </p>
                         </div>
@@ -72,10 +72,10 @@
                         <div class="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
                             <h4 class="text-sm font-semibold text-gray-700 mb-3">Denda</h4>
                             
-                            @if($hariTerlambat > 0)
+                            @if($jamTerlambat > 0)
                                 <div class="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                                     <p class="text-sm text-yellow-800">
-                                        <strong>Perhatian:</strong> Peminjaman ini terlambat <strong>{{ $hariTerlambat }} hari</strong>.
+                                        <strong>Perhatian:</strong> Peminjaman ini terlambat <strong>{{ $jamTerlambat }} jam</strong>.
                                     </p>
                                 </div>
                             @endif
@@ -92,17 +92,17 @@
                                             data-nominal="{{ $d->nominal }}"
                                             {{ old('denda_id') == $d->id ? 'selected' : '' }}>
                                             {{ $d->nama_denda }} - Rp {{ number_format($d->nominal, 0, ',', '.') }}
-                                            @if($d->tipe === 'per_hari') /hari @endif
+                                            @if($d->tipe === 'per_jam') /jam @elseif($d->tipe === 'per_hari') /hari @endif
                                         </option>
                                     @endforeach
                                     <option value="custom" {{ old('denda_id') === 'custom' ? 'selected' : '' }}>-- Denda Custom --</option>
                                 </select>
                             </div>
 
-                            @if($hariTerlambat > 0)
-                                <div id="hari-terlambat-info" class="mb-3 hidden">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Hari Terlambat</label>
-                                    <input type="number" id="hari_terlambat" name="hari_terlambat" value="{{ $hariTerlambat }}" min="0"
+                            @if($jamTerlambat > 0)
+                                <div id="jam-terlambat-info" class="mb-3 hidden">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Jam Terlambat</label>
+                                    <input type="number" id="jam_terlambat" name="jam_terlambat" value="{{ $jamTerlambat }}" min="0"
                                         class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                         onchange="hitungDenda()">
                                 </div>
@@ -143,16 +143,16 @@
     </div>
 
     <script>
-        const hariTerlambat = {{ $hariTerlambat }};
+        const jamTerlambat = Math.max(0, Math.ceil({{ $jamTerlambat }}));
 
         function hitungDenda() {
             const select = document.getElementById('denda_id');
             const dendaInput = document.getElementById('denda');
             const kalkulasiText = document.getElementById('denda-kalkulasi');
-            const hariInfo = document.getElementById('hari-terlambat-info');
+            const jamInfo = document.getElementById('jam-terlambat-info');
             
             if (select.value === '' || select.value === 'custom') {
-                if (hariInfo) hariInfo.classList.add('hidden');
+                if (jamInfo) jamInfo.classList.add('hidden');
                 kalkulasiText.classList.add('hidden');
                 if (select.value === '') {
                     dendaInput.value = 0;
@@ -165,17 +165,26 @@
             const tipe = option.dataset.tipe;
             const nominal = parseFloat(option.dataset.nominal);
 
-            if (tipe === 'per_hari') {
-                if (hariInfo) hariInfo.classList.remove('hidden');
-                const inputHari = document.getElementById('hari_terlambat');
-                const hari = inputHari ? parseInt(inputHari.value) || 0 : hariTerlambat;
-                const total = nominal * hari;
+            if (tipe === 'per_jam') {
+                if (jamInfo) jamInfo.classList.remove('hidden');
+                const inputJam = document.getElementById('jam_terlambat');
+                const jam = Math.max(0, inputJam ? parseInt(inputJam.value) || 0 : jamTerlambat);
+                const total = Math.max(0, nominal * jam);
                 dendaInput.value = total;
-                kalkulasiText.textContent = `Kalkulasi: Rp ${numberFormat(nominal)} x ${hari} hari = Rp ${numberFormat(total)}`;
+                kalkulasiText.textContent = `Kalkulasi: Rp ${numberFormat(nominal)} x ${jam} jam = Rp ${numberFormat(total)}`;
+                kalkulasiText.classList.remove('hidden');
+            } else if (tipe === 'per_hari') {
+                if (jamInfo) jamInfo.classList.remove('hidden');
+                const inputJam = document.getElementById('jam_terlambat');
+                const jam = Math.max(0, inputJam ? parseInt(inputJam.value) || 0 : jamTerlambat);
+                const hari = Math.ceil(jam / 24);
+                const total = Math.max(0, nominal * hari);
+                dendaInput.value = total;
+                kalkulasiText.textContent = `Kalkulasi: Rp ${numberFormat(nominal)} x ${hari} hari (${jam} jam) = Rp ${numberFormat(total)}`;
                 kalkulasiText.classList.remove('hidden');
             } else {
-                if (hariInfo) hariInfo.classList.add('hidden');
-                dendaInput.value = nominal;
+                if (jamInfo) jamInfo.classList.add('hidden');
+                dendaInput.value = Math.max(0, nominal);
                 kalkulasiText.textContent = `Denda tetap: Rp ${numberFormat(nominal)}`;
                 kalkulasiText.classList.remove('hidden');
             }

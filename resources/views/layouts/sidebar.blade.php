@@ -1,6 +1,6 @@
-<aside x-data="{ open: true }" class="fixed top-0 left-0 h-screen bg-gradient-to-b from-white to-gray-50 text-gray-700 w-64 flex-shrink-0 flex flex-col shadow-2xl border-r border-gray-200 z-40">
+<aside x-data="{ open: true }" class="fixed top-0 left-0 h-screen bg-white/80 backdrop-blur-xl text-gray-700 w-64 flex-shrink-0 flex flex-col shadow-2xl border-r border-gray-200/50 z-40">
     <!-- Logo / Brand -->
-    <div class="flex items-center justify-between h-16 px-4 bg-gray-100/80 backdrop-blur-sm border-b border-gray-200">
+    <div class="flex items-center justify-between h-16 px-4 bg-white/50 backdrop-blur-sm border-b border-gray-200/50">
         <a href="{{ route('dashboard') }}" class="flex items-center space-x-2.5 group">
             <div class="p-1.5 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg shadow-lg group-hover:shadow-indigo-500/50 transition-all duration-300">
                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

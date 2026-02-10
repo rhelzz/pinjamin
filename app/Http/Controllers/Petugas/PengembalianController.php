@@ -45,13 +45,18 @@ class PengembalianController extends Controller
         // Ambil daftar denda yang aktif
         $dendas = Denda::aktif()->orderBy('tipe')->orderBy('nama_denda')->get();
         
-        // Hitung hari keterlambatan
-        $hariTerlambat = 0;
-        if ($peminjaman->tanggal_kembali->isPast()) {
-            $hariTerlambat = now()->diffInDays($peminjaman->tanggal_kembali);
+        // Hitung jam keterlambatan
+        // Deadline = tanggal_kembali (sudah termasuk jam)
+        $jamTerlambat = 0;
+        $deadline = $peminjaman->tanggal_kembali;
+        
+        if (now()->gt($deadline)) {
+            // Hitung selisih jam dari deadline ke sekarang
+            $minutesDiff = abs(now()->diffInMinutes($deadline));
+            $jamTerlambat = max(1, (int) ceil($minutesDiff / 60));
         }
 
-        return view('petugas.pengembalian.create', compact('peminjaman', 'dendas', 'hariTerlambat'));
+        return view('petugas.pengembalian.create', compact('peminjaman', 'dendas', 'jamTerlambat'));
     }
 
     public function store(Request $request, Peminjaman $peminjaman)

@@ -102,8 +102,16 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ $peminjaman->tanggal_kembali->format('d M Y') }}</div>
                                         @if($peminjaman->status === 'Dipinjam')
-                                            @if($peminjaman->tanggal_kembali->isPast())
-                                                <div class="text-xs text-red-600 font-medium">Terlambat {{ $peminjaman->tanggal_kembali->diffInDays(now()) }} hari</div>
+                                            @php
+                                                $deadline = $peminjaman->tanggal_kembali;
+                                                $isLate = now()->gt($deadline);
+                                                if ($isLate) {
+                                                    $minutesDiff = abs(now()->diffInMinutes($deadline));
+                                                    $jamTerlambat = max(1, (int) ceil($minutesDiff / 60));
+                                                }
+                                            @endphp
+                                            @if($isLate)
+                                                <div class="text-xs text-red-600 font-medium">Terlambat {{ $jamTerlambat }} jam</div>
                                             @else
                                                 <div class="text-xs text-gray-500">{{ $peminjaman->tanggal_kembali->diffForHumans() }}</div>
                                             @endif

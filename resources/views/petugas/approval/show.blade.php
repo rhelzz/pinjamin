@@ -46,7 +46,10 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500">Durasi Peminjaman</p>
-                            <p class="font-medium text-gray-900">{{ now()->diffInDays($peminjaman->tanggal_kembali) }} hari</p>
+                            @php
+                                $durasi = max(0, (int) abs($peminjaman->tanggal_kembali->startOfDay()->floatDiffInDays(now()->startOfDay())));
+                            @endphp
+                            <p class="font-medium text-gray-900">{{ $durasi }} hari</p>
                         </div>
                     </div>
                 </div>

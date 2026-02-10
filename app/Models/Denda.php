@@ -30,6 +30,11 @@ class Denda extends Model
         return $query->where('aktif', true);
     }
 
+    public function scopePerJam(Builder $query): Builder
+    {
+        return $query->where('tipe', 'per_jam');
+    }
+
     public function scopePerHari(Builder $query): Builder
     {
         return $query->where('tipe', 'per_hari');
@@ -38,5 +43,21 @@ class Denda extends Model
     public function scopeTetap(Builder $query): Builder
     {
         return $query->where('tipe', 'tetap');
+    }
+
+    /**
+     * Hitung denda berdasarkan jam keterlambatan
+     */
+    public function hitungDenda(int $jamTerlambat): float
+    {
+        if ($this->tipe === 'per_jam') {
+            return max(0, $this->nominal * $jamTerlambat);
+        } elseif ($this->tipe === 'per_hari') {
+            // Convert jam ke hari (ceiling)
+            $hariTerlambat = (int) ceil($jamTerlambat / 24);
+            return max(0, $this->nominal * $hariTerlambat);
+        }
+        // tetap
+        return max(0, $this->nominal);
     }
 }

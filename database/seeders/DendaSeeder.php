@@ -12,16 +12,16 @@ class DendaSeeder extends Seeder
         $dendas = [
             [
                 'nama_denda' => 'Denda Keterlambatan Standar',
-                'tipe' => 'per_hari',
-                'nominal' => 5000,
-                'deskripsi' => 'Denda untuk keterlambatan pengembalian per hari',
+                'tipe' => 'per_jam',
+                'nominal' => 500, // Rp 500/jam = Rp 12.000/hari
+                'deskripsi' => 'Denda untuk keterlambatan pengembalian per jam (Rp 500/jam)',
                 'aktif' => true,
             ],
             [
                 'nama_denda' => 'Denda Keterlambatan Premium',
-                'tipe' => 'per_hari',
-                'nominal' => 10000,
-                'deskripsi' => 'Denda untuk keterlambatan alat premium per hari',
+                'tipe' => 'per_jam',
+                'nominal' => 1000, // Rp 1.000/jam = Rp 24.000/hari
+                'deskripsi' => 'Denda untuk keterlambatan alat premium per jam (Rp 1.000/jam)',
                 'aktif' => true,
             ],
             [
@@ -48,7 +48,7 @@ class DendaSeeder extends Seeder
         ];
 
         foreach ($dendas as $denda) {
-            Denda::firstOrCreate(
+            Denda::updateOrCreate(
                 ['nama_denda' => $denda['nama_denda']],
                 $denda
             );

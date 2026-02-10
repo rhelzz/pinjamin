@@ -52,7 +52,14 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
-                                        @if($denda->tipe === 'per_hari')
+                                        @if($denda->tipe === 'per_jam')
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-cyan-100 text-cyan-800">
+                                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                                                </svg>
+                                                Per Jam
+                                            </span>
+                                        @elseif($denda->tipe === 'per_hari')
                                             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
                                                 <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
@@ -70,7 +77,9 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right">
                                         <span class="text-sm font-semibold text-gray-900">Rp {{ number_format($denda->nominal, 0, ',', '.') }}</span>
-                                        @if($denda->tipe === 'per_hari')
+                                        @if($denda->tipe === 'per_jam')
+                                            <span class="text-xs text-gray-500">/jam</span>
+                                        @elseif($denda->tipe === 'per_hari')
                                             <span class="text-xs text-gray-500">/hari</span>
                                         @endif
                                     </td>

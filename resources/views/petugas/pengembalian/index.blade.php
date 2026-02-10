@@ -102,15 +102,26 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm {{ $peminjaman->tanggal_kembali->isPast() ? 'text-red-600 font-semibold' : 'text-gray-900' }}">
-                                            {{ $peminjaman->tanggal_kembali->format('d M Y') }}
+                                            {{ $peminjaman->tanggal_kembali->format('d M Y H:i') }}
                                         </div>
-                                        @if($peminjaman->tanggal_kembali->isPast())
+                                        @php
+                                            $deadline = $peminjaman->tanggal_kembali;
+                                            $isLate = now()->gt($deadline);
+                                            if ($isLate) {
+                                                $minutesDiff = abs(now()->diffInMinutes($deadline));
+                                                $jamTerlambat = max(1, (int) ceil($minutesDiff / 60));
+                                            } else {
+                                                $minutesDiff = $deadline->diffInMinutes(now());
+                                                $sisaJam = max(0, (int) floor($minutesDiff / 60));
+                                            }
+                                        @endphp
+                                        @if($isLate)
                                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-700 mt-1">
                                                 <span class="w-1.5 h-1.5 bg-red-500 rounded-full mr-1"></span>
-                                                Terlambat {{ $peminjaman->tanggal_kembali->diffInDays(now()) }} hari
+                                                Terlambat {{ $jamTerlambat }} jam
                                             </span>
                                         @else
-                                            <div class="text-xs text-gray-500">{{ now()->diffInDays($peminjaman->tanggal_kembali) }} hari lagi</div>
+                                            <div class="text-xs text-gray-500">{{ $sisaJam }} jam lagi</div>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">

@@ -15,7 +15,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 flex">
+        <div class="min-h-screen dashboard-bg flex">
             <!-- Sidebar -->
             @include('layouts.sidebar')
 
@@ -27,22 +27,32 @@
                 <!-- Page Heading -->
                 @isset($header)
                     <header class="bg-transparent">
-                        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                             {{ $header }}
                         </div>
                     </header>
                 @endisset
 
                 <!-- Flash Messages -->
-                <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mt-4">
+                <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
                     @if(session('success'))
-                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                            <span>{{ session('success') }}</span>
+                        <div class="glass-card border-l-4 border-green-500 text-green-700 px-4 py-3 rounded-lg mb-4 shadow-lg" role="alert">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span>{{ session('success') }}</span>
+                            </div>
                         </div>
                     @endif
                     @if(session('error'))
-                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                            <span>{{ session('error') }}</span>
+                        <div class="glass-card border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-lg mb-4 shadow-lg" role="alert">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span>{{ session('error') }}</span>
+                            </div>
                         </div>
                     @endif
                 </div>
@@ -53,7 +63,7 @@
                 </main>
 
                 <!-- Footer -->
-                <footer class="bg-gradient-to-r from-white to-gray-50 border-t border-gray-200 py-4 px-6 text-center text-sm text-gray-700">
+                <footer class="glass-card border-t border-gray-200/50 py-4 px-6 text-center text-sm text-gray-600">
                     &copy; {{ date('Y') }} {{ config('app.name', 'Pinjamin') }}. All rights reserved.
                 </footer>
             </div>
