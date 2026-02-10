@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notifikasi;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -42,13 +43,22 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role_id' => 3, // Default: Peminjam
-            'status' => 'active',
+            'status' => 'pending', // Status pending - menunggu approval admin
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
+        // Kirim notifikasi ke semua admin
+        $admins = User::where('role_id', 1)->get();
+        foreach ($admins as $admin) {
+            Notifikasi::create([
+                'user_id' => $admin->id,
+                'pesan' => "Pendaftaran baru: {$user->name} ({$user->email}) menunggu persetujuan.",
+            ]);
+        }
 
-        return redirect(route('dashboard', absolute: false));
+        // Tidak auto-login, redirect ke halaman login dengan pesan
+        return redirect()->route('login')
+            ->with('status', 'Pendaftaran berhasil! Akun Anda sedang menunggu persetujuan admin. Silakan cek kembali nanti.');
     }
 }

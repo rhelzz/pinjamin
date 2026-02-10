@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\LogAktivitas;
+use App\Models\Notifikasi;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,6 +27,74 @@ class UserController extends Controller
             ->withQueryString();
 
         return view('admin.user.index', compact('users'));
+    }
+
+    /**
+     * Display pending user approvals.
+     */
+    public function pendingApproval(Request $request)
+    {
+        $users = User::with('role')
+            ->where('status', 'pending')
+            ->when($request->search, fn ($q) => $q->where('name', 'like', "%{$request->search}%")
+                ->orWhere('username', 'like', "%{$request->search}%")
+                ->orWhere('email', 'like', "%{$request->search}%"))
+            ->orderBy('created_at', 'desc')
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('admin.user.pending', compact('users'));
+    }
+
+    /**
+     * Approve a pending user.
+     */
+    public function approve(User $user)
+    {
+        if ($user->status !== 'pending') {
+            return back()->with('error', 'User ini tidak dalam status pending.');
+        }
+
+        $user->update([
+            'status' => 'active',
+            'email_verified_at' => now(),
+        ]);
+
+        // Kirim notifikasi ke user
+        Notifikasi::create([
+            'user_id' => $user->id,
+            'pesan' => 'Selamat! Akun Anda telah disetujui. Anda sekarang dapat login dan menggunakan sistem.',
+        ]);
+
+        LogAktivitas::create([
+            'user_id' => Auth::id(),
+            'aktivitas' => "Menyetujui pendaftaran user: {$user->name} ({$user->email})",
+        ]);
+
+        return back()->with('success', "User {$user->name} berhasil disetujui.");
+    }
+
+    /**
+     * Reject a pending user.
+     */
+    public function reject(Request $request, User $user)
+    {
+        if ($user->status !== 'pending') {
+            return back()->with('error', 'User ini tidak dalam status pending.');
+        }
+
+        $reason = $request->input('reason', 'Tidak memenuhi kriteria');
+
+        // Kirim notifikasi ke user sebelum dihapus (opsional, bisa disimpan di log)
+        LogAktivitas::create([
+            'user_id' => Auth::id(),
+            'aktivitas' => "Menolak pendaftaran user: {$user->name} ({$user->email}). Alasan: {$reason}",
+        ]);
+
+        // Hapus user yang ditolak
+        $user->delete();
+
+        return back()->with('success', 'Pendaftaran user berhasil ditolak.');
     }
 
     public function create()

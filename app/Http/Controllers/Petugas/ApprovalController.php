@@ -13,12 +13,21 @@ use Illuminate\Support\Facades\DB;
 
 class ApprovalController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        
+        $allowedSorts = ['id', 'created_at', 'tanggal_kembali'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'id';
+        }
+        
         $peminjamans = Peminjaman::with(['user', 'detail.alat'])
             ->where('status', 'Pending')
-            ->latest()
-            ->paginate(10);
+            ->orderBy($sortBy, $sortDirection)
+            ->paginate(10)
+            ->withQueryString();
 
         return view('petugas.approval.index', compact('peminjamans'));
     }

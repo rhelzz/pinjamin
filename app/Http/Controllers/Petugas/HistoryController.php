@@ -33,7 +33,16 @@ class HistoryController extends Controller
             });
         }
 
-        $peminjamans = $query->latest()->paginate(15)->withQueryString();
+        // Sorting
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        
+        $allowedSorts = ['id', 'created_at', 'status'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'id';
+        }
+        
+        $peminjamans = $query->orderBy($sortBy, $sortDirection)->paginate(15)->withQueryString();
 
         return view('petugas.history.index', compact('peminjamans'));
     }

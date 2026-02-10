@@ -15,12 +15,21 @@ use Illuminate\Support\Facades\DB;
 
 class PengembalianController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        
+        $allowedSorts = ['id', 'tanggal_pinjam', 'tanggal_kembali'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'id';
+        }
+        
         $peminjamans = Peminjaman::with(['user', 'detail.alat'])
             ->where('status', 'Dipinjam')
-            ->latest()
-            ->paginate(10);
+            ->orderBy($sortBy, $sortDirection)
+            ->paginate(10)
+            ->withQueryString();
 
         return view('petugas.pengembalian.index', compact('peminjamans'));
     }

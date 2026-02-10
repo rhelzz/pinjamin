@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             KategoriSeeder::class,
             AlatSeeder::class,
+            DendaSeeder::class,
         ]);
     }
 }

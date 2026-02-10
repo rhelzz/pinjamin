@@ -9,12 +9,21 @@ use Illuminate\Support\Facades\Auth;
 
 class PeminjamanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        
+        $allowedSorts = ['id', 'created_at', 'tanggal_kembali', 'status'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'id';
+        }
+        
         $peminjamans = Peminjaman::with(['detail.alat', 'pengembalian'])
             ->where('user_id', Auth::id())
-            ->latest()
-            ->paginate(10);
+            ->orderBy($sortBy, $sortDirection)
+            ->paginate(10)
+            ->withQueryString();
 
         return view('peminjam.peminjaman.index', compact('peminjamans'));
     }

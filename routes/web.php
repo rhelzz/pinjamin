@@ -54,6 +54,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // CRUD User
     Route::resource('user', UserController::class)->except(['show']);
 
+    // User Approval
+    Route::get('/user-approval', [UserController::class, 'pendingApproval'])->name('user.pending');
+    Route::post('/user/{user}/approve', [UserController::class, 'approve'])->name('user.approve');
+    Route::post('/user/{user}/reject', [UserController::class, 'reject'])->name('user.reject');
+
     // CRUD Denda
     Route::resource('denda', DendaController::class)->except(['show']);
 

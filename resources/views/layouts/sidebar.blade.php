@@ -51,9 +51,24 @@
                 <span>Data Alat</span>
             </a>
 
-            <a href="{{ route('admin.user.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.user.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
-                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('admin.user.*') ? 'text-white' : 'text-gray-500 group-hover:text-blue-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <a href="{{ route('admin.user.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.user.index') || request()->routeIs('admin.user.create') || request()->routeIs('admin.user.edit') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
+                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('admin.user.index') || request()->routeIs('admin.user.create') || request()->routeIs('admin.user.edit') ? 'text-white' : 'text-gray-500 group-hover:text-blue-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 <span>Manajemen User</span>
+            </a>
+
+            @php
+                $pendingUsersCount = \App\Models\User::where('status', 'pending')->count();
+            @endphp
+            <a href="{{ route('admin.user.pending') }}" class="group flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.user.pending') ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('admin.user.pending') ? 'text-white' : 'text-gray-500 group-hover:text-amber-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                    <span>Persetujuan User</span>
+                </div>
+                @if($pendingUsersCount > 0)
+                    <span class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold {{ request()->routeIs('admin.user.pending') ? 'bg-white text-amber-600' : 'bg-amber-500 text-white' }} rounded-full">
+                        {{ $pendingUsersCount }}
+                    </span>
+                @endif
             </a>
 
             <a href="{{ route('admin.log.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.log.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">

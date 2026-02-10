@@ -26,6 +26,16 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+        // Check if user is pending approval
+        if ($request->user()->status === 'pending') {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('login')
+                ->withErrors(['email' => 'Akun Anda masih menunggu persetujuan admin. Silakan coba lagi nanti.']);
+        }
+
         // Check if user is blacklisted
         if ($request->user()->status === 'blacklist') {
             Auth::guard('web')->logout();
