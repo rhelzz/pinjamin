@@ -36,7 +36,7 @@
             <div class="pt-5 pb-2">
                 <div class="flex items-center px-3">
                     <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
-                    <p class="px-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Admin</p>
+                    <p class="px-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Master Data</p>
                     <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
                 </div>
             </div>
@@ -71,23 +71,36 @@
                 @endif
             </a>
 
-            <a href="{{ route('admin.log.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.log.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
-                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('admin.log.*') ? 'text-white' : 'text-gray-500 group-hover:text-purple-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                <span>Log Aktivitas</span>
-            </a>
-
             <a href="{{ route('admin.denda.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.denda.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
                 <svg class="w-5 h-5 mr-3 {{ request()->routeIs('admin.denda.*') ? 'text-white' : 'text-gray-500 group-hover:text-red-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 <span>Tarif Denda</span>
             </a>
-        @endif
 
-        {{-- ==================== PETUGAS MENU ==================== --}}
-        @if(Auth::user()->isAdmin() || Auth::user()->isPetugas())
             <div class="pt-5 pb-2">
                 <div class="flex items-center px-3">
                     <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
-                    <p class="px-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Petugas</p>
+                    <p class="px-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Monitoring</p>
+                    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+                </div>
+            </div>
+
+            <a href="{{ route('admin.history.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.history.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
+                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('admin.history.*') ? 'text-white' : 'text-gray-500 group-hover:text-purple-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>History Peminjaman</span>
+            </a>
+
+            <a href="{{ route('admin.log.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.log.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
+                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('admin.log.*') ? 'text-white' : 'text-gray-500 group-hover:text-purple-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                <span>Log Aktivitas</span>
+            </a>
+        @endif
+
+        {{-- ==================== PETUGAS MENU ==================== --}}
+        @if(Auth::user()->isPetugas())
+            <div class="pt-5 pb-2">
+                <div class="flex items-center px-3">
+                    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+                    <p class="px-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Kelola Peminjaman</p>
                     <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
                 </div>
             </div>
@@ -102,49 +115,51 @@
                 <span>Pengembalian</span>
             </a>
 
-            <a href="{{ route('petugas.laporan.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('petugas.laporan.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
-                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('petugas.laporan.*') ? 'text-white' : 'text-gray-500 group-hover:text-orange-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                <span>Laporan</span>
-            </a>
-
             <a href="{{ route('petugas.history.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('petugas.history.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
                 <svg class="w-5 h-5 mr-3 {{ request()->routeIs('petugas.history.*') ? 'text-white' : 'text-gray-500 group-hover:text-purple-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 <span>History Peminjaman</span>
             </a>
+
+            <a href="{{ route('petugas.laporan.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('petugas.laporan.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
+                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('petugas.laporan.*') ? 'text-white' : 'text-gray-500 group-hover:text-orange-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>Laporan</span>
+            </a>
         @endif
 
         {{-- ==================== PEMINJAM MENU ==================== --}}
-        <div class="pt-5 pb-2">
-            <div class="flex items-center px-3">
-                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
-                <p class="px-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Peminjaman</p>
-                <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+        @if(Auth::user()->isPeminjam())
+            <div class="pt-5 pb-2">
+                <div class="flex items-center px-3">
+                    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+                    <p class="px-3 text-xs font-bold text-gray-600 uppercase tracking-wider">Peminjaman</p>
+                    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+                </div>
             </div>
-        </div>
 
-        <a href="{{ route('peminjam.katalog.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('peminjam.katalog.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
-            <svg class="w-5 h-5 mr-3 {{ request()->routeIs('peminjam.katalog.*') ? 'text-white' : 'text-gray-500 group-hover:text-indigo-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-            <span>Katalog Alat</span>
-        </a>
+            <a href="{{ route('peminjam.katalog.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('peminjam.katalog.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
+                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('peminjam.katalog.*') ? 'text-white' : 'text-gray-500 group-hover:text-indigo-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                <span>Katalog Alat</span>
+            </a>
 
-        <a href="{{ route('peminjam.cart.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('peminjam.cart.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
-            <svg class="w-5 h-5 mr-3 {{ request()->routeIs('peminjam.cart.*') ? 'text-white' : 'text-gray-500 group-hover:text-green-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
-            <span class="flex-1">Keranjang</span>
-            @php $cartCount = count(session('cart', [])); @endphp
-            @if($cartCount > 0)
-                <span class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-full shadow-lg shadow-indigo-500/50 animate-pulse">{{ $cartCount }}</span>
-            @endif
-        </a>
+            <a href="{{ route('peminjam.cart.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('peminjam.cart.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
+                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('peminjam.cart.*') ? 'text-white' : 'text-gray-500 group-hover:text-green-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+                <span class="flex-1">Keranjang</span>
+                @php $cartCount = count(session('cart', [])); @endphp
+                @if($cartCount > 0)
+                    <span class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-full shadow-lg shadow-indigo-500/50 animate-pulse">{{ $cartCount }}</span>
+                @endif
+            </a>
 
-        <a href="{{ route('peminjam.peminjaman.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('peminjam.peminjaman.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
-            <svg class="w-5 h-5 mr-3 {{ request()->routeIs('peminjam.peminjaman.*') ? 'text-white' : 'text-gray-500 group-hover:text-blue-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <span>Riwayat Peminjaman</span>
-        </a>
+            <a href="{{ route('peminjam.peminjaman.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('peminjam.peminjaman.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
+                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('peminjam.peminjaman.*') ? 'text-white' : 'text-gray-500 group-hover:text-blue-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Riwayat Peminjaman</span>
+            </a>
 
-        <a href="{{ route('peminjam.booking.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('peminjam.booking.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
-            <svg class="w-5 h-5 mr-3 {{ request()->routeIs('peminjam.booking.*') ? 'text-white' : 'text-gray-500 group-hover:text-amber-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            <span>Booking</span>
-        </a>
+            <a href="{{ route('peminjam.booking.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('peminjam.booking.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
+                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('peminjam.booking.*') ? 'text-white' : 'text-gray-500 group-hover:text-amber-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>Booking</span>
+            </a>
+        @endif
 
         {{-- ==================== NOTIFIKASI ==================== --}}
         <div class="pt-5 pb-2">

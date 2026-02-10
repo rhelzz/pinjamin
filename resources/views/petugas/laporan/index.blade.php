@@ -17,28 +17,111 @@
 
     <div class="pt-0 pb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Stats Cards -->
+            <div class="flex gap-3 mb-6 overflow-x-auto">
+                <div class="bg-white rounded-xl border border-gray-200 p-3 shadow-sm flex-shrink-0 min-w-[160px]">
+                    <div class="flex items-center">
+                        <div class="p-1.5 bg-indigo-100 rounded-lg">
+                            <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                            </svg>
+                        </div>
+                        <div class="ml-2">
+                            <p class="text-xs font-medium text-gray-500">Total</p>
+                            <p class="text-base font-bold text-gray-900">{{ number_format($stats['total']) }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 p-3 shadow-sm flex-shrink-0 min-w-[160px]">
+                    <div class="flex items-center">
+                        <div class="p-1.5 bg-yellow-100 rounded-lg">
+                            <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="ml-2">
+                            <p class="text-xs font-medium text-gray-500">Pending</p>
+                            <p class="text-base font-bold text-yellow-600">{{ number_format($stats['pending']) }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 p-3 shadow-sm flex-shrink-0 min-w-[160px]">
+                    <div class="flex items-center">
+                        <div class="p-1.5 bg-blue-100 rounded-lg">
+                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                            </svg>
+                        </div>
+                        <div class="ml-2">
+                            <p class="text-xs font-medium text-gray-500">Dipinjam</p>
+                            <p class="text-base font-bold text-blue-600">{{ number_format($stats['dipinjam']) }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 p-3 shadow-sm flex-shrink-0 min-w-[160px]">
+                    <div class="flex items-center">
+                        <div class="p-1.5 bg-green-100 rounded-lg">
+                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <div class="ml-2">
+                            <p class="text-xs font-medium text-gray-500">Selesai</p>
+                            <p class="text-base font-bold text-green-600">{{ number_format($stats['selesai']) }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-200 p-3 shadow-sm flex-shrink-0 min-w-[160px]">
+                    <div class="flex items-center">
+                        <div class="p-1.5 bg-red-100 rounded-lg">
+                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </div>
+                        <div class="ml-2">
+                            <p class="text-xs font-medium text-gray-500">Ditolak</p>
+                            <p class="text-base font-bold text-red-600">{{ number_format($stats['ditolak']) }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl border border-amber-200 p-3 shadow-sm bg-gradient-to-br from-amber-50 to-white flex-shrink-0 min-w-[180px]">
+                    <div class="flex items-center">
+                        <div class="p-1.5 bg-amber-100 rounded-lg">
+                            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="ml-2">
+                            <p class="text-xs font-medium text-amber-700">Total Denda</p>
+                            <p class="text-base font-bold text-amber-700">Rp {{ number_format($totalDenda, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Filter -->
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-6">
                 <div class="bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 p-5">
                     <form method="GET" class="flex flex-wrap gap-4 items-end">
                         <div>
                             <label class="block text-xs font-semibold text-gray-700 mb-1.5">Dari Tanggal</label>
-                            <input type="date" name="dari" value="{{ request('dari') }}"
+                            <input type="date" name="dari_tanggal" value="{{ request('dari_tanggal') }}"
                                 class="rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-2">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-gray-700 mb-1.5">Sampai Tanggal</label>
-                            <input type="date" name="sampai" value="{{ request('sampai') }}"
+                            <input type="date" name="sampai_tanggal" value="{{ request('sampai_tanggal') }}"
                                 class="rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-2">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-gray-700 mb-1.5">Status</label>
                             <select name="status" class="rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm py-2">
                                 <option value="">Semua Status</option>
-                                <option value="Pending" {{ request('status') === 'Pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="Dipinjam" {{ request('status') === 'Dipinjam' ? 'selected' : '' }}>Dipinjam</option>
-                                <option value="Ditolak" {{ request('status') === 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
-                                <option value="Selesai" {{ request('status') === 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                                <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="dipinjam" {{ request('status') === 'dipinjam' ? 'selected' : '' }}>Dipinjam</option>
+                                <option value="ditolak" {{ request('status') === 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                                <option value="selesai" {{ request('status') === 'selesai' ? 'selected' : '' }}>Selesai</option>
                             </select>
                         </div>
                         <div class="flex gap-2">
@@ -48,7 +131,7 @@
                                 </svg>
                                 Filter
                             </button>
-                            @if(request('dari') || request('sampai') || request('status'))
+                            @if(request('dari_tanggal') || request('sampai_tanggal') || request('status'))
                                 <a href="{{ route('petugas.laporan.index') }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 rounded-lg text-sm text-gray-700 font-medium transition-all">
                                     <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -206,20 +289,20 @@
                                                 </svg>
                                             </div>
                                             <h3 class="text-base font-semibold text-gray-900 mb-2">
-                                                @if(request('dari') || request('sampai') || request('status'))
+                                                @if(request('dari_tanggal') || request('sampai_tanggal') || request('status'))
                                                     Tidak Ada Hasil
                                                 @else
                                                     Belum Ada Data Laporan
                                                 @endif
                                             </h3>
                                             <p class="text-sm text-gray-500 max-w-sm">
-                                                @if(request('dari') || request('sampai') || request('status'))
+                                                @if(request('dari_tanggal') || request('sampai_tanggal') || request('status'))
                                                     Tidak ada data peminjaman yang sesuai dengan filter. Coba ubah kriteria pencarian.
                                                 @else
                                                     Data laporan peminjaman akan muncul di sini.
                                                 @endif
                                             </p>
-                                            @if(request('dari') || request('sampai') || request('status'))
+                                            @if(request('dari_tanggal') || request('sampai_tanggal') || request('status'))
                                                 <a href="{{ route('petugas.laporan.index') }}" 
                                                    class="mt-4 inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg shadow-sm transition-all">
                                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

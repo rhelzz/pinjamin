@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AlatController as AdminAlatController;
 use App\Http\Controllers\Admin\DendaController;
+use App\Http\Controllers\Admin\HistoryController as AdminHistoryController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\LogAktivitasController;
 use App\Http\Controllers\Admin\UserController;
@@ -39,6 +40,8 @@ Route::middleware('auth')->prefix('notifikasi')->name('notifikasi.')->group(func
     Route::get('/', [NotifikasiController::class, 'index'])->name('index');
     Route::patch('/{id}/read', [NotifikasiController::class, 'markRead'])->name('read');
     Route::patch('/read-all', [NotifikasiController::class, 'markAllRead'])->name('readAll');
+    Route::delete('/{id}', [NotifikasiController::class, 'destroy'])->name('destroy');
+    Route::delete('/', [NotifikasiController::class, 'destroyAll'])->name('destroyAll');
 });
 
 // ==================== ADMIN ROUTES ====================
@@ -64,10 +67,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     // Log Aktivitas
     Route::get('/log', [LogAktivitasController::class, 'index'])->name('log.index');
+
+    // History Peminjaman untuk Admin
+    Route::get('/history', [AdminHistoryController::class, 'index'])->name('history.index');
+    Route::get('/history/{peminjaman}', [AdminHistoryController::class, 'show'])->name('history.show');
 });
 
 // ==================== PETUGAS ROUTES ====================
-Route::middleware(['auth', 'role:admin,petugas'])->prefix('petugas')->name('petugas.')->group(function () {
+Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'petugas'])->name('dashboard');
 
     // Approval
@@ -81,7 +88,7 @@ Route::middleware(['auth', 'role:admin,petugas'])->prefix('petugas')->name('petu
     Route::get('/pengembalian/{peminjaman}/create', [PengembalianController::class, 'create'])->name('pengembalian.create');
     Route::post('/pengembalian/{peminjaman}', [PengembalianController::class, 'store'])->name('pengembalian.store');
 
-    // History Peminjaman untuk Petugas/Admin
+    // History Peminjaman untuk Petugas
     Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
     Route::get('/history/{peminjaman}', [HistoryController::class, 'show'])->name('history.show');
 
@@ -91,7 +98,7 @@ Route::middleware(['auth', 'role:admin,petugas'])->prefix('petugas')->name('petu
 });
 
 // ==================== PEMINJAM ROUTES ====================
-Route::middleware(['auth', 'role:admin,petugas,peminjam'])->prefix('peminjam')->name('peminjam.')->group(function () {
+Route::middleware(['auth', 'role:peminjam'])->prefix('peminjam')->name('peminjam.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'peminjam'])->name('dashboard');
 
     // Katalog
