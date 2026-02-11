@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="pageTitle">Manajemen User</x-slot>
+
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -166,8 +168,13 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold
-                                            {{ $user->role_id == 1 ? 'bg-purple-100 text-purple-800 ring-1 ring-purple-200' : ($user->role_id == 2 ? 'bg-blue-100 text-blue-800 ring-1 ring-blue-200' : 'bg-gray-100 text-gray-800 ring-1 ring-gray-200') }}">
+                                        @php
+                                            $roleName = strtolower($user->role->nama_role ?? '');
+                                            $roleClass = $roleName === 'admin' ? 'bg-purple-100 text-purple-800 ring-1 ring-purple-200' : 
+                                                        ($roleName === 'petugas' ? 'bg-blue-100 text-blue-800 ring-1 ring-blue-200' : 
+                                                        'bg-gray-100 text-gray-800 ring-1 ring-gray-200');
+                                        @endphp
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold {{ $roleClass }}">
                                             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
                                             </svg>
@@ -190,7 +197,7 @@
                                                 Edit
                                             </a>
                                             @if($user->id !== auth()->id())
-                                                <form action="{{ route('admin.user.destroy', $user) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus user ini?')">
+                                                <form action="{{ route('admin.user.destroy', $user) }}" method="POST" class="inline" data-confirm="Yakin ingin menghapus user ini?" data-confirm-title="Konfirmasi Hapus User" data-confirm-type="danger">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="inline-flex items-center text-red-600 hover:text-red-900 font-medium transition-colors">

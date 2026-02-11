@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="pageTitle">Detail Persetujuan</x-slot>
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Review Peminjaman #{{ $peminjaman->id }}</h2>
     </x-slot>
@@ -156,7 +158,9 @@
                     <div class="p-6 flex items-start space-x-4">
                         <!-- Approve -->
                         <form action="{{ route('petugas.approval.approve', $peminjaman) }}" method="POST"
-                            onsubmit="return confirm('Setujui peminjaman ini?')">
+                            data-confirm="Setujui peminjaman ini?"
+                            data-confirm-title="Konfirmasi Persetujuan"
+                            data-confirm-type="success">
                             @csrf
                             <button type="submit" class="inline-flex items-center px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 font-medium">
                                 Setujui
@@ -165,7 +169,9 @@
 
                         <!-- Reject -->
                         <form action="{{ route('petugas.approval.reject', $peminjaman) }}" method="POST" class="flex-1"
-                            onsubmit="return confirm('Tolak peminjaman ini?')">
+                            data-confirm="Tolak peminjaman ini?"
+                            data-confirm-title="Konfirmasi Penolakan"
+                            data-confirm-type="danger">
                             @csrf
                             <div class="flex items-end space-x-3">
                                 <div class="flex-1">

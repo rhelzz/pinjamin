@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="pageTitle">Tarif Denda</x-slot>
+
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -107,7 +109,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                                 </svg>
                                             </a>
-                                            <form action="{{ route('admin.denda.destroy', $denda) }}" method="POST" class="inline" onsubmit="return confirm('Hapus denda ini?')">
+                                            <form action="{{ route('admin.denda.destroy', $denda) }}" method="POST" class="inline" data-confirm="Hapus tarif denda ini?" data-confirm-title="Konfirmasi Hapus" data-confirm-type="danger">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition-colors" title="Hapus">

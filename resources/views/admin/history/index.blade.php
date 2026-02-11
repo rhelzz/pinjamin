@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="pageTitle">History Peminjaman</x-slot>
+
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -148,8 +150,14 @@
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-600">
                                     <a href="{{ route('admin.history.index', array_merge(request()->all(), ['sort_by' => 'id', 'sort_direction' => request('sort_by') == 'id' && request('sort_direction') == 'asc' ? 'desc' : 'asc'])) }}" class="flex items-center hover:text-indigo-600 transition-colors">
                                         ID
-                                        @if(request('sort_by') == 'id')
-                                            <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="{{ request('sort_direction') == 'desc' ? 'M15 10l-5 5-5-5h10z' : 'M5 10l5-5 5 5H5z' }}"/></svg>
+                                        @if(request('sort_by') == 'id' || !request('sort_by'))
+                                            @if(request('sort_direction') == 'desc')
+                                                <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M15 10l-5 5-5-5h10z"/></svg>
+                                            @else
+                                                <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M5 10l5-5 5 5H5z"/></svg>
+                                            @endif
+                                        @else
+                                            <svg class="w-4 h-4 ml-1 opacity-30" fill="currentColor" viewBox="0 0 20 20"><path d="M5 8l5-5 5 5H5zM5 12l5 5 5-5H5z"/></svg>
                                         @endif
                                     </a>
                                 </th>
@@ -158,7 +166,13 @@
                                     <a href="{{ route('admin.history.index', array_merge(request()->all(), ['sort_by' => 'tanggal_pinjam', 'sort_direction' => request('sort_by') == 'tanggal_pinjam' && request('sort_direction') == 'asc' ? 'desc' : 'asc'])) }}" class="flex items-center hover:text-indigo-600 transition-colors">
                                         Tgl Pinjam
                                         @if(request('sort_by') == 'tanggal_pinjam')
-                                            <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="{{ request('sort_direction') == 'desc' ? 'M15 10l-5 5-5-5h10z' : 'M5 10l5-5 5 5H5z' }}"/></svg>
+                                            @if(request('sort_direction') == 'asc')
+                                                <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M5 10l5-5 5 5H5z"/></svg>
+                                            @else
+                                                <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M15 10l-5 5-5-5h10z"/></svg>
+                                            @endif
+                                        @else
+                                            <svg class="w-4 h-4 ml-1 opacity-30" fill="currentColor" viewBox="0 0 20 20"><path d="M5 8l5-5 5 5H5zM5 12l5 5 5-5H5z"/></svg>
                                         @endif
                                     </a>
                                 </th>

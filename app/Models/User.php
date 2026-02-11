@@ -61,27 +61,46 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role_id === 1;
+        if (!$this->relationLoaded('role')) {
+            $this->load('role');
+        }
+        return $this->role && strtolower($this->role->nama_role) === 'admin';
     }
 
     public function isPetugas(): bool
     {
-        return $this->role_id === 2;
+        if (!$this->relationLoaded('role')) {
+            $this->load('role');
+        }
+        return $this->role && strtolower($this->role->nama_role) === 'petugas';
     }
 
     public function isPeminjam(): bool
     {
-        return $this->role_id === 3;
+        if (!$this->relationLoaded('role')) {
+            $this->load('role');
+        }
+        return $this->role && strtolower($this->role->nama_role) === 'peminjam';
     }
 
     public function hasRole(string ...$roles): bool
     {
-        $roleMap = ['admin' => 1, 'petugas' => 2, 'peminjam' => 3];
+        if (!$this->relationLoaded('role')) {
+            $this->load('role');
+        }
+        
+        if (!$this->role) {
+            return false;
+        }
+        
+        $userRoleName = strtolower($this->role->nama_role);
+        
         foreach ($roles as $role) {
-            if (isset($roleMap[strtolower($role)]) && $this->role_id === $roleMap[strtolower($role)]) {
+            if ($userRoleName === strtolower($role)) {
                 return true;
             }
         }
+        
         return false;
     }
 }

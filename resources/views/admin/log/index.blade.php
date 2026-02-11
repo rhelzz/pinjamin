@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="pageTitle">Log Aktivitas</x-slot>
+
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -141,11 +143,37 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">#</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    <a href="{{ route('admin.log.index', array_merge(request()->all(), ['sort_by' => 'id', 'sort_direction' => request('sort_by') == 'id' && request('sort_direction') == 'asc' ? 'desc' : 'asc'])) }}" class="flex items-center hover:text-indigo-600 transition-colors">
+                                        #
+                                        @if(request('sort_by') == 'id' || !request('sort_by'))
+                                            @if(request('sort_direction') == 'desc')
+                                                <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M15 10l-5 5-5-5h10z"/></svg>
+                                            @else
+                                                <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M5 10l5-5 5 5H5z"/></svg>
+                                            @endif
+                                        @else
+                                            <svg class="w-4 h-4 ml-1 opacity-30" fill="currentColor" viewBox="0 0 20 20"><path d="M5 8l5-5 5 5H5zM5 12l5 5 5-5H5z"/></svg>
+                                        @endif
+                                    </a>
+                                </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">User</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Aktivitas</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Kategori</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">Waktu</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    <a href="{{ route('admin.log.index', array_merge(request()->all(), ['sort_by' => 'timestamp', 'sort_direction' => request('sort_by') == 'timestamp' && request('sort_direction') == 'asc' ? 'desc' : 'asc'])) }}" class="flex items-center justify-end hover:text-indigo-600 transition-colors">
+                                        Waktu
+                                        @if(request('sort_by') == 'timestamp')
+                                            @if(request('sort_direction') == 'asc')
+                                                <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M5 10l5-5 5 5H5z"/></svg>
+                                            @else
+                                                <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M15 10l-5 5-5-5h10z"/></svg>
+                                            @endif
+                                        @else
+                                            <svg class="w-4 h-4 ml-1 opacity-30" fill="currentColor" viewBox="0 0 20 20"><path d="M5 8l5-5 5 5H5zM5 12l5 5 5-5H5z"/></svg>
+                                        @endif
+                                    </a>
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 text-sm">

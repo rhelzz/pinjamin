@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Notifikasi;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -37,19 +38,24 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Get Peminjam role ID
+        $peminjamRole = Role::where('nama_role', 'Peminjam')->first();
+
         $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => 3, // Default: Peminjam
+            'role_id' => $peminjamRole ? $peminjamRole->id : 3, // Default: Peminjam
             'status' => 'pending', // Status pending - menunggu approval admin
         ]);
 
         event(new Registered($user));
 
         // Kirim notifikasi ke semua admin
-        $admins = User::where('role_id', 1)->get();
+        $admins = User::whereHas('role', function($q) {
+            $q->where('nama_role', 'Admin');
+        })->get();
         foreach ($admins as $admin) {
             Notifikasi::create([
                 'user_id' => $admin->id,

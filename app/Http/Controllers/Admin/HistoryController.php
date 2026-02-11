@@ -40,18 +40,20 @@ class HistoryController extends Controller
         }
 
         // Sorting
-        $sortBy = $request->get('sort_by', 'created_at');
-        $sortDirection = $request->get('sort_direction', 'desc');
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
         
         $allowedSorts = ['id', 'created_at', 'status', 'tanggal_pinjam', 'tanggal_kembali'];
         if (!in_array($sortBy, $allowedSorts)) {
-            $sortBy = 'created_at';
+            $sortBy = 'id';
         }
         
         $peminjamans = $query->orderBy($sortBy, $sortDirection)->paginate(15)->withQueryString();
 
-        // Get all users for filter dropdown
-        $users = User::where('role_id', 3)->orderBy('name')->get();
+        // Get all users for filter dropdown (Peminjam only)
+        $users = User::whereHas('role', function($q) {
+            $q->where('nama_role', 'Peminjam');
+        })->orderBy('name')->get();
 
         // Stats
         $stats = [

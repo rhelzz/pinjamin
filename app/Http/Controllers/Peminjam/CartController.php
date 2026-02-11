@@ -121,7 +121,9 @@ class CartController extends Controller
             }
 
             // Notify all petugas & admin
-            $petugasUsers = User::whereIn('role_id', [1, 2])->get();
+            $petugasUsers = User::whereHas('role', function($q) {
+                $q->whereIn('nama_role', ['Admin', 'Petugas']);
+            })->get();
             foreach ($petugasUsers as $petugas) {
                 Notifikasi::create([
                     'user_id' => $petugas->id,

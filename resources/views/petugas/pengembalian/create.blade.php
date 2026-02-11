@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="pageTitle">Proses Pengembalian</x-slot>
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Proses Pengembalian #{{ $peminjaman->id }}</h2>
     </x-slot>
@@ -52,7 +54,10 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">Form Pengembalian</h3>
-                    <form action="{{ route('petugas.pengembalian.store', $peminjaman) }}" method="POST">
+                    <form action="{{ route('petugas.pengembalian.store', $peminjaman) }}" method="POST"
+                        data-confirm="Proses pengembalian alat ini?"
+                        data-confirm-title="Konfirmasi Pengembalian"
+                        data-confirm-type="info">
                         @csrf
 
                         <div class="mb-4">
@@ -130,8 +135,7 @@
                         </div>
 
                         <div class="flex items-center space-x-3">
-                            <button type="submit" class="inline-flex items-center px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 font-medium"
-                                onclick="return confirm('Proses pengembalian?')">
+                            <button type="submit" class="inline-flex items-center px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 font-medium">
                                 Proses Pengembalian
                             </button>
                             <a href="{{ route('petugas.pengembalian.index') }}" class="text-gray-600 hover:text-gray-800 text-sm">Batal</a>

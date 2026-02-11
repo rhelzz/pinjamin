@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="pageTitle">Detail Peminjaman</x-slot>
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Detail Peminjaman #{{ $peminjaman->id }}</h2>
     </x-slot>

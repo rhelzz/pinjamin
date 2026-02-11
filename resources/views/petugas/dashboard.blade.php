@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="pageTitle">Dashboard Petugas</x-slot>
+
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>

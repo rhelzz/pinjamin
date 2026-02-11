@@ -69,8 +69,13 @@ class LogAktivitasController extends Controller
         }
 
         // Sorting
-        $sortBy = $request->get('sort_by', 'timestamp');
-        $sortDirection = $request->get('sort_direction', 'desc');
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        
+        $allowedSorts = ['id', 'timestamp', 'user_id'];
+        if (!in_array($sortBy, $allowedSorts)) {
+            $sortBy = 'id';
+        }
         
         $logs = $query->orderBy($sortBy, $sortDirection)
             ->paginate(15)

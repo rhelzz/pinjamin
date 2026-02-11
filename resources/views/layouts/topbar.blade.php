@@ -9,7 +9,7 @@
                     </svg>
                 </div>
                 <h1 class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                    @yield('page-title', config('app.name', 'Pinjamin'))
+                    {{ $pageTitle ?? config('app.name', 'Pinjamin') }}
                 </h1>
             </div>
 

@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="pageTitle">Detail Alat</x-slot>
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Detail Alat</h2>
     </x-slot>

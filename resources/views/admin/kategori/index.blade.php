@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="pageTitle">Kategori</x-slot>
+
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -106,7 +108,7 @@
                                                 </svg>
                                                 Edit
                                             </a>
-                                            <form action="{{ route('admin.kategori.destroy', $kategori) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus kategori ini? Alat dalam kategori ini akan kehilangan kategorinya.')">
+                                            <form action="{{ route('admin.kategori.destroy', $kategori) }}" method="POST" class="inline" data-confirm="Yakin ingin menghapus kategori ini? Alat dalam kategori ini akan kehilangan kategorinya." data-confirm-title="Konfirmasi Hapus Kategori" data-confirm-type="danger">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-white hover:bg-red-50 border border-red-200 text-red-700 text-xs font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">

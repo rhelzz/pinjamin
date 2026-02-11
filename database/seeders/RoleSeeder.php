@@ -9,10 +9,18 @@ class RoleSeeder extends Seeder
 {
     public function run(): void
     {
-        $roles = ['Admin', 'Petugas', 'Peminjam'];
+        // Ensure roles are created in specific order with specific IDs
+        $roles = [
+            ['id' => 1, 'nama_role' => 'Admin'],
+            ['id' => 2, 'nama_role' => 'Petugas'],
+            ['id' => 3, 'nama_role' => 'Peminjam'],
+        ];
 
-        foreach ($roles as $role) {
-            Role::firstOrCreate(['nama_role' => $role]);
+        foreach ($roles as $roleData) {
+            Role::updateOrCreate(
+                ['id' => $roleData['id']],
+                ['nama_role' => $roleData['nama_role']]
+            );
         }
     }
 }

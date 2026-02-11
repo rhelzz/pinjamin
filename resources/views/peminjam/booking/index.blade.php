@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="pageTitle">Booking</x-slot>
+
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -135,7 +137,7 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center">
                                             @if($booking->status === 'Menunggu')
-                                                <form action="{{ route('peminjam.booking.destroy', $booking) }}" method="POST" class="inline" onsubmit="return confirm('Batalkan booking ini?')">
+                                                <form action="{{ route('peminjam.booking.destroy', $booking) }}" method="POST" class="inline" data-confirm="Batalkan booking ini?" data-confirm-title="Konfirmasi Pembatalan" data-confirm-type="danger">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 rounded-lg transition-colors">

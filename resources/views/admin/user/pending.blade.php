@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="pageTitle">Persetujuan User</x-slot>
+
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -126,7 +128,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div class="flex items-center gap-2">
                                                 <!-- Approve Button -->
-                                                <form action="{{ route('admin.user.approve', $user) }}" method="POST" class="inline" onsubmit="return confirm('Setujui pendaftaran user ini?')">
+                                                <form action="{{ route('admin.user.approve', $user) }}" method="POST" class="inline" data-confirm="Setujui pendaftaran user ini?" data-confirm-title="Konfirmasi Persetujuan" data-confirm-type="success">
                                                     @csrf
                                                     <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-green-100 hover:bg-green-200 text-green-700 text-xs font-semibold rounded-lg transition-colors">
                                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

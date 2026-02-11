@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="pageTitle">Notifikasi</x-slot>
+
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
@@ -19,7 +21,7 @@
                     </form>
                 @endif
                 @if($stats['total'] > 0)
-                    <form action="{{ route('notifikasi.destroyAll') }}" method="POST" class="inline" onsubmit="return confirm('Hapus semua notifikasi?')">
+                    <form action="{{ route('notifikasi.destroyAll') }}" method="POST" class="inline" data-confirm="Hapus semua notifikasi?" data-confirm-title="Konfirmasi Hapus Semua" data-confirm-type="danger">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded-lg shadow-sm transition-all">
@@ -178,7 +180,7 @@
                                         </button>
                                     </form>
                                 @endif
-                                <form action="{{ route('notifikasi.destroy', $notifikasi->id) }}" method="POST" onsubmit="return confirm('Hapus notifikasi ini?')">
+                                <form action="{{ route('notifikasi.destroy', $notifikasi->id) }}" method="POST" data-confirm="Hapus notifikasi ini?" data-confirm-title="Konfirmasi Hapus" data-confirm-type="danger">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="p-1.5 text-red-600 hover:bg-red-100 rounded transition-colors" title="Hapus">
