@@ -5,7 +5,7 @@
 <h1 align="center">🔧 Pinjamin - Sistem Peminjaman Alat</h1>
 
 <p align="center">
-  Aplikasi web untuk manajemen peminjaman alat/inventaris berbasis Laravel 11
+  Aplikasi web untuk manajemen peminjaman alat/inventaris berbasis Laravel 12
 </p>
 
 <p align="center">
