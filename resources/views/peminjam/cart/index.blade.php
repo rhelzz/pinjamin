@@ -57,16 +57,9 @@
                                                 {{ $alat->kategori->nama_kategori }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <form action="{{ route('peminjam.cart.update', $alat) }}" method="POST" class="flex items-center justify-center gap-2">
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="number" name="jumlah" value="{{ $cart[$alat->id]['jumlah'] }}" min="1" max="{{ $alat->stok }}"
-                                                    class="w-16 rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm text-center py-2">
-                                                <button type="submit" class="inline-flex items-center px-3 py-2 text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors">
-                                                    Update
-                                                </button>
-                                            </form>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                                            <input type="number" value="{{ $cart[$alat->id]['jumlah'] }}" readonly
+                                                class="w-16 rounded-lg border-gray-300 shadow-sm bg-gray-100 text-gray-600 text-sm text-center py-2 cursor-not-allowed mx-auto block">
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center">
                                             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold {{ $alat->stok > 3 ? 'bg-green-50 text-green-700 ring-1 ring-green-200' : 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-200' }}">
