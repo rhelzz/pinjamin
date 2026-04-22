@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
-use App\Models\Alat;
+use App\Models\Buku;
 use App\Models\Denda;
 use App\Models\LogAktivitas;
 use App\Models\Notifikasi;
@@ -25,7 +25,7 @@ class PengembalianController extends Controller
             $sortBy = 'id';
         }
         
-        $peminjamans = Peminjaman::with(['user', 'detail.alat'])
+        $peminjamans = Peminjaman::with(['user', 'detail.buku'])
             ->where('status', 'Dipinjam')
             ->orderBy($sortBy, $sortDirection)
             ->paginate(10)
@@ -40,7 +40,7 @@ class PengembalianController extends Controller
             return back()->with('error', 'Peminjaman ini tidak dalam status Dipinjam.');
         }
 
-        $peminjaman->load(['user', 'detail.alat']);
+        $peminjaman->load(['user', 'detail.buku']);
         
         // Ambil daftar denda yang aktif
         $dendas = Denda::aktif()->orderBy('tipe')->orderBy('nama_denda')->get();
@@ -92,16 +92,16 @@ class PengembalianController extends Controller
 
             // Return stock
             foreach ($peminjaman->detail as $detail) {
-                $alat = Alat::lockForUpdate()->find($detail->alat_id);
-                if ($alat) {
-                    $alat->stok += $detail->jumlah;
-                    $alat->save();
+                $buku = Buku::lockForUpdate()->find($detail->buku_id);
+                if ($buku) {
+                    $buku->stok += $detail->jumlah;
+                    $buku->save();
 
                     // Log damaged items
                     if ($request->kondisi === 'Rusak') {
                         LogAktivitas::create([
                             'user_id' => Auth::id(),
-                            'aktivitas' => "Alat {$alat->nama_alat} dikembalikan dalam kondisi RUSAK (Peminjaman #{$peminjaman->id})",
+                            'aktivitas' => "Buku {$buku->judul} dikembalikan dalam kondisi RUSAK (Peminjaman #{$peminjaman->id})",
                         ]);
                     }
                 }

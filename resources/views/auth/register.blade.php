@@ -115,7 +115,7 @@
                     Bergabung dengan<br>Sistem Pinjamin
                 </h1>
                 <p class="text-sky-100 text-lg">
-                    Daftar untuk mulai meminjam alat produktif dengan mudah
+                    Daftar untuk mulai meminjam buku produktif dengan mudah
                 </p>
             </div>
         </div>

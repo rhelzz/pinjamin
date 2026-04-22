@@ -5,7 +5,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="font-bold text-xl text-gray-800 leading-tight">Dashboard Petugas</h2>
-                <p class="mt-0.5 text-sm text-gray-500">Kelola peminjaman dan pengembalian alat</p>
+                <p class="mt-0.5 text-sm text-gray-500">Kelola peminjaman dan pengembalian buku</p>
             </div>
             <div class="hidden sm:flex items-center space-x-2">
                 <span class="text-xs font-medium text-gray-600 bg-white/80 backdrop-blur-sm border border-gray-200/50 px-3 py-1.5 rounded-full shadow-sm">
@@ -23,7 +23,7 @@
                 <div class="relative z-10">
                     <p class="text-sm font-medium text-cyan-100 mb-1">Selamat Bekerja!</p>
                     <h3 class="text-2xl font-bold mb-1">Panel Petugas</h3>
-                    <p class="text-cyan-100 text-sm">Kelola persetujuan dan pengembalian peminjaman alat</p>
+                    <p class="text-cyan-100 text-sm">Kelola persetujuan dan pengembalian peminjaman buku</p>
                 </div>
             </div>
 
@@ -156,7 +156,7 @@
                         </div>
                         <div class="flex-1">
                             <h4 class="text-sm font-semibold text-gray-800">Riwayat Peminjaman</h4>
-                            <p class="text-xs text-gray-500 mt-1">Lihat seluruh history peminjaman alat</p>
+                            <p class="text-xs text-gray-500 mt-1">Lihat seluruh history peminjaman buku</p>
                             <a href="{{ route('petugas.history.index') }}" class="inline-flex items-center mt-3 px-4 py-2 text-xs font-medium text-white gradient-cyan rounded-lg hover:opacity-90 transition shadow-md">
                                 <span>Lihat Riwayat</span>
                                 <svg class="w-3.5 h-3.5 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

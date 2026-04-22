@@ -1,11 +1,11 @@
 <x-app-layout>
-    <x-slot name="pageTitle">Katalog Alat</x-slot>
+    <x-slot name="pageTitle">Katalog Buku</x-slot>
 
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <h2 class="font-bold text-2xl text-gray-900 leading-tight">Katalog Alat</h2>
-                <p class="mt-1 text-sm text-gray-600">Jelajahi dan pinjam alat produktif yang tersedia</p>
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">Katalog Buku</h2>
+                <p class="mt-1 text-sm text-gray-600">Jelajahi dan pinjam buku produktif yang tersedia</p>
             </div>
             <a href="{{ route('peminjam.cart.index') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,19 +32,19 @@
                                     </svg>
                                 </div>
                                 <input type="text" name="search" value="{{ request('search') }}" 
-                                    placeholder="Cari nama alat..." 
+                                    placeholder="Cari nama buku..." 
                                     class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
                             </div>
                         </div>
                         
                         <!-- Category Filter -->
                         <div class="relative w-full md:w-64">
-                            <select name="kategori_id" 
+                            <select name="genre_id" 
                                 class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all appearance-none bg-white">
-                                <option value="">📁 Semua Kategori</option>
-                                @foreach($kategoris as $kategori)
-                                    <option value="{{ $kategori->id }}" {{ request('kategori_id') == $kategori->id ? 'selected' : '' }}>
-                                        {{ $kategori->nama_kategori }}
+                                <option value="">📁 Semua Genre</option>
+                                @foreach($genres as $genre)
+                                    <option value="{{ $genre->id }}" {{ request('genre_id') == $genre->id ? 'selected' : '' }}>
+                                        {{ $genre->nama_genre }}
                                     </option>
                                 @endforeach
                             </select>
@@ -63,7 +63,7 @@
                             Cari
                         </button>
                         
-                        @if(request('search') || request('kategori_id'))
+                        @if(request('search') || request('genre_id'))
                             <a href="{{ route('peminjam.katalog.index') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg transition-all duration-200">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -75,26 +75,26 @@
                 </div>
             </div>
 
-            <!-- Grid Alat -->
+            <!-- Grid Buku -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                @forelse($alats as $alat)
+                @forelse($bukus as $buku)
                     <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col">
                         <!-- Image -->
                         <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden">
-                            @if($alat->gambar)
-                                <img src="{{ asset('storage/' . $alat->gambar) }}" alt="{{ $alat->nama_alat }}" class="w-full h-full object-cover">
+                            @if($buku->gambar)
+                                <img src="{{ asset('storage/' . $buku->gambar) }}" alt="{{ $buku->judul }}" class="w-full h-full object-cover">
                             @else
                                 <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                             @endif
                             <!-- Stock Badge -->
                             <div class="absolute top-3 right-3">
-                                @if($alat->stok > 3)
+                                @if($buku->stok > 3)
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 ring-1 ring-green-200">
-                                        Stok: {{ $alat->stok }}
+                                        Stok: {{ $buku->stok }}
                                     </span>
-                                @elseif($alat->stok > 0)
+                                @elseif($buku->stok > 0)
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 ring-1 ring-yellow-200">
-                                        Stok: {{ $alat->stok }}
+                                        Stok: {{ $buku->stok }}
                                     </span>
                                 @else
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 ring-1 ring-red-200">
@@ -106,16 +106,21 @@
                         <!-- Content -->
                         <div class="p-4 flex-1 flex flex-col">
                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 w-fit mb-2">
-                                {{ $alat->kategori->nama_kategori }}
+                                {{ $buku->genre->nama_genre }}
                             </span>
-                            <h3 class="font-semibold text-gray-900 mb-2">{{ $alat->nama_alat }}</h3>
-                            <p class="text-sm text-gray-500 mb-4 flex-1 line-clamp-2">{{ Str::limit($alat->deskripsi, 80) }}</p>
+                            <h3 class="font-semibold text-gray-900 mb-1">
+                                <a href="{{ route('peminjam.katalog.show', $buku) }}" class="hover:text-indigo-600 transition-colors">{{ $buku->judul }}</a>
+                            </h3>
+                            @if($buku->penulis)
+                                <p class="text-xs text-gray-500 mb-2 font-medium">Oleh: {{ $buku->penulis }}</p>
+                            @endif
+                            <p class="text-sm text-gray-500 mb-4 flex-1 line-clamp-2">{{ Str::limit($buku->deskripsi, 80) }}</p>
                             
                             <div class="mt-auto">
-                                @if($alat->stok > 0)
-                                    <form action="{{ route('peminjam.cart.add', $alat) }}" method="POST" class="flex items-center gap-2">
+                                @if($buku->stok > 0)
+                                    <form action="{{ route('peminjam.cart.add', $buku) }}" method="POST" class="flex items-center gap-2">
                                         @csrf
-                                        <input type="number" name="jumlah" value="1" min="1" max="{{ $alat->stok }}"
+                                        <input type="number" name="jumlah" value="1" min="1" max="{{ $buku->stok }}"
                                             class="w-16 rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-xs py-2 text-center">
                                         <button type="submit"
                                             class="flex-1 inline-flex items-center justify-center px-3 py-2 text-xs font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm">
@@ -126,7 +131,7 @@
                                         </button>
                                     </form>
                                 @else
-                                    <a href="{{ route('peminjam.booking.create', $alat) }}"
+                                    <a href="{{ route('peminjam.booking.create', $buku) }}"
                                         class="inline-flex items-center justify-center w-full px-3 py-2 text-xs font-semibold rounded-lg text-white bg-amber-500 hover:bg-amber-600 transition-colors shadow-sm">
                                         <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -146,22 +151,22 @@
                                 </svg>
                             </div>
                             <h3 class="text-base font-semibold text-gray-900 mb-2">
-                                @if(request('search') || request('kategori_id'))
+                                @if(request('search') || request('genre_id'))
                                     Tidak Ada Hasil
                                 @else
-                                    Belum Ada Alat
+                                    Belum Ada Buku
                                 @endif
                             </h3>
                             <p class="text-sm text-gray-500 mb-6 max-w-sm mx-auto">
                                 @if(request('search'))
-                                    Tidak ditemukan alat dengan kata kunci "{{ request('search') }}". Coba kata kunci lain.
-                                @elseif(request('kategori_id'))
-                                    Tidak ada alat dalam kategori yang dipilih.
+                                    Tidak ditemukan buku dengan kata kunci "{{ request('search') }}". Coba kata kunci lain.
+                                @elseif(request('genre_id'))
+                                    Tidak ada buku dalam genre yang dipilih.
                                 @else
-                                    Katalog alat sedang kosong.
+                                    Katalog buku sedang kosong.
                                 @endif
                             </p>
-                            @if(request('search') || request('kategori_id'))
+                            @if(request('search') || request('genre_id'))
                                 <a href="{{ route('peminjam.katalog.index') }}" 
                                    class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg shadow-sm transition-all">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -176,9 +181,9 @@
             </div>
 
             <!-- Pagination -->
-            @if($alats->hasPages())
+            @if($bukus->hasPages())
                 <div class="mt-6">
-                    {{ $alats->links() }}
+                    {{ $bukus->links() }}
                 </div>
             @endif
         </div>

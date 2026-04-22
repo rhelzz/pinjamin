@@ -5,7 +5,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <h2 class="font-bold text-2xl text-gray-900 leading-tight">Keranjang Peminjaman</h2>
-                <p class="mt-1 text-sm text-gray-600">Kelola daftar alat yang akan dipinjam</p>
+                <p class="mt-1 text-sm text-gray-600">Kelola daftar buku yang akan dipinjam</p>
             </div>
             <a href="{{ route('peminjam.katalog.index') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg transition-all duration-200">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -19,28 +19,28 @@
     <div class="pt-0 pb-8">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            @if($alats->count() > 0)
+            @if($bukus->count() > 0)
                 <!-- Cart Table -->
                 <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-6">
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead>
                                 <tr class="bg-gradient-to-r from-gray-50 to-white">
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-600">Alat</th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-600">Kategori</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-600">Buku</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-600">Genre</th>
                                     <th scope="col" class="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-600">Jumlah</th>
                                     <th scope="col" class="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-600">Stok</th>
                                     <th scope="col" class="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-600">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach($alats as $alat)
+                                @foreach($bukus as $buku)
                                     <tr class="hover:bg-gray-50 transition-colors duration-150">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                                                    @if($alat->gambar)
-                                                        <img src="{{ asset('storage/' . $alat->gambar) }}" alt="{{ $alat->nama_alat }}" class="h-10 w-10 rounded-lg object-cover">
+                                                    @if($buku->gambar)
+                                                        <img src="{{ asset('storage/' . $buku->gambar) }}" alt="{{ $buku->judul }}" class="h-10 w-10 rounded-lg object-cover">
                                                     @else
                                                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
@@ -48,26 +48,26 @@
                                                     @endif
                                                 </div>
                                                 <div class="ml-4">
-                                                    <div class="text-sm font-semibold text-gray-900">{{ $alat->nama_alat }}</div>
+                                                    <div class="text-sm font-semibold text-gray-900">{{ $buku->judul }}</div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200">
-                                                {{ $alat->kategori->nama_kategori }}
+                                                {{ $buku->genre->nama_genre }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center">
-                                            <input type="number" value="{{ $cart[$alat->id]['jumlah'] }}" readonly
+                                            <input type="number" value="{{ $cart[$buku->id]['jumlah'] }}" readonly
                                                 class="w-16 rounded-lg border-gray-300 shadow-sm bg-gray-100 text-gray-600 text-sm text-center py-2 cursor-not-allowed mx-auto block">
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center">
-                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold {{ $alat->stok > 3 ? 'bg-green-50 text-green-700 ring-1 ring-green-200' : 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-200' }}">
-                                                {{ $alat->stok }}
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold {{ $buku->stok > 3 ? 'bg-green-50 text-green-700 ring-1 ring-green-200' : 'bg-yellow-50 text-yellow-700 ring-1 ring-yellow-200' }}">
+                                                {{ $buku->stok }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center">
-                                            <form action="{{ route('peminjam.cart.remove', $alat) }}" method="POST">
+                                            <form action="{{ route('peminjam.cart.remove', $buku) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="inline-flex items-center px-3 py-2 text-xs font-medium text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 rounded-lg transition-colors">
@@ -136,7 +136,7 @@
                                 <div class="grid grid-cols-2 gap-4">
                                     <div class="bg-white rounded-lg p-3 border border-indigo-100">
                                         <p class="text-xs text-gray-500 mb-1">Total Item</p>
-                                        <p class="text-lg font-bold text-indigo-600">{{ count($cart) }} <span class="text-sm font-normal text-gray-500">jenis alat</span></p>
+                                        <p class="text-lg font-bold text-indigo-600">{{ count($cart) }} <span class="text-sm font-normal text-gray-500">jenis buku</span></p>
                                     </div>
                                     <div class="bg-white rounded-lg p-3 border border-indigo-100">
                                         <p class="text-xs text-gray-500 mb-1">Total Unit</p>
@@ -167,14 +167,14 @@
                     </div>
                     <h3 class="text-base font-semibold text-gray-900 mb-2">Keranjang Kosong</h3>
                     <p class="text-sm text-gray-500 mb-6 max-w-sm mx-auto">
-                        Belum ada alat yang ditambahkan ke keranjang. Jelajahi katalog untuk meminjam alat.
+                        Belum ada buku yang ditambahkan ke keranjang. Jelajahi katalog untuk meminjam buku.
                     </p>
                     <a href="{{ route('peminjam.katalog.index') }}" 
                        class="inline-flex items-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 text-white text-sm font-semibold rounded-lg shadow-sm transition-all">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
                         </svg>
-                        Lihat Katalog Alat
+                        Lihat Katalog Buku
                     </a>
                 </div>
             @endif

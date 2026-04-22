@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Admin\AlatController as AdminAlatController;
+use App\Http\Controllers\Admin\BukuController as AdminBukuController;
 use App\Http\Controllers\Admin\DendaController;
 use App\Http\Controllers\Admin\HistoryController as AdminHistoryController;
-use App\Http\Controllers\Admin\KategoriController;
+use App\Http\Controllers\Admin\GenreController;
 use App\Http\Controllers\Admin\LogAktivitasController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController;
@@ -48,11 +48,11 @@ Route::middleware('auth')->prefix('notifikasi')->name('notifikasi.')->group(func
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
 
-    // CRUD Kategori
-    Route::resource('kategori', KategoriController::class)->except(['show']);
+    // CRUD Genre
+    Route::resource('genre', GenreController::class)->except(['show']);
 
-    // CRUD Alat
-    Route::resource('alat', AdminAlatController::class)->except(['show']);
+    // CRUD Buku
+    Route::resource('buku', AdminBukuController::class)->except(['show']);
 
     // CRUD User
     Route::resource('user', UserController::class)->except(['show']);
@@ -103,19 +103,19 @@ Route::middleware(['auth', 'role:peminjam'])->prefix('peminjam')->name('peminjam
 
     // Katalog
     Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
-    Route::get('/katalog/{alat}', [KatalogController::class, 'show'])->name('katalog.show');
+    Route::get('/katalog/{buku}', [KatalogController::class, 'show'])->name('katalog.show');
 
     // Cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/add/{alat}', [CartController::class, 'add'])->name('cart.add');
-    Route::patch('/cart/update/{alat}', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('/cart/remove/{alat}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/cart/add/{buku}', [CartController::class, 'add'])->name('cart.add');
+    Route::patch('/cart/update/{buku}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/remove/{buku}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
     // Booking (untuk barang yang sedang tidak tersedia)
     Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');
-    Route::get('/booking/create/{alat}', [BookingController::class, 'create'])->name('booking.create');
-    Route::post('/booking/{alat}', [BookingController::class, 'store'])->name('booking.store');
+    Route::get('/booking/create/{buku}', [BookingController::class, 'create'])->name('booking.create');
+    Route::post('/booking/{buku}', [BookingController::class, 'store'])->name('booking.store');
     Route::delete('/booking/{booking}', [BookingController::class, 'destroy'])->name('booking.destroy');
 
     // Riwayat Peminjaman

@@ -21,7 +21,7 @@ class DendaSeeder extends Seeder
                 'nama_denda' => 'Denda Keterlambatan Premium',
                 'tipe' => 'per_jam',
                 'nominal' => 1000, // Rp 1.000/jam = Rp 24.000/hari
-                'deskripsi' => 'Denda untuk keterlambatan alat premium per jam (Rp 1.000/jam)',
+                'deskripsi' => 'Denda untuk keterlambatan buku premium per jam (Rp 1.000/jam)',
                 'aktif' => true,
             ],
             [

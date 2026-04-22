@@ -3,29 +3,29 @@
 namespace App\Http\Controllers\Peminjam;
 
 use App\Http\Controllers\Controller;
-use App\Models\Alat;
-use App\Models\Kategori;
+use App\Models\Buku;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 
 class KatalogController extends Controller
 {
     public function index(Request $request)
     {
-        $alats = Alat::with('kategori')
+        $bukus = Buku::with('genre')
             ->search($request->search)
-            ->byKategori($request->kategori_id)
+            ->byGenre($request->genre_id)
             ->latest()
             ->paginate(12)
             ->withQueryString();
 
-        $kategoris = Kategori::all();
+        $genres = Genre::all();
 
-        return view('peminjam.katalog.index', compact('alats', 'kategoris'));
+        return view('peminjam.katalog.index', compact('bukus', 'genres'));
     }
 
-    public function show(Alat $alat)
+    public function show(Buku $buku)
     {
-        $alat->load('kategori');
-        return view('peminjam.katalog.show', compact('alat'));
+        $buku->load('genre');
+        return view('peminjam.katalog.show', compact('buku'));
     }
 }

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Laporan Peminjaman Alat - Pinjamin</title>
+    <title>Laporan Peminjaman Buku - Pinjamin</title>
     <style>
         @page { margin: 1.5cm; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -157,7 +157,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>LAPORAN PEMINJAMAN ALAT PRODUKTIF</h1>
+        <h1>LAPORAN PEMINJAMAN BUKU PRODUKTIF</h1>
         <h2>Sistem Pinjamin</h2>
         <p>Dokumen Resmi - Dicetak pada {{ now()->format('d F Y, H:i') }} WIB</p>
     </div>
@@ -219,7 +219,7 @@
                 <th style="width: 100px;">Peminjam</th>
                 <th style="width: 70px;">Tgl Pinjam</th>
                 <th style="width: 70px;">Tgl Kembali</th>
-                <th>Alat yang Dipinjam</th>
+                <th>Buku yang Dipinjam</th>
                 <th style="width: 60px;">Status</th>
                 <th style="width: 80px; text-align: right;">Denda</th>
             </tr>
@@ -236,7 +236,7 @@
                     <td>{{ $peminjaman->tanggal_kembali->format('d M Y') }}</td>
                     <td>
                         @foreach($peminjaman->detail as $detail)
-                            • {{ $detail->alat->nama_alat }} <span style="color: #333;">({{ $detail->jumlah }} unit)</span>{{ !$loop->last ? '<br>' : '' }}
+                            • {{ $detail->buku->judul }} <span style="color: #333;">({{ $detail->jumlah }} unit)</span>{{ !$loop->last ? '<br>' : '' }}
                         @endforeach
                     </td>
                     <td class="status-{{ strtolower($peminjaman->status) }}">{{ ucfirst($peminjaman->status) }}</td>
@@ -265,7 +265,7 @@
 
     <div class="footer">
         <p>Dokumen ini dicetak secara otomatis oleh Sistem Pinjamin</p>
-        <p>Aplikasi Peminjaman Alat Produktif &mdash; {{ now()->year }}</p>
+        <p>Aplikasi Peminjaman Buku Produktif &mdash; {{ now()->year }}</p>
     </div>
 </body>
 </html>

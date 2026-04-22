@@ -148,7 +148,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">
-                                            {{ $peminjaman->detail->count() }} jenis alat
+                                            {{ $peminjaman->detail->count() }} jenis buku
                                         </div>
                                         <div class="text-xs text-gray-500">
                                             {{ $peminjaman->detail->sum('jumlah') }} unit total

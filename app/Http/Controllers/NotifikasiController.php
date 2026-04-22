@@ -12,10 +12,10 @@ class NotifikasiController extends Controller
     {
         $query = Notifikasi::where('user_id', Auth::id());
 
-        // Filter by kategori (based on pesan content)
-        if ($request->filled('kategori')) {
-            $kategori = $request->kategori;
-            switch ($kategori) {
+        // Filter by genre (based on pesan content)
+        if ($request->filled('genre')) {
+            $genre = $request->genre;
+            switch ($genre) {
                 case 'peminjaman':
                     $query->where(function ($q) {
                         $q->where('pesan', 'like', '%peminjaman%')

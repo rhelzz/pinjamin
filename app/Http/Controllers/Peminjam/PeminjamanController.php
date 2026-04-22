@@ -19,7 +19,7 @@ class PeminjamanController extends Controller
             $sortBy = 'id';
         }
         
-        $peminjamans = Peminjaman::with(['detail.alat', 'pengembalian'])
+        $peminjamans = Peminjaman::with(['detail.buku', 'pengembalian'])
             ->where('user_id', Auth::id())
             ->orderBy($sortBy, $sortDirection)
             ->paginate(10)
@@ -34,7 +34,7 @@ class PeminjamanController extends Controller
             abort(403);
         }
 
-        $peminjaman->load(['detail.alat.kategori', 'pengembalian', 'user', 'approver', 'returner']);
+        $peminjaman->load(['detail.buku.genre', 'pengembalian', 'user', 'approver', 'returner']);
 
         return view('peminjam.peminjaman.show', compact('peminjaman'));
     }

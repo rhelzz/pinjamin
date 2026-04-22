@@ -4,8 +4,8 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <h2 class="font-bold text-2xl text-gray-900 leading-tight">Pengembalian Alat</h2>
-                <p class="mt-1 text-sm text-gray-600">Kelola proses pengembalian alat yang dipinjam</p>
+                <h2 class="font-bold text-2xl text-gray-900 leading-tight">Pengembalian Buku</h2>
+                <p class="mt-1 text-sm text-gray-600">Kelola proses pengembalian buku yang dipinjam</p>
             </div>
             @if($peminjamans->count() > 0)
                 <span class="inline-flex items-center px-3 py-1.5 bg-blue-100 text-blue-800 text-sm font-semibold rounded-full ring-1 ring-blue-200">
@@ -128,7 +128,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-sm font-semibold bg-gray-100 text-gray-800">
-                                            {{ $peminjaman->detail->count() }} alat
+                                            {{ $peminjaman->detail->count() }} buku
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">

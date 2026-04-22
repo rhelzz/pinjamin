@@ -5,13 +5,13 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <h2 class="font-bold text-2xl text-gray-900 leading-tight">Riwayat Peminjaman Saya</h2>
-                <p class="mt-1 text-sm text-gray-600">Pantau status dan riwayat peminjaman alat Anda</p>
+                <p class="mt-1 text-sm text-gray-600">Pantau status dan riwayat peminjaman buku Anda</p>
             </div>
             <a href="{{ route('peminjam.katalog.index') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
-                Pinjam Alat Baru
+                Pinjam Buku Baru
             </a>
         </div>
     </x-slot>
@@ -124,7 +124,7 @@
                                             <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
                                                 <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/>
                                             </svg>
-                                            {{ $peminjaman->detail->count() }} alat
+                                            {{ $peminjaman->detail->count() }} buku
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
@@ -163,12 +163,12 @@
                                                 </svg>
                                             </div>
                                             <h3 class="text-base font-semibold text-gray-900 mb-2">Belum Ada Riwayat Peminjaman</h3>
-                                            <p class="text-sm text-gray-500 mb-6 max-w-sm">Mulai dengan meminjam alat dari katalog yang tersedia</p>
+                                            <p class="text-sm text-gray-500 mb-6 max-w-sm">Mulai dengan meminjam buku dari katalog yang tersedia</p>
                                             <a href="{{ route('peminjam.katalog.index') }}" class="inline-flex items-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition-all">
                                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                                                 </svg>
-                                                Lihat Katalog Alat
+                                                Lihat Katalog Buku
                                             </a>
                                         </div>
                                     </td>

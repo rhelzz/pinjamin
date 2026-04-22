@@ -34,14 +34,14 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Alat</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Buku</th>
                                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Jumlah</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach($peminjaman->detail as $detail)
                                 <tr>
-                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $detail->alat->nama_alat }}</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $detail->buku->judul }}</td>
                                     <td class="px-6 py-4 text-sm text-center text-gray-900">{{ $detail->jumlah }}</td>
                                 </tr>
                             @endforeach
@@ -55,13 +55,13 @@
                 <div class="p-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">Form Pengembalian</h3>
                     <form action="{{ route('petugas.pengembalian.store', $peminjaman) }}" method="POST"
-                        data-confirm="Proses pengembalian alat ini?"
+                        data-confirm="Proses pengembalian buku ini?"
                         data-confirm-title="Konfirmasi Pengembalian"
                         data-confirm-type="info">
                         @csrf
 
                         <div class="mb-4">
-                            <label for="kondisi" class="block text-sm font-medium text-gray-700 mb-1">Kondisi Alat</label>
+                            <label for="kondisi" class="block text-sm font-medium text-gray-700 mb-1">Kondisi Buku</label>
                             <select name="kondisi" id="kondisi" required
                                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 <option value="">-- Pilih Kondisi --</option>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Peminjam;
 
 use App\Http\Controllers\Controller;
-use App\Models\Alat;
+use App\Models\Buku;
 use App\Models\Booking;
 use App\Models\LogAktivitas;
 use App\Models\Notifikasi;
@@ -24,7 +24,7 @@ class BookingController extends Controller
             $sortBy = 'id';
         }
         
-        $bookings = Booking::with(['alat.kategori', 'referensiPeminjaman.user'])
+        $bookings = Booking::with(['buku.genre', 'referensiPeminjaman.user'])
             ->where('user_id', Auth::id())
             ->orderBy($sortBy, $sortDirection)
             ->paginate(10)
@@ -33,12 +33,12 @@ class BookingController extends Controller
         return view('peminjam.booking.index', compact('bookings'));
     }
 
-    public function create(Alat $alat)
+    public function create(Buku $buku)
     {
-        // Cari peminjaman aktif yang menggunakan alat ini
+        // Cari peminjaman aktif yang menggunakan buku ini
         $activePeminjamans = Peminjaman::with('user')
-            ->whereHas('detail', function ($query) use ($alat) {
-                $query->where('alat_id', $alat->id);
+            ->whereHas('detail', function ($query) use ($buku) {
+                $query->where('buku_id', $buku->id);
             })
             ->where('status', 'Dipinjam')
             ->orderBy('tanggal_kembali', 'asc')
@@ -47,10 +47,10 @@ class BookingController extends Controller
         // Cari tanggal kembali tercepat
         $earliestReturn = $activePeminjamans->first();
 
-        return view('peminjam.booking.create', compact('alat', 'activePeminjamans', 'earliestReturn'));
+        return view('peminjam.booking.create', compact('buku', 'activePeminjamans', 'earliestReturn'));
     }
 
-    public function store(Request $request, Alat $alat)
+    public function store(Request $request, Buku $buku)
     {
         $request->validate([
             'jumlah' => 'required|integer|min:1',
@@ -60,19 +60,19 @@ class BookingController extends Controller
             'catatan' => 'nullable|string|max:500',
         ]);
 
-        // Cek apakah user sudah punya booking untuk alat ini yang masih menunggu
+        // Cek apakah user sudah punya booking untuk buku ini yang masih menunggu
         $existingBooking = Booking::where('user_id', Auth::id())
-            ->where('alat_id', $alat->id)
+            ->where('buku_id', $buku->id)
             ->where('status', 'Menunggu')
             ->first();
 
         if ($existingBooking) {
-            return back()->with('error', 'Anda sudah memiliki booking yang menunggu untuk alat ini.');
+            return back()->with('error', 'Anda sudah memiliki booking yang menunggu untuk buku ini.');
         }
 
         $booking = Booking::create([
             'user_id' => Auth::id(),
-            'alat_id' => $alat->id,
+            'buku_id' => $buku->id,
             'jumlah' => $request->jumlah,
             'tanggal_booking' => $request->tanggal_booking,
             'tanggal_kembali' => $request->tanggal_kembali,
@@ -88,17 +88,17 @@ class BookingController extends Controller
         foreach ($petugasUsers as $petugas) {
             Notifikasi::create([
                 'user_id' => $petugas->id,
-                'pesan' => 'Booking baru #' . $booking->id . ' dari ' . Auth::user()->name . ' untuk ' . $alat->nama_alat,
+                'pesan' => 'Booking baru #' . $booking->id . ' dari ' . Auth::user()->name . ' untuk ' . $buku->judul,
             ]);
         }
 
         LogAktivitas::create([
             'user_id' => Auth::id(),
-            'aktivitas' => "Mengajukan booking #{$booking->id} untuk {$alat->nama_alat}",
+            'aktivitas' => "Mengajukan booking #{$booking->id} untuk {$buku->judul}",
         ]);
 
         return redirect()->route('peminjam.booking.index')
-            ->with('success', 'Booking berhasil diajukan. Anda akan diberitahu saat alat tersedia.');
+            ->with('success', 'Booking berhasil diajukan. Anda akan diberitahu saat buku tersedia.');
     }
 
     public function destroy(Booking $booking)

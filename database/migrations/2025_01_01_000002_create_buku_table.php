@@ -8,10 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('alat', function (Blueprint $table) {
+        Schema::create('buku', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_alat');
-            $table->foreignId('kategori_id')->constrained('kategori')->cascadeOnDelete();
+            $table->string('judul');
+            $table->string('penulis')->nullable();
+            $table->string('penerbit')->nullable();
+            $table->year('tahun_terbit')->nullable();
+            $table->string('isbn')->nullable()->unique();
+            $table->foreignId('genre_id')->constrained('genre')->cascadeOnDelete();
             $table->integer('stok')->default(0);
             $table->string('gambar')->nullable();
             $table->text('deskripsi')->nullable();
@@ -21,6 +25,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('alat');
+        Schema::dropIfExists('buku');
     }
 };

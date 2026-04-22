@@ -248,7 +248,7 @@
                                         <div class="max-w-xs">
                                             @foreach($peminjaman->detail->take(3) as $detail)
                                                 <span class="inline-flex items-center text-xs text-gray-600">
-                                                    {{ $detail->alat->nama_alat }} <span class="text-gray-400 mx-1">({{ $detail->jumlah }})</span>{{ !$loop->last ? ',' : '' }}
+                                                    {{ $detail->buku->judul }} <span class="text-gray-400 mx-1">({{ $detail->jumlah }})</span>{{ !$loop->last ? ',' : '' }}
                                                 </span>
                                             @endforeach
                                             @if($peminjaman->detail->count() > 3)

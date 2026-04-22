@@ -5,7 +5,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="font-bold text-xl text-gray-800 leading-tight">Dashboard Admin</h2>
-                <p class="mt-0.5 text-sm text-gray-500">Ringkasan sistem peminjaman alat</p>
+                <p class="mt-0.5 text-sm text-gray-500">Ringkasan sistem peminjaman buku</p>
             </div>
             <div class="hidden sm:flex items-center space-x-2">
                 <span class="text-xs font-medium text-gray-600 bg-white/80 backdrop-blur-sm border border-gray-200/50 px-3 py-1.5 rounded-full shadow-sm">
@@ -23,7 +23,7 @@
                 <div class="relative z-10">
                     <p class="text-sm font-medium text-blue-100 mb-1">Statistik Sistem</p>
                     <h3 class="text-3xl font-bold mb-1">Selamat Datang!</h3>
-                    <p class="text-blue-100 text-sm">Platform manajemen peminjaman alat sekolah</p>
+                    <p class="text-blue-100 text-sm">Platform manajemen peminjaman buku sekolah</p>
                 </div>
             </div>
 
@@ -48,7 +48,7 @@
                     </div>
                 </div>
 
-                <!-- Total Alat -->
+                <!-- Total Buku -->
                 <div class="stat-card rounded-xl p-4 border border-gray-100/50 shadow-lg relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-20 h-20 bg-green-100 rounded-full -mr-10 -mt-10 opacity-40"></div>
                     <div class="absolute bottom-0 left-0 w-16 h-16 bg-green-200 rounded-full -ml-8 -mb-8 opacity-30"></div>
@@ -59,14 +59,14 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
                                 </svg>
                             </div>
-                            <span class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">Alat</span>
+                            <span class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">Buku</span>
                         </div>
-                        <p class="text-2xl font-bold text-gray-800">{{ $totalAlat }}</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ $totalBuku }}</p>
                         <p class="text-xs text-gray-500 mt-1">Item tersedia</p>
                     </div>
                 </div>
 
-                <!-- Total Kategori -->
+                <!-- Total Genre -->
                 <div class="stat-card rounded-xl p-4 border border-gray-100/50 shadow-lg relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-20 h-20 bg-amber-100 rounded-full -mr-10 -mt-10 opacity-40"></div>
                     <div class="absolute bottom-0 left-0 w-16 h-16 bg-amber-200 rounded-full -ml-8 -mb-8 opacity-30"></div>
@@ -77,10 +77,10 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/>
                                 </svg>
                             </div>
-                            <span class="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">Kategori</span>
+                            <span class="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">Genre</span>
                         </div>
-                        <p class="text-2xl font-bold text-gray-800">{{ $totalKategori }}</p>
-                        <p class="text-xs text-gray-500 mt-1">Jenis alat</p>
+                        <p class="text-2xl font-bold text-gray-800">{{ $totalGenre }}</p>
+                        <p class="text-xs text-gray-500 mt-1">Jenis buku</p>
                     </div>
                 </div>
 

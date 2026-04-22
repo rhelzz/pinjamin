@@ -2,18 +2,18 @@
     <x-slot name="pageTitle">Buat Booking</x-slot>
 
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Booking: {{ $alat->nama_alat }}</h2>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Booking: {{ $buku->judul }}</h2>
     </x-slot>
 
     <div class="py-6">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <!-- Info Alat -->
+            <!-- Info Buku -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0 h-20 w-20 bg-gray-200 rounded-lg flex items-center justify-center">
-                            @if($alat->gambar)
-                                <img src="{{ asset('storage/' . $alat->gambar) }}" alt="{{ $alat->nama_alat }}" class="w-full h-full object-cover rounded-lg">
+                            @if($buku->gambar)
+                                <img src="{{ asset('storage/' . $buku->gambar) }}" alt="{{ $buku->judul }}" class="w-full h-full object-cover rounded-lg">
                             @else
                                 <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -21,12 +21,12 @@
                             @endif
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-900">{{ $alat->nama_alat }}</h3>
-                            <p class="text-sm text-indigo-600">{{ $alat->kategori->nama_kategori }}</p>
-                            <p class="text-sm text-gray-500 mt-1">{{ $alat->deskripsi ?? '-' }}</p>
+                            <h3 class="text-lg font-semibold text-gray-900">{{ $buku->judul }}</h3>
+                            <p class="text-sm text-indigo-600">{{ $buku->genre->nama_genre }}</p>
+                            <p class="text-sm text-gray-500 mt-1">{{ $buku->deskripsi ?? '-' }}</p>
                             <p class="mt-2">
-                                <span class="text-sm font-medium {{ $alat->stok > 0 ? 'text-green-600' : 'text-red-600' }}">
-                                    Stok saat ini: {{ $alat->stok }}
+                                <span class="text-sm font-medium {{ $buku->stok > 0 ? 'text-green-600' : 'text-red-600' }}">
+                                    Stok saat ini: {{ $buku->stok }}
                                 </span>
                             </p>
                         </div>
@@ -37,7 +37,7 @@
             @if($activePeminjamans->count() > 0)
                 <!-- Info Peminjaman Aktif -->
                 <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                    <h4 class="font-semibold text-blue-800 mb-3">Peminjaman Aktif untuk Alat Ini</h4>
+                    <h4 class="font-semibold text-blue-800 mb-3">Peminjaman Aktif untuk Buku Ini</h4>
                     <div class="space-y-2">
                         @foreach($activePeminjamans as $peminjaman)
                             <div class="flex items-center justify-between bg-white rounded-lg p-3 border border-blue-100">
@@ -60,7 +60,7 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4">Form Booking</h3>
-                        <form action="{{ route('peminjam.booking.store', $alat) }}" method="POST">
+                        <form action="{{ route('peminjam.booking.store', $buku) }}" method="POST">
                             @csrf
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -148,8 +148,8 @@
                                     <div>
                                         <p class="text-sm font-medium text-yellow-800">Informasi Booking</p>
                                         <ul class="text-sm text-yellow-700 mt-1 list-disc list-inside space-y-1">
-                                            <li>Booking tidak menjamin ketersediaan alat</li>
-                                            <li>Anda akan diberitahu saat alat tersedia</li>
+                                            <li>Booking tidak menjamin ketersediaan buku</li>
+                                            <li>Anda akan diberitahu saat buku tersedia</li>
                                             <li>Untuk memastikan dapat meminjam, segera ajukan peminjaman setelah menerima notifikasi</li>
                                         </ul>
                                     </div>
@@ -163,7 +163,7 @@
                                     </svg>
                                     Ajukan Booking
                                 </button>
-                                <a href="{{ route('peminjam.katalog.show', $alat) }}" class="text-gray-600 hover:text-gray-800 text-sm">Kembali</a>
+                                <a href="{{ route('peminjam.katalog.show', $buku) }}" class="text-gray-600 hover:text-gray-800 text-sm">Kembali</a>
                             </div>
                         </form>
                     </div>
@@ -173,9 +173,9 @@
                     <svg class="w-12 h-12 text-green-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    <h4 class="font-semibold text-green-800 mb-2">Alat Tersedia!</h4>
-                    <p class="text-green-700 mb-4">Tidak ada peminjaman aktif untuk alat ini. Anda dapat langsung meminjam!</p>
-                    <a href="{{ route('peminjam.katalog.show', $alat) }}" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm">
+                    <h4 class="font-semibold text-green-800 mb-2">Buku Tersedia!</h4>
+                    <p class="text-green-700 mb-4">Tidak ada peminjaman aktif untuk buku ini. Anda dapat langsung meminjam!</p>
+                    <a href="{{ route('peminjam.katalog.show', $buku) }}" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm">
                         Langsung Pinjam
                     </a>
                 </div>

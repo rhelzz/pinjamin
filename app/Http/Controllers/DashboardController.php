@@ -23,12 +23,12 @@ class DashboardController extends Controller
     public function admin()
     {
         $totalUsers = \App\Models\User::count();
-        $totalAlat = \App\Models\Alat::count();
-        $totalKategori = \App\Models\Kategori::count();
+        $totalBuku = \App\Models\Buku::count();
+        $totalGenre = \App\Models\Genre::count();
         $totalPeminjaman = \App\Models\Peminjaman::count();
         $recentLogs = \App\Models\LogAktivitas::with('user')->latest('timestamp')->take(5)->get();
 
-        return view('admin.dashboard', compact('totalUsers', 'totalAlat', 'totalKategori', 'totalPeminjaman', 'recentLogs'));
+        return view('admin.dashboard', compact('totalUsers', 'totalBuku', 'totalGenre', 'totalPeminjaman', 'recentLogs'));
     }
 
     public function petugas()

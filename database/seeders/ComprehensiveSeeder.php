@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Alat;
+use App\Models\Buku;
 use App\Models\Booking;
 use App\Models\Denda;
-use App\Models\Kategori;
+use App\Models\Genre;
 use App\Models\LogAktivitas;
 use App\Models\Notifikasi;
 use App\Models\Peminjaman;
@@ -23,14 +23,14 @@ use Illuminate\Support\Facades\Hash;
  * Seeder ini akan membuat:
  * - 3 Role (Admin, Petugas, Peminjam)
  * - 50+ Users (1 Admin, 3 Petugas, 46+ Peminjam)
- * - 8 Kategori alat
- * - 40+ Alat dengan berbagai kategori
+ * - 8 Genre buku
+ * - 40+ Buku dengan berbagai genre
  * - 5 Tarif Denda
  * - 100+ Peminjaman dengan berbagai status
  * - Pengembalian untuk peminjaman yang selesai
  * - Notifikasi untuk users
  * - Log Aktivitas
- * - Booking untuk alat yang sedang dipinjam
+ * - Booking untuk buku yang sedang dipinjam
  */
 class ComprehensiveSeeder extends Seeder
 {
@@ -49,11 +49,11 @@ class ComprehensiveSeeder extends Seeder
         // 2. Create Users
         $this->createUsers();
         
-        // 3. Create Kategori
-        $this->createKategori();
+        // 3. Create Genre
+        $this->createGenre();
         
-        // 4. Create Alat
-        $this->createAlat();
+        // 4. Create Buku
+        $this->createBuku();
         
         // 5. Create Denda
         $this->createDenda();
@@ -75,8 +75,8 @@ class ComprehensiveSeeder extends Seeder
         $this->command->info('📊 Ringkasan Data:');
         $this->command->info('   - Roles: ' . Role::count());
         $this->command->info('   - Users: ' . User::count());
-        $this->command->info('   - Kategori: ' . Kategori::count());
-        $this->command->info('   - Alat: ' . Alat::count());
+        $this->command->info('   - Genre: ' . Genre::count());
+        $this->command->info('   - Buku: ' . Buku::count());
         $this->command->info('   - Denda: ' . Denda::count());
         $this->command->info('   - Peminjaman: ' . Peminjaman::count());
         $this->command->info('   - Pengembalian: ' . Pengembalian::count());
@@ -172,97 +172,97 @@ class ComprehensiveSeeder extends Seeder
         }
     }
 
-    private function createKategori(): void
+    private function createGenre(): void
     {
-        $this->command->info('📁 Membuat Kategori...');
+        $this->command->info('📁 Membuat Genre...');
 
-        $kategoris = [
+        $genres = [
             'Elektronik',
             'Perkakas',
-            'Alat Ukur',
-            'Alat Laboratorium',
+            'Buku Ukur',
+            'Buku Laboratorium',
             'Komputer & Aksesoris',
             'Audio Visual',
-            'Alat Kebersihan',
+            'Buku Kebersihan',
             'Peralatan Olahraga',
         ];
 
-        foreach ($kategoris as $k) {
-            Kategori::firstOrCreate(['nama_kategori' => $k]);
+        foreach ($genres as $k) {
+            Genre::firstOrCreate(['nama_genre' => $k]);
         }
     }
 
-    private function createAlat(): void
+    private function createBuku(): void
     {
-        $this->command->info('🔧 Membuat Alat...');
+        $this->command->info('🔧 Membuat Buku...');
 
         $alatData = [
             // Elektronik
-            ['nama_alat' => 'Laptop ASUS ROG', 'kategori' => 'Elektronik', 'stok' => 8, 'deskripsi' => 'Laptop gaming untuk kebutuhan desain dan pemrograman'],
-            ['nama_alat' => 'Laptop Dell Latitude', 'kategori' => 'Elektronik', 'stok' => 12, 'deskripsi' => 'Laptop bisnis dengan performa tinggi'],
-            ['nama_alat' => 'Laptop HP ProBook', 'kategori' => 'Elektronik', 'stok' => 10, 'deskripsi' => 'Laptop untuk kebutuhan kantor dan presentasi'],
-            ['nama_alat' => 'Tablet Samsung Galaxy', 'kategori' => 'Elektronik', 'stok' => 6, 'deskripsi' => 'Tablet untuk presentasi dan demo'],
-            ['nama_alat' => 'iPad Pro 12.9"', 'kategori' => 'Elektronik', 'stok' => 4, 'deskripsi' => 'Tablet premium untuk desain digital'],
+            ['judul' => 'Laptop ASUS ROG', 'genre' => 'Elektronik', 'stok' => 8, 'deskripsi' => 'Laptop gaming untuk kebutuhan desain dan pemrograman'],
+            ['judul' => 'Laptop Dell Latitude', 'genre' => 'Elektronik', 'stok' => 12, 'deskripsi' => 'Laptop bisnis dengan performa tinggi'],
+            ['judul' => 'Laptop HP ProBook', 'genre' => 'Elektronik', 'stok' => 10, 'deskripsi' => 'Laptop untuk kebutuhan kantor dan presentasi'],
+            ['judul' => 'Tablet Samsung Galaxy', 'genre' => 'Elektronik', 'stok' => 6, 'deskripsi' => 'Tablet untuk presentasi dan demo'],
+            ['judul' => 'iPad Pro 12.9"', 'genre' => 'Elektronik', 'stok' => 4, 'deskripsi' => 'Tablet premium untuk desain digital'],
 
             // Perkakas
-            ['nama_alat' => 'Bor Listrik Bosch', 'kategori' => 'Perkakas', 'stok' => 5, 'deskripsi' => 'Bor listrik untuk pekerjaan bengkel'],
-            ['nama_alat' => 'Gerinda Tangan Makita', 'kategori' => 'Perkakas', 'stok' => 4, 'deskripsi' => 'Gerinda tangan untuk memotong dan menghaluskan'],
-            ['nama_alat' => 'Mesin Las Listrik', 'kategori' => 'Perkakas', 'stok' => 3, 'deskripsi' => 'Mesin las untuk pekerjaan pengelasan dasar'],
-            ['nama_alat' => 'Tool Kit Lengkap Stanley', 'kategori' => 'Perkakas', 'stok' => 8, 'deskripsi' => 'Set peralatan lengkap untuk berbagai pekerjaan'],
-            ['nama_alat' => 'Jigsaw Black & Decker', 'kategori' => 'Perkakas', 'stok' => 4, 'deskripsi' => 'Gergaji listrik untuk pemotongan presisi'],
+            ['judul' => 'Bor Listrik Bosch', 'genre' => 'Perkakas', 'stok' => 5, 'deskripsi' => 'Bor listrik untuk pekerjaan bengkel'],
+            ['judul' => 'Gerinda Tangan Makita', 'genre' => 'Perkakas', 'stok' => 4, 'deskripsi' => 'Gerinda tangan untuk memotong dan menghaluskan'],
+            ['judul' => 'Mesin Las Listrik', 'genre' => 'Perkakas', 'stok' => 3, 'deskripsi' => 'Mesin las untuk pekerjaan pengelasan dasar'],
+            ['judul' => 'Tool Kit Lengkap Stanley', 'genre' => 'Perkakas', 'stok' => 8, 'deskripsi' => 'Set peralatan lengkap untuk berbagai pekerjaan'],
+            ['judul' => 'Jigsaw Black & Decker', 'genre' => 'Perkakas', 'stok' => 4, 'deskripsi' => 'Gergaji listrik untuk pemotongan presisi'],
 
-            // Alat Ukur
-            ['nama_alat' => 'Multimeter Digital Fluke', 'kategori' => 'Alat Ukur', 'stok' => 15, 'deskripsi' => 'Multimeter digital presisi tinggi'],
-            ['nama_alat' => 'Oscilloscope Tektronix', 'kategori' => 'Alat Ukur', 'stok' => 3, 'deskripsi' => 'Oscilloscope untuk analisis sinyal'],
-            ['nama_alat' => 'Clamp Meter Kyoritsu', 'kategori' => 'Alat Ukur', 'stok' => 8, 'deskripsi' => 'Clamp meter untuk pengukuran arus'],
-            ['nama_alat' => 'Thermometer Infrared', 'kategori' => 'Alat Ukur', 'stok' => 10, 'deskripsi' => 'Termometer non-kontak untuk pengukuran suhu'],
-            ['nama_alat' => 'Sound Level Meter', 'kategori' => 'Alat Ukur', 'stok' => 5, 'deskripsi' => 'Alat ukur tingkat kebisingan'],
+            // Buku Ukur
+            ['judul' => 'Multimeter Digital Fluke', 'genre' => 'Buku Ukur', 'stok' => 15, 'deskripsi' => 'Multimeter digital presisi tinggi'],
+            ['judul' => 'Oscilloscope Tektronix', 'genre' => 'Buku Ukur', 'stok' => 3, 'deskripsi' => 'Oscilloscope untuk analisis sinyal'],
+            ['judul' => 'Clamp Meter Kyoritsu', 'genre' => 'Buku Ukur', 'stok' => 8, 'deskripsi' => 'Clamp meter untuk pengukuran arus'],
+            ['judul' => 'Thermometer Infrared', 'genre' => 'Buku Ukur', 'stok' => 10, 'deskripsi' => 'Termometer non-kontak untuk pengukuran suhu'],
+            ['judul' => 'Sound Level Meter', 'genre' => 'Buku Ukur', 'stok' => 5, 'deskripsi' => 'Buku ukur tingkat kebisingan'],
 
-            // Alat Laboratorium
-            ['nama_alat' => 'Mikroskop Digital', 'kategori' => 'Alat Laboratorium', 'stok' => 6, 'deskripsi' => 'Mikroskop dengan kamera digital terintegrasi'],
-            ['nama_alat' => 'Timbangan Analitik', 'kategori' => 'Alat Laboratorium', 'stok' => 4, 'deskripsi' => 'Timbangan presisi untuk laboratorium'],
-            ['nama_alat' => 'Centrifuge Mini', 'kategori' => 'Alat Laboratorium', 'stok' => 3, 'deskripsi' => 'Centrifuge portable untuk sampel kecil'],
-            ['nama_alat' => 'pH Meter Digital', 'kategori' => 'Alat Laboratorium', 'stok' => 8, 'deskripsi' => 'Alat ukur pH digital akurat'],
-            ['nama_alat' => 'Hot Plate Stirrer', 'kategori' => 'Alat Laboratorium', 'stok' => 5, 'deskripsi' => 'Pemanas dengan pengaduk magnetik'],
+            // Buku Laboratorium
+            ['judul' => 'Mikroskop Digital', 'genre' => 'Buku Laboratorium', 'stok' => 6, 'deskripsi' => 'Mikroskop dengan kamera digital terintegrasi'],
+            ['judul' => 'Timbangan Analitik', 'genre' => 'Buku Laboratorium', 'stok' => 4, 'deskripsi' => 'Timbangan presisi untuk laboratorium'],
+            ['judul' => 'Centrifuge Mini', 'genre' => 'Buku Laboratorium', 'stok' => 3, 'deskripsi' => 'Centrifuge portable untuk sampel kecil'],
+            ['judul' => 'pH Meter Digital', 'genre' => 'Buku Laboratorium', 'stok' => 8, 'deskripsi' => 'Buku ukur pH digital akurat'],
+            ['judul' => 'Hot Plate Stirrer', 'genre' => 'Buku Laboratorium', 'stok' => 5, 'deskripsi' => 'Pemanas dengan pengaduk magnetik'],
 
             // Komputer & Aksesoris
-            ['nama_alat' => 'PC Desktop Core i7', 'kategori' => 'Komputer & Aksesoris', 'stok' => 10, 'deskripsi' => 'Komputer desktop performa tinggi'],
-            ['nama_alat' => 'Monitor 27" 4K', 'kategori' => 'Komputer & Aksesoris', 'stok' => 8, 'deskripsi' => 'Monitor resolusi tinggi untuk desain'],
-            ['nama_alat' => 'Keyboard Mechanical', 'kategori' => 'Komputer & Aksesoris', 'stok' => 15, 'deskripsi' => 'Keyboard mekanik untuk produktivitas'],
-            ['nama_alat' => 'Mouse Wireless Logitech', 'kategori' => 'Komputer & Aksesoris', 'stok' => 20, 'deskripsi' => 'Mouse wireless ergonomis'],
-            ['nama_alat' => 'Webcam Logitech C920', 'kategori' => 'Komputer & Aksesoris', 'stok' => 12, 'deskripsi' => 'Webcam HD untuk video conference'],
+            ['judul' => 'PC Desktop Core i7', 'genre' => 'Komputer & Aksesoris', 'stok' => 10, 'deskripsi' => 'Komputer desktop performa tinggi'],
+            ['judul' => 'Monitor 27" 4K', 'genre' => 'Komputer & Aksesoris', 'stok' => 8, 'deskripsi' => 'Monitor resolusi tinggi untuk desain'],
+            ['judul' => 'Keyboard Mechanical', 'genre' => 'Komputer & Aksesoris', 'stok' => 15, 'deskripsi' => 'Keyboard mekanik untuk produktivitas'],
+            ['judul' => 'Mouse Wireless Logitech', 'genre' => 'Komputer & Aksesoris', 'stok' => 20, 'deskripsi' => 'Mouse wireless ergonomis'],
+            ['judul' => 'Webcam Logitech C920', 'genre' => 'Komputer & Aksesoris', 'stok' => 12, 'deskripsi' => 'Webcam HD untuk video conference'],
 
             // Audio Visual
-            ['nama_alat' => 'Proyektor Epson', 'kategori' => 'Audio Visual', 'stok' => 6, 'deskripsi' => 'Proyektor LCD untuk presentasi'],
-            ['nama_alat' => 'Speaker Portable JBL', 'kategori' => 'Audio Visual', 'stok' => 8, 'deskripsi' => 'Speaker portable bluetooth'],
-            ['nama_alat' => 'Microphone Wireless', 'kategori' => 'Audio Visual', 'stok' => 10, 'deskripsi' => 'Microphone wireless untuk presentasi'],
-            ['nama_alat' => 'Kamera DSLR Canon', 'kategori' => 'Audio Visual', 'stok' => 4, 'deskripsi' => 'Kamera DSLR untuk dokumentasi'],
-            ['nama_alat' => 'Tripod Kamera', 'kategori' => 'Audio Visual', 'stok' => 8, 'deskripsi' => 'Tripod untuk stabilitas kamera'],
-            ['nama_alat' => 'LED Panel Light', 'kategori' => 'Audio Visual', 'stok' => 6, 'deskripsi' => 'Lampu LED untuk pencahayaan video'],
+            ['judul' => 'Proyektor Epson', 'genre' => 'Audio Visual', 'stok' => 6, 'deskripsi' => 'Proyektor LCD untuk presentasi'],
+            ['judul' => 'Speaker Portable JBL', 'genre' => 'Audio Visual', 'stok' => 8, 'deskripsi' => 'Speaker portable bluetooth'],
+            ['judul' => 'Microphone Wireless', 'genre' => 'Audio Visual', 'stok' => 10, 'deskripsi' => 'Microphone wireless untuk presentasi'],
+            ['judul' => 'Kamera DSLR Canon', 'genre' => 'Audio Visual', 'stok' => 4, 'deskripsi' => 'Kamera DSLR untuk dokumentasi'],
+            ['judul' => 'Tripod Kamera', 'genre' => 'Audio Visual', 'stok' => 8, 'deskripsi' => 'Tripod untuk stabilitas kamera'],
+            ['judul' => 'LED Panel Light', 'genre' => 'Audio Visual', 'stok' => 6, 'deskripsi' => 'Lampu LED untuk pencahayaan video'],
 
-            // Alat Kebersihan
-            ['nama_alat' => 'Vacuum Cleaner Industrial', 'kategori' => 'Alat Kebersihan', 'stok' => 4, 'deskripsi' => 'Vacuum cleaner untuk area luas'],
-            ['nama_alat' => 'Pressure Washer', 'kategori' => 'Alat Kebersihan', 'stok' => 3, 'deskripsi' => 'Mesin cuci bertekanan tinggi'],
-            ['nama_alat' => 'Blower Industrial', 'kategori' => 'Alat Kebersihan', 'stok' => 5, 'deskripsi' => 'Blower untuk membersihkan debu'],
+            // Buku Kebersihan
+            ['judul' => 'Vacuum Cleaner Industrial', 'genre' => 'Buku Kebersihan', 'stok' => 4, 'deskripsi' => 'Vacuum cleaner untuk area luas'],
+            ['judul' => 'Pressure Washer', 'genre' => 'Buku Kebersihan', 'stok' => 3, 'deskripsi' => 'Mesin cuci bertekanan tinggi'],
+            ['judul' => 'Blower Industrial', 'genre' => 'Buku Kebersihan', 'stok' => 5, 'deskripsi' => 'Blower untuk membersihkan debu'],
 
             // Peralatan Olahraga
-            ['nama_alat' => 'Bola Basket Molten', 'kategori' => 'Peralatan Olahraga', 'stok' => 10, 'deskripsi' => 'Bola basket official size'],
-            ['nama_alat' => 'Bola Voli Mikasa', 'kategori' => 'Peralatan Olahraga', 'stok' => 8, 'deskripsi' => 'Bola voli standar pertandingan'],
-            ['nama_alat' => 'Raket Badminton Yonex', 'kategori' => 'Peralatan Olahraga', 'stok' => 12, 'deskripsi' => 'Raket badminton berkualitas'],
-            ['nama_alat' => 'Net Badminton', 'kategori' => 'Peralatan Olahraga', 'stok' => 4, 'deskripsi' => 'Net badminton standar'],
-            ['nama_alat' => 'Matras Yoga', 'kategori' => 'Peralatan Olahraga', 'stok' => 15, 'deskripsi' => 'Matras untuk yoga dan senam'],
-            ['nama_alat' => 'Stopwatch Digital', 'kategori' => 'Peralatan Olahraga', 'stok' => 10, 'deskripsi' => 'Stopwatch untuk kegiatan olahraga'],
+            ['judul' => 'Bola Basket Molten', 'genre' => 'Peralatan Olahraga', 'stok' => 10, 'deskripsi' => 'Bola basket official size'],
+            ['judul' => 'Bola Voli Mikasa', 'genre' => 'Peralatan Olahraga', 'stok' => 8, 'deskripsi' => 'Bola voli standar pertandingan'],
+            ['judul' => 'Raket Badminton Yonex', 'genre' => 'Peralatan Olahraga', 'stok' => 12, 'deskripsi' => 'Raket badminton berkualitas'],
+            ['judul' => 'Net Badminton', 'genre' => 'Peralatan Olahraga', 'stok' => 4, 'deskripsi' => 'Net badminton standar'],
+            ['judul' => 'Matras Yoga', 'genre' => 'Peralatan Olahraga', 'stok' => 15, 'deskripsi' => 'Matras untuk yoga dan senam'],
+            ['judul' => 'Stopwatch Digital', 'genre' => 'Peralatan Olahraga', 'stok' => 10, 'deskripsi' => 'Stopwatch untuk kegiatan olahraga'],
         ];
 
-        foreach ($alatData as $alat) {
-            $kategori = Kategori::where('nama_kategori', $alat['kategori'])->first();
-            if ($kategori) {
-                $created = Alat::firstOrCreate(
-                    ['nama_alat' => $alat['nama_alat']],
+        foreach ($alatData as $buku) {
+            $genre = Genre::where('nama_genre', $buku['genre'])->first();
+            if ($genre) {
+                $created = Buku::firstOrCreate(
+                    ['judul' => $buku['judul']],
                     [
-                        'kategori_id' => $kategori->id,
-                        'stok' => $alat['stok'],
-                        'deskripsi' => $alat['deskripsi'],
+                        'genre_id' => $genre->id,
+                        'stok' => $buku['stok'],
+                        'deskripsi' => $buku['deskripsi'],
                     ]
                 );
                 $this->alatList[] = $created;
@@ -286,7 +286,7 @@ class ComprehensiveSeeder extends Seeder
                 'nama_denda' => 'Denda Keterlambatan Premium',
                 'tipe' => 'per_jam',
                 'nominal' => 1000,
-                'deskripsi' => 'Denda untuk keterlambatan alat premium per jam (Rp 1.000/jam)',
+                'deskripsi' => 'Denda untuk keterlambatan buku premium per jam (Rp 1.000/jam)',
                 'aktif' => true,
             ],
             [
@@ -322,7 +322,7 @@ class ComprehensiveSeeder extends Seeder
         $this->command->info('📋 Membuat Peminjaman...');
 
         if (empty($this->peminjamUsers) || empty($this->alatList)) {
-            $this->command->warn('   Tidak ada peminjam atau alat yang tersedia');
+            $this->command->warn('   Tidak ada peminjam atau buku yang tersedia');
             return;
         }
 
@@ -353,13 +353,13 @@ class ComprehensiveSeeder extends Seeder
 
             // Create detail peminjaman (1-3 items)
             $numItems = rand(1, 3);
-            $selectedAlat = collect($this->alatList)->random($numItems);
+            $selectedBuku = collect($this->alatList)->random($numItems);
             
-            foreach ($selectedAlat as $alat) {
+            foreach ($selectedBuku as $buku) {
                 PeminjamanDetail::create([
                     'peminjaman_id' => $peminjaman->id,
-                    'alat_id' => $alat->id,
-                    'jumlah' => rand(1, min(3, $alat->stok)),
+                    'buku_id' => $buku->id,
+                    'jumlah' => rand(1, min(3, $buku->stok)),
                 ]);
             }
 
@@ -373,7 +373,7 @@ class ComprehensiveSeeder extends Seeder
                     'tanggal_dikembalikan' => $peminjaman->returned_at ?? $tanggalKembali,
                     'denda' => $isLate ? rand(5, 50) * 1000 : ($isDamaged ? rand(50, 150) * 1000 : 0),
                     'kondisi' => $isDamaged ? 'Rusak' : 'Baik',
-                    'catatan' => $isDamaged ? 'Ditemukan kerusakan pada alat' : ($isLate ? 'Terlambat mengembalikan' : null),
+                    'catatan' => $isDamaged ? 'Ditemukan kerusakan pada buku' : ($isLate ? 'Terlambat mengembalikan' : null),
                 ]);
             }
         }
@@ -392,12 +392,12 @@ class ComprehensiveSeeder extends Seeder
 
         foreach ($activePeminjaman->take(15) as $peminjaman) {
             $user = $this->peminjamUsers[array_rand($this->peminjamUsers)];
-            $alat = Alat::find($peminjaman->detail->first()->alat_id ?? null);
+            $buku = Buku::find($peminjaman->detail->first()->buku_id ?? null);
             
-            if ($alat) {
+            if ($buku) {
                 Booking::create([
                     'user_id' => $user->id,
-                    'alat_id' => $alat->id,
+                    'buku_id' => $buku->id,
                     'jumlah' => rand(1, 2),
                     'tanggal_booking' => $peminjaman->tanggal_kembali->addDays(1),
                     'tanggal_kembali' => $peminjaman->tanggal_kembali->addDays(rand(3, 7)),
@@ -416,11 +416,11 @@ class ComprehensiveSeeder extends Seeder
         $messages = [
             'Peminjaman Anda telah disetujui',
             'Peminjaman Anda telah ditolak',
-            'Reminder: Segera kembalikan alat yang dipinjam',
+            'Reminder: Segera kembalikan buku yang dipinjam',
             'Pengembalian berhasil dicatat',
             'Booking Anda telah dikonfirmasi',
             'Ada peminjaman baru yang perlu disetujui',
-            'Alat yang Anda booking sudah tersedia',
+            'Buku yang Anda booking sudah tersedia',
             'Denda keterlambatan telah dicatat',
             'Selamat datang di Pinjamin!',
             'Profil Anda telah diperbarui',
@@ -452,10 +452,10 @@ class ComprehensiveSeeder extends Seeder
             'Menyetujui peminjaman',
             'Menolak peminjaman',
             'Memproses pengembalian',
-            'Menambah alat baru',
-            'Mengupdate data alat',
-            'Menghapus alat',
-            'Menambah kategori',
+            'Menambah buku baru',
+            'Mengupdate data buku',
+            'Menghapus buku',
+            'Menambah genre',
             'Mengupdate profil',
             'Mengubah password',
             'Menambah user baru',
@@ -485,10 +485,10 @@ class ComprehensiveSeeder extends Seeder
     private function getRandomRejectionReason(): string
     {
         $reasons = [
-            'Stok alat tidak mencukupi',
+            'Stok buku tidak mencukupi',
             'Dokumen tidak lengkap',
             'Periode peminjaman terlalu lama',
-            'Alat sedang dalam perbaikan',
+            'Buku sedang dalam perbaikan',
             'Peminjam memiliki denda yang belum dibayar',
         ];
         return $reasons[array_rand($reasons)];

@@ -125,15 +125,15 @@
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-semibold text-gray-800">Item Dipinjam</h3>
-                        <span class="text-sm text-gray-500">Total: {{ $peminjaman->detail->count() }} jenis alat</span>
+                        <span class="text-sm text-gray-500">Total: {{ $peminjaman->detail->count() }} jenis buku</span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Alat</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Buku</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Genre</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deskripsi</th>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah</th>
                                 </tr>
@@ -142,14 +142,14 @@
                                 @foreach($peminjaman->detail as $index => $detail)
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $index + 1 }}</td>
-                                        <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $detail->alat->nama_alat }}</td>
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $detail->buku->judul }}</td>
                                         <td class="px-6 py-4 text-sm text-gray-600">
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                                                {{ $detail->alat->kategori->nama_kategori ?? '-' }}
+                                                {{ $detail->buku->genre->nama_genre ?? '-' }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-500">
-                                            <p class="line-clamp-2">{{ $detail->alat->deskripsi ?? '-' }}</p>
+                                            <p class="line-clamp-2">{{ $detail->buku->deskripsi ?? '-' }}</p>
                                         </td>
                                         <td class="px-6 py-4 text-sm text-center">
                                             <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-800 font-semibold">

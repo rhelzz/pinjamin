@@ -115,14 +115,14 @@
                 <!-- Items -->
                 <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                     <div class="bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 px-6 py-4">
-                        <h3 class="text-lg font-semibold text-gray-900">Daftar Alat Dipinjam</h3>
+                        <h3 class="text-lg font-semibold text-gray-900">Daftar Buku Dipinjam</h3>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Alat</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kategori</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Buku</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Genre</th>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Jumlah</th>
                                 </tr>
                             </thead>
@@ -131,8 +131,8 @@
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4">
                                             <div class="flex items-center">
-                                                @if($detail->alat->gambar)
-                                                    <img src="{{ asset('storage/' . $detail->alat->gambar) }}" alt="{{ $detail->alat->nama_alat }}" class="h-10 w-10 rounded-lg object-cover">
+                                                @if($detail->buku->gambar)
+                                                    <img src="{{ asset('storage/' . $detail->buku->gambar) }}" alt="{{ $detail->buku->judul }}" class="h-10 w-10 rounded-lg object-cover">
                                                 @else
                                                     <div class="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center">
                                                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -140,10 +140,10 @@
                                                         </svg>
                                                     </div>
                                                 @endif
-                                                <span class="ml-3 text-sm font-medium text-gray-900">{{ $detail->alat->nama_alat }}</span>
+                                                <span class="ml-3 text-sm font-medium text-gray-900">{{ $detail->buku->judul }}</span>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4 text-sm text-gray-500">{{ $detail->alat->kategori->nama_kategori ?? '-' }}</td>
+                                        <td class="px-6 py-4 text-sm text-gray-500">{{ $detail->buku->genre->nama_genre ?? '-' }}</td>
                                         <td class="px-6 py-4 text-center">
                                             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-700">
                                                 {{ $detail->jumlah }} unit

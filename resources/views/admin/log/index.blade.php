@@ -159,7 +159,7 @@
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">User</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Aktivitas</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Kategori</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Genre</th>
                                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
                                     <a href="{{ route('admin.log.index', array_merge(request()->all(), ['sort_by' => 'timestamp', 'sort_direction' => request('sort_by') == 'timestamp' && request('sort_direction') == 'asc' ? 'desc' : 'asc'])) }}" class="flex items-center justify-end hover:text-indigo-600 transition-colors">
                                         Waktu
@@ -180,20 +180,20 @@
                             @forelse($logs as $log)
                                 @php
                                     $aktivitas = strtolower($log->aktivitas);
-                                    $kategori = 'Lainnya';
+                                    $genre = 'Lainnya';
                                     $kategoriColor = 'gray';
                                     
                                     if (str_contains($aktivitas, 'login') || str_contains($aktivitas, 'logout') || str_contains($aktivitas, 'register')) {
-                                        $kategori = 'Auth';
+                                        $genre = 'Auth';
                                         $kategoriColor = 'blue';
                                     } elseif (str_contains($aktivitas, 'menambah') || str_contains($aktivitas, 'mengubah') || str_contains($aktivitas, 'menghapus') || str_contains($aktivitas, 'membuat') || str_contains($aktivitas, 'edit') || str_contains($aktivitas, 'hapus') || str_contains($aktivitas, 'tambah')) {
-                                        $kategori = 'CRUD';
+                                        $genre = 'CRUD';
                                         $kategoriColor = 'green';
                                     } elseif (str_contains($aktivitas, 'peminjaman') || str_contains($aktivitas, 'pinjam') || str_contains($aktivitas, 'checkout') || str_contains($aktivitas, 'approve') || str_contains($aktivitas, 'reject') || str_contains($aktivitas, 'tolak') || str_contains($aktivitas, 'setuju')) {
-                                        $kategori = 'Peminjaman';
+                                        $genre = 'Peminjaman';
                                         $kategoriColor = 'amber';
                                     } elseif (str_contains($aktivitas, 'pengembalian') || str_contains($aktivitas, 'kembali') || str_contains($aktivitas, 'return')) {
-                                        $kategori = 'Pengembalian';
+                                        $genre = 'Pengembalian';
                                         $kategoriColor = 'purple';
                                     }
                                 @endphp
@@ -227,7 +227,7 @@
                                             @elseif($kategoriColor === 'purple') bg-purple-100 text-purple-700
                                             @else bg-gray-100 text-gray-700
                                             @endif">
-                                            {{ $kategori }}
+                                            {{ $genre }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right">

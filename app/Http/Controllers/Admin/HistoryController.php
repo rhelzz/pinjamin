@@ -11,7 +11,7 @@ class HistoryController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Peminjaman::with(['user', 'detail.alat', 'pengembalian', 'approver', 'returner']);
+        $query = Peminjaman::with(['user', 'detail.buku', 'pengembalian', 'approver', 'returner']);
 
         // Filter by status
         if ($request->filled('status')) {
@@ -69,7 +69,7 @@ class HistoryController extends Controller
 
     public function show(Peminjaman $peminjaman)
     {
-        $peminjaman->load(['user', 'detail.alat.kategori', 'pengembalian', 'approver', 'returner']);
+        $peminjaman->load(['user', 'detail.buku.genre', 'pengembalian', 'approver', 'returner']);
         return view('admin.history.show', compact('peminjaman'));
     }
 }

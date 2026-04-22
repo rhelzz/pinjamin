@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
-use App\Models\Alat;
+use App\Models\Buku;
 use App\Models\LogAktivitas;
 use App\Models\Notifikasi;
 use App\Models\Peminjaman;
@@ -23,7 +23,7 @@ class ApprovalController extends Controller
             $sortBy = 'id';
         }
         
-        $peminjamans = Peminjaman::with(['user', 'detail.alat'])
+        $peminjamans = Peminjaman::with(['user', 'detail.buku'])
             ->where('status', 'Pending')
             ->orderBy($sortBy, $sortDirection)
             ->paginate(10)
@@ -34,7 +34,7 @@ class ApprovalController extends Controller
 
     public function show(Peminjaman $peminjaman)
     {
-        $peminjaman->load(['user', 'detail.alat.kategori']);
+        $peminjaman->load(['user', 'detail.buku.genre']);
         return view('petugas.approval.show', compact('peminjaman'));
     }
 
@@ -49,16 +49,16 @@ class ApprovalController extends Controller
         try {
             // Check and reduce stock
             foreach ($peminjaman->detail as $detail) {
-                $alat = Alat::lockForUpdate()->find($detail->alat_id);
+                $buku = Buku::lockForUpdate()->find($detail->buku_id);
                 $jumlah = (int)$detail->jumlah;
                 
-                if ($alat->stok < $jumlah) {
+                if ($buku->stok < $jumlah) {
                     DB::rollBack();
-                    return back()->with('error', "Stok {$alat->nama_alat} tidak mencukupi ({$alat->stok} tersisa, {$jumlah} dibutuhkan).");
+                    return back()->with('error', "Stok {$buku->judul} tidak mencukupi ({$buku->stok} tersisa, {$jumlah} dibutuhkan).");
                 }
                 
-                $alat->stok -= $jumlah;
-                $alat->save();
+                $buku->stok -= $jumlah;
+                $buku->save();
             }
 
             $peminjaman->update([
@@ -71,7 +71,7 @@ class ApprovalController extends Controller
             // Notify borrower
             Notifikasi::create([
                 'user_id' => $peminjaman->user_id,
-                'pesan' => "Peminjaman #{$peminjaman->id} telah DISETUJUI. Silakan ambil alat Anda.",
+                'pesan' => "Peminjaman #{$peminjaman->id} telah DISETUJUI. Silakan ambil buku Anda.",
             ]);
 
             LogAktivitas::create([

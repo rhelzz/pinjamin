@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('booking', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('alat_id')->constrained('alat')->cascadeOnDelete();
+            $table->foreignId('buku_id')->constrained('buku')->cascadeOnDelete();
             $table->integer('jumlah')->default(1);
             $table->date('tanggal_booking'); // Tanggal ingin meminjam (setelah barang dikembalikan)
             $table->date('tanggal_kembali'); // Tanggal rencana kembali

@@ -12,7 +12,7 @@ class LaporanController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Peminjaman::with(['user', 'detail.alat', 'pengembalian']);
+        $query = Peminjaman::with(['user', 'detail.buku', 'pengembalian']);
 
         if ($request->filled('dari_tanggal')) {
             $query->whereDate('created_at', '>=', $request->dari_tanggal);
@@ -71,7 +71,7 @@ class LaporanController extends Controller
 
     public function cetak(Request $request)
     {
-        $query = Peminjaman::with(['user', 'detail.alat', 'pengembalian']);
+        $query = Peminjaman::with(['user', 'detail.buku', 'pengembalian']);
 
         if ($request->filled('dari_tanggal')) {
             $query->whereDate('created_at', '>=', $request->dari_tanggal);

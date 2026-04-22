@@ -5,7 +5,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <h2 class="font-bold text-2xl text-gray-900 leading-tight">Approval Peminjaman</h2>
-                <p class="mt-1 text-sm text-gray-600">Review dan kelola persetujuan peminjaman alat</p>
+                <p class="mt-1 text-sm text-gray-600">Review dan kelola persetujuan peminjaman buku</p>
             </div>
             @if($peminjamans->count() > 0)
                 <span class="inline-flex items-center px-3 py-1.5 bg-amber-100 text-amber-800 text-sm font-semibold rounded-full ring-1 ring-amber-200">
@@ -96,7 +96,7 @@
                                     <td class="px-6 py-4">
                                         <div class="max-w-md">
                                             <p class="text-sm font-medium text-gray-900 mb-2">
-                                                {{ $peminjaman->detail->count() }} jenis alat ({{ $peminjaman->detail->sum('jumlah') }} unit)
+                                                {{ $peminjaman->detail->count() }} jenis buku ({{ $peminjaman->detail->sum('jumlah') }} unit)
                                             </p>
                                             <div class="space-y-1">
                                                 @foreach($peminjaman->detail->take(3) as $detail)
@@ -106,7 +106,7 @@
                                                         </svg>
                                                         <span class="font-medium">{{ $detail->jumlah }}x</span>
                                                         <span class="mx-1">-</span>
-                                                        <span class="truncate">{{ $detail->alat->nama_alat }}</span>
+                                                        <span class="truncate">{{ $detail->buku->judul }}</span>
                                                     </div>
                                                 @endforeach
                                                 @if($peminjaman->detail->count() > 3)

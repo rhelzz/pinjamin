@@ -11,7 +11,7 @@ class Booking extends Model
 
     protected $fillable = [
         'user_id',
-        'alat_id',
+        'buku_id',
         'jumlah',
         'tanggal_booking',
         'tanggal_kembali',
@@ -34,9 +34,9 @@ class Booking extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function alat(): BelongsTo
+    public function buku(): BelongsTo
     {
-        return $this->belongsTo(Alat::class, 'alat_id');
+        return $this->belongsTo(Buku::class, 'buku_id');
     }
 
     public function referensiPeminjaman(): BelongsTo

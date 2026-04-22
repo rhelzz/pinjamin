@@ -41,14 +41,14 @@
                 </div>
             </div>
 
-            <a href="{{ route('admin.kategori.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.kategori.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
-                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('admin.kategori.*') ? 'text-white' : 'text-gray-500 group-hover:text-amber-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/></svg>
-                <span>Kategori</span>
+            <a href="{{ route('admin.genre.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.genre.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
+                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('admin.genre.*') ? 'text-white' : 'text-gray-500 group-hover:text-amber-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/></svg>
+                <span>Genre</span>
             </a>
 
-            <a href="{{ route('admin.alat.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.alat.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
-                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('admin.alat.*') ? 'text-white' : 'text-gray-500 group-hover:text-green-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
-                <span>Data Alat</span>
+            <a href="{{ route('admin.buku.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.buku.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
+                <svg class="w-5 h-5 mr-3 {{ request()->routeIs('admin.buku.*') ? 'text-white' : 'text-gray-500 group-hover:text-green-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                <span>Data Buku</span>
             </a>
 
             <a href="{{ route('admin.user.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('admin.user.index') || request()->routeIs('admin.user.create') || request()->routeIs('admin.user.edit') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
@@ -138,7 +138,7 @@
 
             <a href="{{ route('peminjam.katalog.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('peminjam.katalog.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">
                 <svg class="w-5 h-5 mr-3 {{ request()->routeIs('peminjam.katalog.*') ? 'text-white' : 'text-gray-500 group-hover:text-indigo-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-                <span>Katalog Alat</span>
+                <span>Katalog Buku</span>
             </a>
 
             <a href="{{ route('peminjam.cart.index') }}" class="group flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 {{ request()->routeIs('peminjam.cart.*') ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white scale-[1.02]' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:translate-x-1' }}">

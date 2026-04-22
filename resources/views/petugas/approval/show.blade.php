@@ -62,15 +62,15 @@
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-semibold text-gray-800">Item yang Dipinjam</h3>
-                        <span class="text-sm text-gray-500">Total: {{ $peminjaman->detail->count() }} jenis alat</span>
+                        <span class="text-sm text-gray-500">Total: {{ $peminjaman->detail->count() }} jenis buku</span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Alat</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Buku</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Genre</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deskripsi</th>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah Pinjam</th>
                                     <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Stok Tersedia</th>
@@ -81,25 +81,25 @@
                                 @foreach($peminjaman->detail as $index => $detail)
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $index + 1 }}</td>
-                                        <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $detail->alat->nama_alat }}</td>
+                                        <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $detail->buku->judul }}</td>
                                         <td class="px-6 py-4 text-sm">
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                                                {{ $detail->alat->kategori->nama_kategori ?? '-' }}
+                                                {{ $detail->buku->genre->nama_genre ?? '-' }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-500 max-w-xs">
-                                            <p class="line-clamp-2">{{ $detail->alat->deskripsi ?? '-' }}</p>
+                                            <p class="line-clamp-2">{{ $detail->buku->deskripsi ?? '-' }}</p>
                                         </td>
                                         <td class="px-6 py-4 text-sm text-center">
                                             <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-blue-800 font-bold">
                                                 {{ $detail->jumlah }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 text-sm text-center font-semibold {{ $detail->alat->stok >= $detail->jumlah ? 'text-green-600' : 'text-red-600' }}">
-                                            {{ $detail->alat->stok }}
+                                        <td class="px-6 py-4 text-sm text-center font-semibold {{ $detail->buku->stok >= $detail->jumlah ? 'text-green-600' : 'text-red-600' }}">
+                                            {{ $detail->buku->stok }}
                                         </td>
                                         <td class="px-6 py-4 text-center">
-                                            @if($detail->alat->stok >= $detail->jumlah)
+                                            @if($detail->buku->stok >= $detail->jumlah)
                                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
                                                     <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
@@ -134,7 +134,7 @@
 
             @php
                 $stokTidakCukup = $peminjaman->detail->filter(function($detail) {
-                    return $detail->alat->stok < $detail->jumlah;
+                    return $detail->buku->stok < $detail->jumlah;
                 })->count();
             @endphp
 
@@ -156,7 +156,7 @@
                                     <div class="ml-3 flex-1">
                                         <h4 class="text-base font-semibold text-gray-900 mb-1">Setujui Peminjaman</h4>
                                         <p class="text-sm text-gray-600">
-                                            Dengan menyetujui, stok alat akan dikurangi dan peminjaman akan diproses.
+                                            Dengan menyetujui, stok buku akan dikurangi dan peminjaman akan diproses.
                                         </p>
                                     </div>
                                 </div>
@@ -201,7 +201,7 @@
                                                 Alasan Penolakan <span class="text-red-500">*</span>
                                             </label>
                                             <textarea name="alasan_tolak" id="alasan_tolak" rows="3" required 
-                                                placeholder="Contoh: Stok tidak mencukupi, alat sedang dalam perbaikan, dll..."
+                                                placeholder="Contoh: Stok tidak mencukupi, buku sedang dalam perbaikan, dll..."
                                                 class="w-full rounded-lg border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 text-sm resize-none"></textarea>
                                         </div>
                                         <button type="submit" 

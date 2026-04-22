@@ -86,12 +86,12 @@
             <div class="bg-white border border-gray-200 rounded-lg shadow-sm mb-4">
                 <div class="p-4">
                     <form method="GET" class="flex flex-wrap justify-center gap-2">
-                        <select name="kategori" class="rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-xs py-1.5">
-                            <option value="">Semua Kategori</option>
-                            <option value="peminjaman" {{ request('kategori') === 'peminjaman' ? 'selected' : '' }}>Peminjaman</option>
-                            <option value="pengembalian" {{ request('kategori') === 'pengembalian' ? 'selected' : '' }}>Pengembalian</option>
-                            <option value="denda" {{ request('kategori') === 'denda' ? 'selected' : '' }}>Denda</option>
-                            <option value="sistem" {{ request('kategori') === 'sistem' ? 'selected' : '' }}>Sistem</option>
+                        <select name="genre" class="rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-xs py-1.5">
+                            <option value="">Semua Genre</option>
+                            <option value="peminjaman" {{ request('genre') === 'peminjaman' ? 'selected' : '' }}>Peminjaman</option>
+                            <option value="pengembalian" {{ request('genre') === 'pengembalian' ? 'selected' : '' }}>Pengembalian</option>
+                            <option value="denda" {{ request('genre') === 'denda' ? 'selected' : '' }}>Denda</option>
+                            <option value="sistem" {{ request('genre') === 'sistem' ? 'selected' : '' }}>Sistem</option>
                         </select>
                         <select name="status" class="rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-xs py-1.5">
                             <option value="">Semua Status</option>
@@ -104,7 +104,7 @@
                             </svg>
                             Filter
                         </button>
-                        @if(request()->hasAny(['kategori', 'status']))
+                        @if(request()->hasAny(['genre', 'status']))
                             <a href="{{ route('notifikasi.index') }}" class="inline-flex items-center px-3 py-1.5 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 text-xs font-medium rounded-lg transition-all">
                                 <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -121,20 +121,20 @@
                 @forelse($notifikasis as $notifikasi)
                     @php
                         $pesan = strtolower($notifikasi->pesan);
-                        $kategori = 'Sistem';
+                        $genre = 'Sistem';
                         $kategoriColor = 'gray';
                         $kategoriIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>';
                         
                         if (str_contains($pesan, 'peminjaman') || str_contains($pesan, 'pinjam') || str_contains($pesan, 'disetujui') || str_contains($pesan, 'ditolak') || str_contains($pesan, 'approve')) {
-                            $kategori = 'Peminjaman';
+                            $genre = 'Peminjaman';
                             $kategoriColor = 'blue';
                             $kategoriIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>';
                         } elseif (str_contains($pesan, 'pengembalian') || str_contains($pesan, 'dikembalikan') || str_contains($pesan, 'kembali')) {
-                            $kategori = 'Pengembalian';
+                            $genre = 'Pengembalian';
                             $kategoriColor = 'green';
                             $kategoriIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>';
                         } elseif (str_contains($pesan, 'denda') || str_contains($pesan, 'terlambat') || str_contains($pesan, 'keterlambatan')) {
-                            $kategori = 'Denda';
+                            $genre = 'Denda';
                             $kategoriColor = 'red';
                             $kategoriIcon = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>';
                         }
@@ -157,7 +157,7 @@
                                         @elseif($kategoriColor === 'red') bg-red-100 text-red-700
                                         @else bg-gray-100 text-gray-700
                                         @endif">
-                                        {{ $kategori }}
+                                        {{ $genre }}
                                     </span>
                                     @if(!$notifikasi->is_read)
                                         <span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">Baru</span>
@@ -202,7 +202,7 @@
                             </div>
                             <h3 class="text-sm font-semibold text-gray-900 mb-1">Belum Ada Notifikasi</h3>
                             <p class="text-xs text-gray-500">
-                                @if(request()->hasAny(['kategori', 'status']))
+                                @if(request()->hasAny(['genre', 'status']))
                                     Tidak ada notifikasi dengan filter yang dipilih.
                                 @else
                                     Notifikasi akan muncul di sini ketika ada aktivitas terkait akun Anda.
