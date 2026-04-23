@@ -15,8 +15,8 @@ class KatalogController extends Controller
         $sortDirection = $request->get('sort_direction', 'asc');
         $viewMode = $request->get('view', 'card'); // Default ke card
         
-        // Tentukan jumlah per halaman
-        $perPage = 4;
+        // Tentukan jumlah per halaman berdasarkan view mode
+        $perPage = ($viewMode === 'table') ? 10 : 4;
 
         $bukus = Buku::with('genre')
             ->search($request->search)
@@ -38,5 +38,10 @@ class KatalogController extends Controller
     {
         $buku->load('genre');
         return view('peminjam.katalog.show', compact('buku'));
+    }
+
+    public function cartOverlay()
+    {
+        return view('peminjam.katalog._cart_overlay')->render();
     }
 }

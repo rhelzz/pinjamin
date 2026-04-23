@@ -74,6 +74,13 @@ class CartController extends Controller
         return back()->with('success', 'Item dihapus dari keranjang.');
     }
 
+    public function clear()
+    {
+        session()->forget('cart');
+        return redirect()->route('peminjam.katalog.index')
+            ->with('success', 'Keranjang berhasil dikosongkan.');
+    }
+
     public function checkout(Request $request)
     {
         $request->validate([

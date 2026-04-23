@@ -94,6 +94,11 @@
         </div>
     </div>
 
+    <!-- CART OVERLAY CONTAINER -->
+    <div id="cartOverlayWrapper">
+        @include('peminjam.katalog._cart_overlay')
+    </div>
+
     <script>
         function incrementQty(id, max) {
             const input = document.getElementById(id);
@@ -111,7 +116,14 @@
             }
         }
 
-        // AJAX Fast Search Logic
+        function toggleCartPreview() {
+            const preview = document.getElementById('cartPreview');
+            if (preview) {
+                preview.classList.toggle('show');
+            }
+        }
+
+        // AJAX Logic
         let searchTimer;
         const searchForm = document.getElementById('searchForm');
         const searchInput = document.getElementById('searchInput');
@@ -119,6 +131,7 @@
         const container = document.getElementById('booksListContainer');
         const loader = document.getElementById('searchLoader');
         const viewInput = document.getElementById('viewModeInput');
+        const cartWrapper = document.getElementById('cartOverlayWrapper');
 
         async function performSearch(url = null) {
             if (!url) {
@@ -132,20 +145,14 @@
 
             try {
                 const response = await fetch(url, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
                 });
                 
                 if (response.ok) {
                     const html = await response.text();
                     container.innerHTML = html;
-                    
-                    // Update URL without reload
                     window.history.pushState({}, '', url);
-                    
-                    // Re-init pagination clicks
-                    initPagination();
+                    initPageInteractions();
                 }
             } catch (error) {
                 console.error('Search failed:', error);
@@ -155,7 +162,46 @@
             }
         }
 
-        function initPagination() {
+        async function refreshCartOverlay() {
+            try {
+                const response = await fetch("{{ route('peminjam.katalog.cartOverlay') }}", {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+                if (response.ok) {
+                    const html = await response.text();
+                    cartWrapper.innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Cart refresh failed:', error);
+            }
+        }
+
+        async function addToCartAjax(form) {
+            const formData = new FormData(form);
+            const url = form.action;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': formData.get('_token')
+                    }
+                });
+
+                if (response.ok) {
+                    await refreshCartOverlay();
+                    Toast.success("Buku berhasil ditambahkan ke keranjang!", 2000);
+                }
+            } catch (error) {
+                console.error('Add to cart failed:', error);
+                Toast.error("Gagal menambahkan buku ke keranjang.");
+            }
+        }
+
+        function initPageInteractions() {
+            // Re-init pagination
             document.querySelectorAll('.ajax-pagination a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -163,11 +209,18 @@
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             });
+
+            // Re-init add to cart forms
+            document.querySelectorAll('form[action*="cart/add"]').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    addToCartAjax(this);
+                });
+            });
         }
 
         function switchView(mode) {
             viewInput.value = mode;
-            // Update UI buttons
             document.querySelectorAll('.view-btn').forEach(btn => {
                 if (btn.getAttribute('data-view') === mode) {
                     btn.classList.add('bg-white', 'shadow-sm', 'text-indigo-600');
@@ -183,9 +236,7 @@
         if (searchInput) {
             searchInput.addEventListener('input', function() {
                 clearTimeout(searchTimer);
-                searchTimer = setTimeout(() => {
-                    performSearch();
-                }, 300); // Faster debounce for "fast search"
+                searchTimer = setTimeout(() => performSearch(), 300);
             });
         }
 
@@ -198,8 +249,7 @@
             performSearch();
         });
 
-        // Initialize pagination on load
-        document.addEventListener('DOMContentLoaded', initPagination);
+        document.addEventListener('DOMContentLoaded', initPageInteractions);
     </script>
 
     <style>
@@ -209,8 +259,6 @@
             -webkit-appearance: none; 
             margin: 0; 
         }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
+        input[type=number] { -moz-appearance: textfield; }
     </style>
 </x-app-layout>

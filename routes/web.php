@@ -103,12 +103,14 @@ Route::middleware(['auth', 'role:peminjam'])->prefix('peminjam')->name('peminjam
 
     // Katalog
     Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
+    Route::get('/katalog-cart-overlay', [KatalogController::class, 'cartOverlay'])->name('katalog.cartOverlay');
     Route::get('/katalog/{buku}', [KatalogController::class, 'show'])->name('katalog.show');
 
     // Cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add/{buku}', [CartController::class, 'add'])->name('cart.add');
     Route::patch('/cart/update/{buku}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
     Route::delete('/cart/remove/{buku}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
