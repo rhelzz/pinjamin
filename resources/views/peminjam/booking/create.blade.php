@@ -35,6 +35,28 @@
             </div>
 
             @if($activePeminjamans->count() > 0)
+                @php
+                    $hasOverdue = $activePeminjamans->contains(function($p) {
+                        return $p->tanggal_kembali->isPast();
+                    });
+                @endphp
+                
+                @if($hasOverdue)
+                    <!-- Konflik / Terlambat Warning -->
+                    <div class="bg-red-50 border-l-4 border-red-500 rounded-r-lg p-4 mb-6 shadow-sm">
+                        <div class="flex items-start">
+                            <svg class="w-6 h-6 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            <div>
+                                <h4 class="font-bold text-red-800">Peringatan Konflik Ketersediaan!</h4>
+                                <p class="text-sm text-red-700 mt-1">
+                                    Saat ini terdapat peminjam sebelumnya yang <strong>terlambat mengembalikan</strong> buku ini. 
+                                    Estimasi tanggal ketersediaan buku mungkin akan meleset dari rencana awal.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 <!-- Info Peminjaman Aktif -->
                 <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                     <h4 class="font-semibold text-blue-800 mb-3">Peminjaman Aktif untuk Buku Ini</h4>

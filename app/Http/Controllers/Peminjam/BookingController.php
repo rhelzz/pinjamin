@@ -97,8 +97,17 @@ class BookingController extends Controller
             'aktivitas' => "Mengajukan booking #{$booking->id} untuk {$buku->judul}",
         ]);
 
+        $warning = '';
+        $overduePeminjamans = Peminjaman::whereHas('detail', function ($q) use ($buku) {
+            $q->where('buku_id', $buku->id);
+        })->where('status', 'Dipinjam')->where('tanggal_kembali', '<', now())->exists();
+
+        if ($overduePeminjamans) {
+            $warning = ' Namun, ada kemungkinan waktu tunggu lebih lama karena peminjam sebelumnya belum mengembalikan buku ini (terlambat).';
+        }
+
         return redirect()->route('peminjam.booking.index')
-            ->with('success', 'Booking berhasil diajukan. Anda akan diberitahu saat buku tersedia.');
+            ->with('success', 'Booking berhasil diajukan. Anda akan diberitahu saat buku tersedia.' . $warning);
     }
 
     public function destroy(Booking $booking)

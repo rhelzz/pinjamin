@@ -116,11 +116,12 @@
                                     <label for="tanggal_pinjam" class="block text-sm font-medium text-gray-700 mb-2">
                                         Tanggal Peminjaman
                                     </label>
-                                    <input type="date" id="tanggal_pinjam"
+                                    <input type="date" id="tanggal_pinjam" name="tanggal_pinjam"
                                         value="{{ date('Y-m-d') }}"
+                                        min="{{ date('Y-m-d') }}"
                                         readonly
                                         class="w-full rounded-lg border-gray-300 bg-gray-50 text-gray-600 shadow-sm cursor-not-allowed">
-                                    <p class="mt-2 text-xs text-gray-500">Tanggal peminjaman akan dicatat saat petugas menyetujui</p>
+                                    <p class="mt-2 text-xs text-gray-500">Tanggal peminjaman otomatis diset hari ini</p>
                                 </div>
 
                                 <!-- Tanggal Rencana Kembali -->
@@ -129,12 +130,13 @@
                                         Tanggal Rencana Kembali <span class="text-red-500">*</span>
                                     </label>
                                     <input type="date" name="tanggal_kembali" id="tanggal_kembali"
-                                        value="{{ old('tanggal_kembali') }}"
+                                        value="{{ old('tanggal_kembali', date('Y-m-d', strtotime('+1 day'))) }}"
                                         min="{{ date('Y-m-d', strtotime('+1 day')) }}"
                                         class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                                     @error('tanggal_kembali')
                                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
+                                    <p class="mt-2 text-xs text-gray-500" id="info_durasi">Durasi pinjam: 1 hari</p>
                                 </div>
                             </div>
 
@@ -195,4 +197,34 @@
             @endif
         </div>
     </div>
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tglPinjam = document.getElementById('tanggal_pinjam');
+            const tglKembali = document.getElementById('tanggal_kembali');
+            const infoDurasi = document.getElementById('info_durasi');
+
+            function hitungDurasi() {
+                if (tglPinjam.value && tglKembali.value) {
+                    const date1 = new Date(tglPinjam.value);
+                    const date2 = new Date(tglKembali.value);
+                    const diffTime = Math.abs(date2 - date1);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    
+                    if (date2 <= date1) {
+                        infoDurasi.textContent = 'Tanggal kembali tidak valid (harus setelah tanggal peminjaman)';
+                        infoDurasi.classList.add('text-red-500');
+                        tglKembali.value = ''; // Reset if invalid
+                    } else {
+                        infoDurasi.textContent = 'Durasi pinjam: ' + diffDays + ' hari';
+                        infoDurasi.classList.remove('text-red-500');
+                    }
+                }
+            }
+
+            tglKembali.addEventListener('change', hitungDurasi);
+            hitungDurasi(); // Calculate on load
+        });
+    </script>
+    @endpush
 </x-app-layout>
