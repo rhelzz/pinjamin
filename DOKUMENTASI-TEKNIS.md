@@ -25,9 +25,9 @@ Dokumentasi teknis lengkap mencakup arsitektur, database, API, dan penjelasan ko
 
 | Layer | Teknologi |
 |-------|-----------|
-| Backend | Laravel 12.0, PHP 8.2+ |
-| Frontend | Blade, TailwindCSS 4.0, Alpine.js 3.4 |
-| Database | MySQL 8 / MariaDB 10 |
+| Backend | Laravel 13.*, PHP 8.4+ |
+| Frontend | Blade, TailwindCSS 4.*, Alpine.js 3.4 |
+| Database | MySQL 8.* / MariaDB 10 |
 | Build Tool | Vite 7.0 |
 | Authentication | Laravel Breeze |
 | Testing | Pest PHP 4.3 |
