@@ -2,10 +2,10 @@
   <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="300" alt="Laravel Logo">
 </p>
 
-<h1 align="center">📚 Pinjamin - Sistem Peminjaman Buku</h1>
+<h1 align="center">📚 Pinjamin - Sistem Manajemen Perpustakaan Terpadu</h1>
 
 <p align="center">
-  Aplikasi web untuk manajemen peminjaman buku dan koleksi perpustakaan berbasis Laravel 12
+  Aplikasi web untuk manajemen peminjaman buku dan koleksi perpustakaan berbasis Laravel 12 dengan fitur lengkap (Katalog, Keranjang, Booking, Denda, dan Laporan PDF).
 </p>
 
 <p align="center">
@@ -14,6 +14,7 @@
   <img src="https://img.shields.io/badge/TailwindCSS-4.x-38B2AC?style=flat-square&logo=tailwind-css" alt="TailwindCSS">
   <img src="https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?style=flat-square&logo=alpine.js" alt="Alpine.js">
   <img src="https://img.shields.io/badge/Vite-7.x-646CFF?style=flat-square&logo=vite" alt="Vite">
+  <img src="https://img.shields.io/badge/DomPDF-3.1-orange?style=flat-square&logo=pdf" alt="DomPDF">
 </p>
 
 ---
@@ -21,285 +22,201 @@
 ## 📋 Daftar Isi
 
 - [Tentang Aplikasi](#-tentang-aplikasi)
-- [Fitur](#-fitur)
+- [Arsitektur & Komponen Utama](#-arsitektur--komponen-utama)
+- [Fitur Berdasarkan Role](#-fitur-berdasarkan-role)
 - [Persyaratan Sistem](#-persyaratan-sistem)
-- [Instalasi](#-instalasi)
-- [Konfigurasi](#-konfigurasi)
-- [Menjalankan Seeder](#-menjalankan-seeder)
+- [Instalasi Cepat](#-instalasi-cepat)
 - [Menjalankan Aplikasi](#-menjalankan-aplikasi)
-- [Akun Default](#-akun-default)
-- [Struktur Project](#-struktur-project)
+- [Data Seeder & Akun Default](#-data-seeder--akun-default)
+- [Struktur Direktori Detail](#-struktur-direktori-detail)
+- [Teknologi yang Digunakan](#-teknologi-yang-digunakan)
 - [Dokumentasi Lainnya](#-dokumentasi-lainnya)
 
 ---
 
 ## 📖 Tentang Aplikasi
 
-**Pinjamin** adalah sistem manajemen peminjaman buku berbasis web yang dibangun dengan Laravel 12. Aplikasi ini dirancang untuk memudahkan pengelolaan koleksi buku dan proses peminjaman di lingkungan sekolah, perpustakaan, atau instansi lainnya.
+**Pinjamin** adalah sistem manajemen peminjaman buku perpustakaan modern berbasis web yang dibangun dengan Laravel 12. Aplikasi ini mengelola siklus penuh operasional perpustakaan mulai dari pendaftaran anggota, katalog buku, keranjang peminjaman, sistem booking, persetujuan petugas, pengembalian, kalkulasi denda otomatis, hingga pembuatan laporan PDF.
 
-## ✨ Fitur
+---
 
-### Fitur Umum
-- 🔐 Autentikasi dengan Laravel Breeze
-- 👥 Multi-role: Admin, Petugas, Peminjam
-- 🔔 Sistem notifikasi real-time
-- 🎨 UI Modern dengan TailwindCSS dan Glass Morphism
-- 📱 Responsive design
+## 🏗 Arsitektur & Komponen Utama
 
-### Fitur Admin
-- 📊 Dashboard statistik
-- 📁 Manajemen genre buku
-- 📚 Manajemen data buku
-- 👤 Manajemen user & persetujuan pendaftaran
-- 💰 Pengaturan tarif denda
-- 📜 Riwayat peminjaman
-- 📝 Log aktivitas sistem
+### 🗄️ Database Models (Eloquent)
+Aplikasi ini memiliki relasi database yang kompleks menggunakan model berikut:
+- `User` & `Role` - Manajemen pengguna dan hak akses (Admin, Petugas, Peminjam).
+- `Buku` & `Genre` - Manajemen katalog pustaka dengan relasi Many-to-Many atau One-to-Many.
+- `Peminjaman` & `PeminjamanDetail` - Mencatat transaksi utama peminjaman buku.
+- `Pengembalian` - Mencatat data buku yang dikembalikan beserta kondisi buku.
+- `Booking` - Sistem reservasi buku di muka.
+- `Denda` - Sistem tarif dan catatan denda keterlambatan (mendukung per hari/per jam).
+- `LogAktivitas` - Sistem audit trail yang mencatat semua tindakan admin/petugas.
+- `Notifikasi` - Sistem notifikasi internal aplikasi untuk pengguna.
 
-### Fitur Petugas
-- ✅ Persetujuan peminjaman
-- 📦 Proses pengembalian buku
-- 📊 Laporan peminjaman
-- 📜 Riwayat transaksi
+### 🎮 Controllers
+Logika bisnis dipisah dengan rapi berdasarkan Role untuk keamanan (Namespace Separation):
+- **Admin**: `BukuController`, `DendaController`, `GenreController`, `HistoryController`, `LogAktivitasController`, `UserController`.
+- **Petugas**: `ApprovalController`, `HistoryController`, `LaporanController` (Cetak PDF), `PengembalianController`.
+- **Peminjam**: `BookingController`, `CartController`, `KatalogController`, `PeminjamanController`.
+- **General**: `DashboardController`, `NotifikasiController`, `ProfileController`.
 
-### Fitur Peminjam
-- 🔍 Katalog buku
-- 🛒 Keranjang peminjaman
-- 📅 Booking buku
-- 📋 Riwayat peminjaman pribadi
+---
+
+## ✨ Fitur Berdasarkan Role
+
+### 👑 1. Admin (Administrator Sistem)
+- **Dashboard Analitik**: Statistik total buku, peminjaman aktif, total denda, dan pengguna.
+- **Manajemen User**: Verifikasi, blokir (blacklist), edit dan hapus pengguna (Peminjam & Petugas).
+- **Katalog Buku & Genre**: CRUD buku, upload cover, manajemen stok, dan kategori (Genre).
+- **Pengaturan Denda**: Menetapkan aturan tarif denda dasar dan keterlambatan (tipe per jam/hari).
+- **Log Aktivitas**: Pantauan sistem secara menyeluruh terhadap setiap aksi (Create, Update, Delete) yang dilakukan oleh user/petugas.
+- **Riwayat Seluruh Transaksi**: Melihat semua riwayat peminjaman perpustakaan.
+
+### 👨‍💼 2. Petugas (Operator Perpustakaan)
+- **Approval Peminjaman**: Menerima atau menolak permintaan peminjaman dan booking dari anggota.
+- **Proses Pengembalian**: Menangani pengembalian buku, mencatat tanggal kembali, dan memvalidasi kondisi buku.
+- **Perhitungan Denda Otomatis**: Jika telat, sistem otomatis mengalkulasi denda, dan petugas mencatat pembayarannya.
+- **Laporan PDF**: Generate dan unduh laporan transaksi peminjaman bulanan/harian dalam format PDF menggunakan `barryvdh/laravel-dompdf`.
+
+### 🧑‍🎓 3. Peminjam (Anggota)
+- **Katalog Digital**: Menelusuri ketersediaan buku, cover, sinopsis, dan genre secara real-time.
+- **Keranjang (Cart)**: Menambahkan beberapa buku sekaligus ke dalam keranjang sebelum dipinjam.
+- **Booking (Reservasi)**: Memesan buku yang sedang tidak tersedia (jika diaktifkan).
+- **Riwayat Peminjaman**: Melihat status buku yang sedang dipinjam (Menunggu Persetujuan, Dipinjam, Selesai, Ditolak).
+- **Notifikasi Terpadu**: Menerima peringatan ketika masa pinjam akan habis atau jika pinjaman disetujui/ditolak.
 
 ---
 
 ## 💻 Persyaratan Sistem
 
-- PHP >= 8.2
-- Composer >= 2.x
-- Node.js >= 18.x
-- NPM >= 9.x
-- MySQL >= 8.x / MariaDB >= 10.x
-- Git
+- **PHP** >= 8.2
+- **Composer** >= 2.x
+- **Node.js** >= 18.x & NPM >= 9.x
+- **Database**: MySQL >= 8.x atau MariaDB >= 10.x
+- **Ekstensi PHP**: `BCMath`, `Ctype`, `Fileinfo`, `JSON`, `Mbstring`, `OpenSSL`, `PDO`, `Tokenizer`, `XML`, `GD` (untuk DomPDF).
 
 ---
 
-## 🚀 Instalasi
+## 🚀 Instalasi Cepat (Otomatis)
 
-### 1. Clone Repository
+Project ini telah dikonfigurasi dengan script composer otomatis untuk kemudahan instalasi:
 
 ```bash
+# 1. Clone Repository
 git clone https://github.com/username/pinjamin.git
 cd pinjamin
+
+# 2. Setup Otomatis (Akan menginstall vendor PHP, NPM, generate key, dan migrate)
+composer run setup
 ```
+*(Pastikan Anda sudah mengedit file `.env` untuk kredensial database sebelum menjalankan migrate yang ada di dalam script setup jika tidak menggunakan SQLite).*
 
-### 2. Install Dependencies PHP
-
+### Instalasi Manual (Alternatif)
+Jika script setup di atas gagal, lakukan langkah berikut:
 ```bash
 composer install
-```
-
-### 3. Install Dependencies JavaScript
-
-```bash
 npm install
-```
-
-### 4. Salin File Environment
-
-```bash
 cp .env.example .env
-```
-
-### 5. Generate Application Key
-
-```bash
 php artisan key:generate
-```
-
----
-
-## ⚙️ Konfigurasi
-
-### 1. Konfigurasi Database
-
-Edit file `.env` dan sesuaikan konfigurasi database:
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=pinjamin
-DB_USERNAME=root
-DB_PASSWORD=
-```
-
-### 2. Buat Database
-
-Buat database dengan nama yang sesuai (contoh: `pinjamin`) di MySQL/MariaDB.
-
-### 3. Jalankan Migration
-
-```bash
+# Sesuaikan .env dengan database Anda
 php artisan migrate
-```
-
-### 4. Buat Storage Link
-
-```bash
+npm run build
 php artisan storage:link
-```
-
----
-
-## 🌱 Menjalankan Seeder
-
-### Opsi 1: Data Dasar (Recommended untuk Production)
-
-Membuat data minimal: roles, 3 user demo, genre, buku, dan denda.
-
-```bash
-php artisan db:seed
-```
-
-### Opsi 2: Admin Saja
-
-Hanya membuat roles dan 1 akun admin.
-
-```bash
-php artisan db:seed --class=AdminSeeder
-```
-
-### Opsi 3: Data Komprehensif (Recommended untuk Development/Testing)
-
-Membuat data lengkap dan realistis:
-- 3 Role
-- 50+ Users (1 Admin, 3 Petugas, 46+ Peminjam)
-- 8 Genre
-- 40+ Buku
-- 5 Tarif Denda
-- 120+ Peminjaman dengan berbagai status
-- Pengembalian, Booking, Notifikasi, Log Aktivitas
-
-```bash
-php artisan db:seed --class=ComprehensiveSeeder
-```
-
-### Fresh Migration dengan Seeder
-
-Untuk reset database dan seed ulang:
-
-```bash
-# Dengan data dasar
-php artisan migrate:fresh --seed
-
-# Dengan data komprehensif
-php artisan migrate:fresh --seed --seeder=ComprehensiveSeeder
-
-# Dengan admin saja
-php artisan migrate:fresh --seed --seeder=AdminSeeder
 ```
 
 ---
 
 ## ▶️ Menjalankan Aplikasi
 
-### Development
-
-Jalankan di dua terminal terpisah:
-
-**Terminal 1 - Laravel Server:**
-```bash
-php artisan serve
-```
-
-**Terminal 2 - Vite (Hot Reload):**
-```bash
-npm run dev
-```
-
-Akses aplikasi di: `http://localhost:8000`
-
-### Production
-
-Build assets untuk production:
+Project ini memanfaatkan Laravel 12 dan Vite, serta menggunakan Queue. Gunakan perintah berikut untuk menjalankan Server, Queue, dan Vite sekaligus dalam satu terminal menggunakan *concurrently*:
 
 ```bash
-npm run build
+composer run dev
 ```
+
+Atau jalankan secara terpisah:
+1. `php artisan serve` (Terminal 1)
+2. `php artisan queue:listen` (Terminal 2)
+3. `npm run dev` (Terminal 3)
+
+Aplikasi dapat diakses di: **`http://localhost:8000`**
 
 ---
 
-## 🔑 Akun Default
+## 🌱 Data Seeder & Akun Default
 
-Setelah menjalankan seeder, Anda dapat login dengan akun berikut:
+Kami menyediakan `ComprehensiveSeeder` untuk mengisi database dengan ratusan data dummy realistis (Buku, User, Transaksi, Log).
 
-| Role | Username | Email | Password |
-|------|----------|-------|----------|
-| Admin | `admin` | admin@pinjamin.test | password |
-| Petugas | `petugas` | petugas@pinjamin.test | password |
-| Peminjam | `peminjam` | peminjam@pinjamin.test | password |
+```bash
+php artisan migrate:fresh --seed --seeder=ComprehensiveSeeder
+```
 
-> **Catatan:** Jika menggunakan `ComprehensiveSeeder`, tersedia lebih banyak akun dengan pola:
-> - Petugas: `budi.petugas`, `siti.petugas`, `ahmad.petugas`
-> - Peminjam: `andi.wijaya`, `dewi.lestari`, dll.
-> - Semua password: `password`
+**Daftar Akun Default Login:**
+*(Semua password default adalah: `password`)*
+
+| Role | Username | Email |
+|------|----------|-------|
+| **Admin** | `admin` | `admin@pinjamin.test` |
+| **Petugas** | `petugas` | `petugas@pinjamin.test` |
+| **Peminjam** | `peminjam` | `peminjam@pinjamin.test` |
+
+*(Jika memakai `ComprehensiveSeeder`, terdapat user tambahan seperti `budi.petugas`, `andi.wijaya`, dll.)*
 
 ---
 
-## 📁 Struktur Project
+## 📁 Struktur Direktori Detail
 
+Aplikasi diorganisir sesuai best practice MVC Laravel:
+
+```text
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── Admin/         # Controller spesifik hak akses Admin
+│   │   ├── Peminjam/      # Controller operasional Anggota
+│   │   └── Petugas/       # Controller operasional Petugas/Pustakawan
+│   ├── Middleware/        # Cek Role (CheckBlacklist, RoleMiddleware)
+│   └── Requests/          # Validasi Input Form (FormRequests)
+├── Models/                # (Buku, Booking, Denda, Peminjaman, dll)
+└── Providers/
+resources/
+├── views/
+│   ├── admin/             # View UI Dashboard & Master Data Admin
+│   ├── petugas/           # View UI Approval & Laporan
+│   ├── peminjam/          # View UI Katalog, Cart, Booking
+│   ├── components/        # Blade UI Components Tailwind (Buttons, Modals)
+│   └── layouts/           # App, Guest, Navigation Layouts
+routes/
+├── web.php                # Rute dengan prefix '/admin', '/petugas', '/peminjam'
+└── auth.php               # Rute Breeze Auth
+database/
+├── migrations/            # Skema DB berelasi penuh
+└── seeders/               # File populasi data awal
 ```
-pinjamin/
-├── app/
-│   ├── Http/
-│   │   ├── Controllers/     # Controller aplikasi
-│   │   ├── Middleware/      # Middleware autentikasi & role
-│   │   └── Requests/        # Form request validation
-│   ├── Models/              # Eloquent models
-│   ├── Providers/           # Service providers
-│   └── View/Components/     # Blade components
-├── database/
-│   ├── migrations/          # Database migrations
-│   └── seeders/             # Database seeders
-├── resources/
-│   ├── css/                 # Stylesheet
-│   ├── js/                  # JavaScript
-│   └── views/               # Blade templates
-│       ├── admin/           # Views untuk admin
-│       ├── petugas/         # Views untuk petugas
-│       ├── peminjam/        # Views untuk peminjam
-│       ├── components/      # Reusable components
-│       └── layouts/         # Layout templates
-├── routes/
-│   ├── web.php              # Web routes
-│   └── auth.php             # Authentication routes
-└── tests/                   # Test files (Pest PHP)
-```
-
----
-
-## 📚 Dokumentasi Lainnya
-
-- [📘 Dokumentasi Umum](DOKUMENTASI.md) - Panduan penggunaan aplikasi
-- [📗 Dokumentasi Teknis](DOKUMENTASI-TEKNIS.md) - Dokumentasi kode dan arsitektur
-- [📋 Testing Cases (UAT)](TESTING_CASES.md) - Daftar skenario pengujian aplikasi
 
 ---
 
 ## 🛠️ Teknologi yang Digunakan
 
-- **Backend:** Laravel 12.0, PHP 8.2+
-- **Frontend:** Blade, TailwindCSS 4.0, Alpine.js 3.4
-- **Database:** MySQL / MariaDB
-- **Build Tool:** Vite 7.0
-- **Authentication:** Laravel Breeze
-- **Testing:** Pest PHP 4.3
+- **Core Framework**: Laravel 12.0
+- **Language**: PHP 8.2+
+- **Frontend Toolkit**: TailwindCSS 4.0, Alpine.js 3.x, Vite 7.x
+- **Authentication**: Laravel Breeze (Blade/Alpine)
+- **PDF Generator**: `barryvdh/laravel-dompdf` (Versi 3.1)
+- **Database**: MySQL / MariaDB (Dukungan penuh Relasi Eloquent)
+- **Testing**: Pest PHP 4.3 (`pestphp/pest`)
 
 ---
 
-## 📝 License
+## 📚 Dokumentasi Lainnya
 
-Project ini dilisensikan di bawah [MIT License](LICENSE).
+- [📘 Dokumentasi Umum (Pengguna)](DOKUMENTASI.md) - Panduan cara pakai untuk awam.
+- [📗 Dokumentasi Teknis (Developer)](DOKUMENTASI-TEKNIS.md) - Panduan kode, arsitektur, dan relasi DB.
+- [📋 Testing Cases (UAT)](TESTING_CASES.md) - Skenario pengujian bug & fitur.
 
 ---
 
 <p align="center">
-  Made with ❤️ using Laravel
+  Dibuat untuk Manajemen Perpustakaan yang Lebih Baik. <br>
+  <strong>&copy; 2026 Pinjamin Team</strong>
 </p>
