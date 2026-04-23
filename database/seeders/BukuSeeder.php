@@ -10,55 +10,44 @@ class BukuSeeder extends Seeder
 {
     public function run(): void
     {
-        $fiksi = Genre::where('nama_genre', 'Fiksi')->first();
-        $teknologi = Genre::where('nama_genre', 'Teknologi')->first();
-        $pelajaran = Genre::where('nama_genre', 'Pelajaran')->first();
+        $fiksi = Genre::where('nama_genre', 'Fiksi')->first()?->id ?? 1;
+        $teknologi = Genre::where('nama_genre', 'Teknologi')->first()?->id ?? 3;
 
-        $bukus = [
+        $books = [
             [
                 'judul' => 'Laskar Pelangi',
-                'genre_id' => $fiksi->id,
+                'genre_id' => $fiksi,
                 'penulis' => 'Andrea Hirata',
                 'penerbit' => 'Bentang Pustaka',
-                'tahun_terbit' => '2005',
-                'isbn' => '979-3062-79-7',
+                'tahun_terbit' => 2005,
+                'isbn' => '9793062797',
                 'stok' => 10,
-                'deskripsi' => 'Novel tentang kehidupan anak-anak di Belitung.',
+                'deskripsi' => 'Kisah perjuangan 10 anak di Belitung.',
             ],
             [
                 'judul' => 'Clean Code',
-                'genre_id' => $teknologi->id,
+                'genre_id' => $teknologi,
                 'penulis' => 'Robert C. Martin',
                 'penerbit' => 'Prentice Hall',
-                'tahun_terbit' => '2008',
-                'isbn' => '978-0132350884',
+                'tahun_terbit' => 2008,
+                'isbn' => '9780132350884',
                 'stok' => 5,
-                'deskripsi' => 'A Handbook of Agile Software Craftsmanship.',
+                'deskripsi' => 'Panduan menulis kode yang bersih dan profesional.',
             ],
             [
-                'judul' => 'Buku Pintar Matematika',
-                'genre_id' => $pelajaran->id,
-                'penulis' => 'Ahmad Faisal',
-                'penerbit' => 'Erlangga',
-                'tahun_terbit' => '2020',
-                'isbn' => '978-602-298-123-4',
+                'judul' => 'Filosofi Teras',
+                'genre_id' => $fiksi,
+                'penulis' => 'Henry Manampiring',
+                'penerbit' => 'Kompas',
+                'tahun_terbit' => 2019,
+                'isbn' => '9786024125189',
                 'stok' => 15,
-                'deskripsi' => 'Buku panduan belajar matematika untuk SMA.',
-            ],
-            [
-                'judul' => 'The Pragmatic Programmer',
-                'genre_id' => $teknologi->id,
-                'penulis' => 'Andrew Hunt',
-                'penerbit' => 'Addison-Wesley',
-                'tahun_terbit' => '1999',
-                'isbn' => '020161622X',
-                'stok' => 8,
-                'deskripsi' => 'Your journey to mastery in software engineering.',
+                'deskripsi' => 'Pengenalan Stoisisme untuk kehidupan modern.',
             ],
         ];
 
-        foreach ($bukus as $buku) {
-            Buku::firstOrCreate(['judul' => $buku['judul']], $buku);
+        foreach ($books as $book) {
+            Buku::updateOrCreate(['judul' => $book['judul']], $book);
         }
     }
 }
