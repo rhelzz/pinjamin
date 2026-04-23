@@ -2,17 +2,18 @@
   <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="300" alt="Laravel Logo">
 </p>
 
-<h1 align="center">🔧 Pinjamin - Sistem Peminjaman Alat</h1>
+<h1 align="center">📚 Pinjamin - Sistem Peminjaman Buku</h1>
 
 <p align="center">
-  Aplikasi web untuk manajemen peminjaman alat/inventaris berbasis Laravel 12
+  Aplikasi web untuk manajemen peminjaman buku dan koleksi perpustakaan berbasis Laravel 12
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Laravel-11.x-red?style=flat-square&logo=laravel" alt="Laravel">
+  <img src="https://img.shields.io/badge/Laravel-12.x-red?style=flat-square&logo=laravel" alt="Laravel">
   <img src="https://img.shields.io/badge/PHP-8.2+-blue?style=flat-square&logo=php" alt="PHP">
-  <img src="https://img.shields.io/badge/TailwindCSS-3.x-38B2AC?style=flat-square&logo=tailwind-css" alt="TailwindCSS">
+  <img src="https://img.shields.io/badge/TailwindCSS-4.x-38B2AC?style=flat-square&logo=tailwind-css" alt="TailwindCSS">
   <img src="https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?style=flat-square&logo=alpine.js" alt="Alpine.js">
+  <img src="https://img.shields.io/badge/Vite-7.x-646CFF?style=flat-square&logo=vite" alt="Vite">
 </p>
 
 ---
@@ -34,7 +35,7 @@
 
 ## 📖 Tentang Aplikasi
 
-**Pinjamin** adalah sistem manajemen peminjaman alat berbasis web yang dibangun dengan Laravel 11. Aplikasi ini dirancang untuk memudahkan pengelolaan inventaris dan proses peminjaman alat di lingkungan sekolah, laboratorium, atau instansi lainnya.
+**Pinjamin** adalah sistem manajemen peminjaman buku berbasis web yang dibangun dengan Laravel 12. Aplikasi ini dirancang untuk memudahkan pengelolaan koleksi buku dan proses peminjaman di lingkungan sekolah, perpustakaan, atau instansi lainnya.
 
 ## ✨ Fitur
 
@@ -47,8 +48,8 @@
 
 ### Fitur Admin
 - 📊 Dashboard statistik
-- 📁 Manajemen kategori alat
-- 🔧 Manajemen data alat
+- 📁 Manajemen genre buku
+- 📚 Manajemen data buku
 - 👤 Manajemen user & persetujuan pendaftaran
 - 💰 Pengaturan tarif denda
 - 📜 Riwayat peminjaman
@@ -56,14 +57,14 @@
 
 ### Fitur Petugas
 - ✅ Persetujuan peminjaman
-- 📦 Proses pengembalian
+- 📦 Proses pengembalian buku
 - 📊 Laporan peminjaman
 - 📜 Riwayat transaksi
 
 ### Fitur Peminjam
-- 🔍 Katalog alat
+- 🔍 Katalog buku
 - 🛒 Keranjang peminjaman
-- 📅 Booking alat
+- 📅 Booking buku
 - 📋 Riwayat peminjaman pribadi
 
 ---
@@ -151,7 +152,7 @@ php artisan storage:link
 
 ### Opsi 1: Data Dasar (Recommended untuk Production)
 
-Membuat data minimal: roles, 3 user demo, kategori, alat, dan denda.
+Membuat data minimal: roles, 3 user demo, genre, buku, dan denda.
 
 ```bash
 php artisan db:seed
@@ -170,8 +171,8 @@ php artisan db:seed --class=AdminSeeder
 Membuat data lengkap dan realistis:
 - 3 Role
 - 50+ Users (1 Admin, 3 Petugas, 46+ Peminjam)
-- 8 Kategori
-- 40+ Alat
+- 8 Genre
+- 40+ Buku
 - 5 Tarif Denda
 - 120+ Peminjaman dengan berbagai status
 - Pengembalian, Booking, Notifikasi, Log Aktivitas
@@ -269,7 +270,7 @@ pinjamin/
 ├── routes/
 │   ├── web.php              # Web routes
 │   └── auth.php             # Authentication routes
-└── tests/                   # Test files
+└── tests/                   # Test files (Pest PHP)
 ```
 
 ---
@@ -278,16 +279,18 @@ pinjamin/
 
 - [📘 Dokumentasi Umum](DOKUMENTASI.md) - Panduan penggunaan aplikasi
 - [📗 Dokumentasi Teknis](DOKUMENTASI-TEKNIS.md) - Dokumentasi kode dan arsitektur
+- [📋 Testing Cases (UAT)](TESTING_CASES.md) - Daftar skenario pengujian aplikasi
 
 ---
 
 ## 🛠️ Teknologi yang Digunakan
 
-- **Backend:** Laravel 11, PHP 8.2+
-- **Frontend:** Blade, TailwindCSS 3, Alpine.js 3
+- **Backend:** Laravel 12.0, PHP 8.2+
+- **Frontend:** Blade, TailwindCSS 4.0, Alpine.js 3.4
 - **Database:** MySQL / MariaDB
-- **Build Tool:** Vite
+- **Build Tool:** Vite 7.0
 - **Authentication:** Laravel Breeze
+- **Testing:** Pest PHP 4.3
 
 ---
 

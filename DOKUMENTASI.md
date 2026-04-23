@@ -1,6 +1,6 @@
 # 📘 Dokumentasi Umum - Pinjamin
 
-Panduan lengkap penggunaan aplikasi Pinjamin - Sistem Peminjaman Alat.
+Panduan lengkap penggunaan aplikasi Pinjamin - Sistem Peminjaman Buku.
 
 ---
 
@@ -18,7 +18,7 @@ Panduan lengkap penggunaan aplikasi Pinjamin - Sistem Peminjaman Alat.
 
 ## Pengantar
 
-**Pinjamin** adalah aplikasi web untuk mengelola peminjaman alat/inventaris. Aplikasi ini memiliki tiga peran pengguna dengan hak akses yang berbeda-beda.
+**Pinjamin** adalah aplikasi web untuk mengelola peminjaman buku/koleksi perpustakaan. Aplikasi ini memiliki tiga peran pengguna dengan hak akses yang berbeda-beda.
 
 ### Alur Peminjaman
 
@@ -42,7 +42,7 @@ Panduan lengkap penggunaan aplikasi Pinjamin - Sistem Peminjaman Alat.
 
 ### 1. Admin
 Admin memiliki akses penuh ke sistem dengan kemampuan:
-- Mengelola seluruh data master (kategori, alat, user, denda)
+- Mengelola seluruh data master (genre, buku, user, denda)
 - Menyetujui pendaftaran user baru
 - Melihat log aktivitas sistem
 - Melihat semua riwayat peminjaman
@@ -50,16 +50,16 @@ Admin memiliki akses penuh ke sistem dengan kemampuan:
 ### 2. Petugas
 Petugas bertanggung jawab untuk operasional peminjaman:
 - Menyetujui atau menolak permintaan peminjaman
-- Memproses pengembalian alat
+- Memproses pengembalian buku
 - Membuat laporan peminjaman
 - Melihat riwayat transaksi
 
 ### 3. Peminjam
-Peminjam adalah end-user yang akan meminjam alat:
-- Melihat katalog alat
-- Menambahkan alat ke keranjang
+Peminjam adalah end-user yang akan meminjam buku:
+- Melihat katalog buku
+- Menambahkan buku ke keranjang
 - Melakukan checkout peminjaman
-- Melakukan booking untuk alat yang sedang dipinjam
+- Melakukan booking untuk buku yang sedang dipinjam
 - Melihat riwayat peminjaman pribadi
 
 ---
@@ -68,26 +68,26 @@ Peminjam adalah end-user yang akan meminjam alat:
 
 ### Dashboard
 Dashboard admin menampilkan statistik keseluruhan sistem:
-- Total alat, kategori, dan user
+- Total buku, genre, dan user
 - Statistik peminjaman (pending, dipinjam, selesai)
 - Grafik aktivitas peminjaman
 
-### Manajemen Kategori
-1. Navigasi ke **Kategori** di sidebar
-2. Klik **Tambah Kategori** untuk menambah kategori baru
-3. Klik ikon **Edit** untuk mengubah nama kategori
-4. Klik ikon **Hapus** untuk menghapus kategori
+### Manajemen Genre
+1. Navigasi ke **Genre** di sidebar
+2. Klik **Tambah Genre** untuk menambah genre baru
+3. Klik ikon **Edit** untuk mengubah nama genre
+4. Klik ikon **Hapus** untuk menghapus genre
 
-> **Catatan:** Menghapus kategori akan menyebabkan alat dalam kategori tersebut kehilangan kategorinya.
+> **Catatan:** Menghapus genre akan menyebabkan buku dalam genre tersebut kehilangan genrenya.
 
-### Manajemen Alat
-1. Navigasi ke **Data Alat** di sidebar
-2. Klik **Tambah Alat** untuk menambah alat baru
-3. Isi informasi alat:
-   - Nama Alat (wajib)
-   - Kategori (wajib)
+### Manajemen Buku
+1. Navigasi ke **Data Buku** di sidebar
+2. Klik **Tambah Buku** untuk menambah buku baru
+3. Isi informasi buku:
+   - Judul Buku (wajib)
+   - Genre (wajib)
    - Stok (wajib)
-   - Gambar (opsional)
+   - Gambar Sampul (opsional)
    - Deskripsi (opsional)
 4. Klik **Simpan**
 
@@ -108,7 +108,7 @@ Dashboard admin menampilkan statistik keseluruhan sistem:
 2. Tersedia 3 tipe denda:
    - **Per Jam:** Denda dihitung berdasarkan jam keterlambatan
    - **Per Hari:** Denda dihitung berdasarkan hari keterlambatan
-   - **Tetap:** Denda dengan nominal tetap (untuk kerusakan)
+   - **Tetap:** Denda dengan nominal tetap (untuk kerusakan/hilang)
 3. Aktifkan/nonaktifkan denda sesuai kebutuhan
 
 ### History Peminjaman
@@ -128,7 +128,7 @@ Dashboard admin menampilkan statistik keseluruhan sistem:
 ### Dashboard
 Dashboard petugas menampilkan:
 - Jumlah peminjaman pending yang perlu disetujui
-- Jumlah alat yang sedang dipinjam
+- Jumlah buku yang sedang dipinjam
 - Statistik pengembalian hari ini
 
 ### Persetujuan Peminjaman
@@ -142,7 +142,7 @@ Dashboard petugas menampilkan:
 2. Cari peminjaman yang akan dikembalikan
 3. Klik **Proses Pengembalian**
 4. Isi form pengembalian:
-   - Kondisi alat (Baik/Rusak)
+   - Kondisi buku (Baik/Rusak/Hilang)
    - Pilih tarif denda jika ada keterlambatan/kerusakan
    - Catatan (opsional)
 5. Klik **Proses Pengembalian**
@@ -157,17 +157,17 @@ Dashboard petugas menampilkan:
 
 ## Panduan Peminjam
 
-### Katalog Alat
-1. Navigasi ke **Katalog Alat** di sidebar
-2. Browse alat yang tersedia
-3. Gunakan filter kategori atau pencarian
-4. Klik **Detail** untuk melihat informasi lengkap alat
+### Katalog Buku
+1. Navigasi ke **Katalog Buku** di sidebar
+2. Browse buku yang tersedia
+3. Gunakan filter genre atau pencarian
+4. Klik **Detail** untuk melihat informasi lengkap buku
 
 ### Menambah ke Keranjang
-1. Pada halaman katalog atau detail alat
+1. Pada halaman katalog atau detail buku
 2. Pilih jumlah yang ingin dipinjam
 3. Klik **Tambah ke Keranjang**
-4. Alat akan masuk ke keranjang
+4. Buku akan masuk ke keranjang
 
 ### Checkout Peminjaman
 1. Klik menu **Keranjang** di sidebar
@@ -177,9 +177,9 @@ Dashboard petugas menampilkan:
 5. Klik **Checkout**
 6. Peminjaman akan masuk status **Pending**
 
-### Booking Alat
-Jika alat yang diinginkan sedang dipinjam:
-1. Pada halaman katalog, cari alat yang stoknya 0
+### Booking Buku
+Jika buku yang diinginkan sedang dipinjam (stok 0):
+1. Pada halaman katalog, cari buku yang stoknya 0
 2. Klik **Booking**
 3. Pilih tanggal booking (setelah perkiraan kembali)
 4. Pilih tanggal pengembalian
@@ -189,7 +189,7 @@ Jika alat yang diinginkan sedang dipinjam:
 1. Navigasi ke **Riwayat Peminjaman** di sidebar
 2. Lihat status setiap peminjaman:
    - **Pending:** Menunggu persetujuan
-   - **Dipinjam:** Sudah disetujui, alat dalam peminjaman
+   - **Dipinjam:** Sudah disetujui, buku dalam peminjaman
    - **Ditolak:** Ditolak oleh petugas
    - **Selesai:** Sudah dikembalikan
 
@@ -225,16 +225,16 @@ Sistem menggunakan toast notification untuk feedback:
 A: Kunjungi halaman Register, isi form pendaftaran, lalu tunggu persetujuan dari Admin.
 
 ### Q: Berapa lama peminjaman bisa dilakukan?
-A: Tergantung kebijakan instansi, biasanya 1-7 hari.
+A: Tergantung kebijakan perpustakaan/instansi, biasanya 1-7 hari.
 
 ### Q: Apa yang terjadi jika terlambat mengembalikan?
 A: Akan dikenakan denda sesuai tarif yang berlaku (per jam/per hari).
 
-### Q: Bagaimana jika alat rusak saat dipinjam?
-A: Laporkan ke petugas, akan dikenakan denda kerusakan sesuai tingkat kerusakan.
+### Q: Bagaimana jika buku rusak atau hilang saat dipinjam?
+A: Laporkan ke petugas, akan dikenakan denda kerusakan atau penggantian sesuai tingkat kerusakan.
 
-### Q: Bisakah membooking alat yang sedang dipinjam?
-A: Ya, gunakan fitur Booking untuk mereservasi alat yang sedang dipinjam orang lain.
+### Q: Bisakah membooking buku yang sedang dipinjam?
+A: Ya, gunakan fitur Booking untuk mereservasi buku yang sedang dipinjam orang lain.
 
 ### Q: Bagaimana cara melihat riwayat peminjaman?
 A: Navigasi ke menu **Riwayat Peminjaman** di sidebar.

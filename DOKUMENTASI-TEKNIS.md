@@ -25,12 +25,12 @@ Dokumentasi teknis lengkap mencakup arsitektur, database, API, dan penjelasan ko
 
 | Layer | Teknologi |
 |-------|-----------|
-| Backend | Laravel 11, PHP 8.2+ |
-| Frontend | Blade, TailwindCSS 3, Alpine.js 3 |
+| Backend | Laravel 12.0, PHP 8.2+ |
+| Frontend | Blade, TailwindCSS 4.0, Alpine.js 3.4 |
 | Database | MySQL 8 / MariaDB 10 |
-| Build Tool | Vite |
+| Build Tool | Vite 7.0 |
 | Authentication | Laravel Breeze |
-| Testing | Pest PHP |
+| Testing | Pest PHP 4.3 |
 
 ### Design Pattern
 
@@ -47,12 +47,12 @@ app/
 ├── Http/
 │   ├── Controllers/
 │   │   ├── Admin/           # Controllers untuk admin
-│   │   │   ├── AlatController.php
+│   │   │   ├── BukuController.php
 │   │   │   ├── DashboardController.php
 │   │   │   ├── DendaController.php
 │   │   │   ├── HistoryController.php
-│   │   │   ├── KategoriController.php
-│   │   │   ├── LogController.php
+│   │   │   ├── GenreController.php
+│   │   │   ├── LogAktivitasController.php
 │   │   │   └── UserController.php
 │   │   ├── Peminjam/        # Controllers untuk peminjam
 │   │   │   ├── BookingController.php
@@ -70,13 +70,13 @@ app/
 │   │   └── ProfileController.php
 │   ├── Middleware/
 │   │   ├── RoleMiddleware.php       # Cek role user
-│   │   └── StatusMiddleware.php     # Cek status aktif user
+│   │   └── CheckBlacklist.php       # Cek status blacklist
 │   └── Requests/            # Form Request Validation
 ├── Models/
-│   ├── Alat.php
 │   ├── Booking.php
+│   ├── Buku.php
 │   ├── Denda.php
-│   ├── Kategori.php
+│   ├── Genre.php
 │   ├── LogAktivitas.php
 │   ├── Notifikasi.php
 │   ├── Peminjaman.php
@@ -86,7 +86,8 @@ app/
 │   └── User.php
 └── View/
     └── Components/
-        └── AppLayout.php
+        ├── AppLayout.php
+        └── GuestLayout.php
 ```
 
 ---
@@ -97,21 +98,21 @@ app/
 
 ```
 ┌─────────────┐       ┌─────────────┐
-│    Role     │       │   Kategori  │
+│    Role     │       │    Genre    │
 ├─────────────┤       ├─────────────┤
 │ id          │       │ id          │
-│ nama_role   │       │ nama_kategori│
+│ nama_role   │       │ nama_genre  │
 └──────┬──────┘       └──────┬──────┘
        │                     │
        │ 1                   │ 1
        │                     │
        │ *                   │ *
 ┌──────┴──────┐       ┌──────┴──────┐
-│    User     │       │    Alat     │
+│    User     │       │    Buku     │
 ├─────────────┤       ├─────────────┤
 │ id          │       │ id          │
-│ name        │       │ nama_alat   │
-│ username    │       │ kategori_id │──FK
+│ name        │       │ judul_buku  │
+│ username    │       │ genre_id    │──FK
 │ email       │       │ stok        │
 │ password    │       │ gambar      │
 │ role_id     │──FK   │ deskripsi   │
@@ -127,7 +128,7 @@ app/
 │ id          │◄──────┤─────────────┤
 │ user_id     │──FK   │ id          │
 │ tanggal_pinjam      │ peminjaman_id──FK
-│ tanggal_kembali     │ alat_id     │──FK
+│ tanggal_kembali     │ buku_id     │──FK
 │ status      │       │ jumlah      │
 │ alasan_tolak│       └─────────────┘
 │ approved_by │──FK
@@ -174,22 +175,22 @@ app/
 | remember_token | string | Token remember me |
 | timestamps | - | created_at, updated_at |
 
-#### 3. Kategori
+#### 3. Genre
 | Column | Type | Description |
 |--------|------|-------------|
 | id | bigint | Primary key |
-| nama_kategori | string | Nama kategori |
+| nama_genre | string | Nama genre |
 | timestamps | - | created_at, updated_at |
 
-#### 4. Alat
+#### 4. Buku
 | Column | Type | Description |
 |--------|------|-------------|
 | id | bigint | Primary key |
-| nama_alat | string | Nama alat |
-| kategori_id | bigint | FK ke kategori |
+| judul_buku | string | Judul buku |
+| genre_id | bigint | FK ke genre |
 | stok | integer | Jumlah stok tersedia |
 | gambar | string | Path gambar (nullable) |
-| deskripsi | text | Deskripsi alat (nullable) |
+| deskripsi | text | Deskripsi buku (nullable) |
 | timestamps | - | created_at, updated_at |
 
 #### 5. Peminjaman
@@ -212,8 +213,8 @@ app/
 |--------|------|-------------|
 | id | bigint | Primary key |
 | peminjaman_id | bigint | FK ke peminjaman |
-| alat_id | bigint | FK ke alat |
-| jumlah | integer | Jumlah alat dipinjam |
+| buku_id | bigint | FK ke buku |
+| jumlah | integer | Jumlah buku dipinjam |
 | timestamps | - | created_at, updated_at |
 
 #### 7. Pengembalian
@@ -223,7 +224,7 @@ app/
 | peminjaman_id | bigint | FK ke peminjaman |
 | tanggal_dikembalikan | date | Tanggal dikembalikan |
 | denda | decimal(12,2) | Total denda |
-| kondisi | enum | Baik/Rusak |
+| kondisi | enum | Baik/Rusak/Hilang |
 | catatan | text | Catatan (nullable) |
 | timestamps | - | created_at, updated_at |
 
@@ -243,7 +244,7 @@ app/
 |--------|------|-------------|
 | id | bigint | Primary key |
 | user_id | bigint | FK ke users |
-| alat_id | bigint | FK ke alat |
+| buku_id | bigint | FK ke buku |
 | jumlah | integer | Jumlah booking |
 | tanggal_booking | date | Tanggal ingin pinjam |
 | tanggal_kembali | date | Target kembali |
@@ -295,20 +296,20 @@ class User extends Authenticatable
 }
 ```
 
-### Alat Model
+### Buku Model
 
 ```php
-// app/Models/Alat.php
+// app/Models/Buku.php
 
-class Alat extends Model
+class Buku extends Model
 {
     // Relationships
-    public function kategori(): BelongsTo;        // Alat belongs to Kategori
-    public function peminjamanDetail(): HasMany;  // Alat has many PeminjamanDetail
+    public function genre(): BelongsTo;           // Buku belongs to Genre
+    public function peminjamanDetail(): HasMany;  // Buku has many PeminjamanDetail
     
     // Query Scopes
-    public function scopeByKategori($query, $id); // Filter by kategori
-    public function scopeSearch($query, $search); // Search by nama
+    public function scopeByGenre($query, $id);    // Filter by genre
+    public function scopeSearch($query, $search); // Search by judul_buku
     public function scopeTersedia($query);        // Filter stok > 0
 }
 ```
@@ -341,12 +342,12 @@ Controller diorganisir berdasarkan role:
 Controllers/
 ├── Admin/
 │   ├── DashboardController.php   # Dashboard admin
-│   ├── KategoriController.php    # CRUD kategori
-│   ├── AlatController.php        # CRUD alat
+│   ├── GenreController.php       # CRUD genre
+│   ├── BukuController.php        # CRUD buku
 │   ├── UserController.php        # CRUD user + approval
 │   ├── DendaController.php       # CRUD denda
 │   ├── HistoryController.php     # View history
-│   └── LogController.php         # View log aktivitas
+│   └── LogAktivitasController.php# View log aktivitas
 ├── Petugas/
 │   ├── DashboardController.php   # Dashboard petugas
 │   ├── ApprovalController.php    # Approve/reject peminjaman
@@ -355,7 +356,7 @@ Controllers/
 │   └── LaporanController.php     # Generate laporan
 ├── Peminjam/
 │   ├── DashboardController.php   # Dashboard peminjam
-│   ├── KatalogController.php     # View katalog alat
+│   ├── KatalogController.php     # View katalog buku
 │   ├── CartController.php        # Keranjang & checkout
 │   ├── PeminjamanController.php  # View riwayat
 │   └── BookingController.php     # CRUD booking
@@ -366,34 +367,34 @@ Controllers/
 ### Contoh Controller Pattern
 
 ```php
-// app/Http/Controllers/Admin/AlatController.php
+// app/Http/Controllers/Admin/BukuController.php
 
-class AlatController extends Controller
+class BukuController extends Controller
 {
     public function index(Request $request)
     {
-        $alats = Alat::with('kategori')
-            ->byKategori($request->kategori_id)
-            ->search($request->search)
+        $bukus = Buku::with('genre')
+            ->when($request->genre_id, fn($q, $genre_id) => $q->where('genre_id', $genre_id))
+            ->when($request->search, fn($q, $search) => $q->where('judul_buku', 'like', "%{$search}%"))
             ->orderBy($request->sort_by ?? 'id', $request->sort_direction ?? 'asc')
             ->paginate(10);
             
-        return view('admin.alat.index', compact('alats'));
+        return view('admin.buku.index', compact('bukus'));
     }
     
-    public function store(StoreAlatRequest $request)
+    public function store(StoreBukuRequest $request)
     {
         // Validated data from Form Request
-        $alat = Alat::create($request->validated());
+        $buku = Buku::create($request->validated());
         
         // Log aktivitas
         LogAktivitas::create([
             'user_id' => auth()->id(),
-            'aktivitas' => "Menambah alat: {$alat->nama_alat}",
+            'aktivitas' => "Menambah buku: {$buku->judul_buku}",
         ]);
         
-        return redirect()->route('admin.alat.index')
-            ->with('success', 'Alat berhasil ditambahkan');
+        return redirect()->route('admin.buku.index')
+            ->with('success', 'Buku berhasil ditambahkan');
     }
 }
 ```
@@ -409,7 +410,7 @@ Memastikan user memiliki role yang sesuai:
 ```php
 // app/Http/Middleware/RoleMiddleware.php
 
-public function handle(Request $request, Closure $next, ...$roles): Response
+public function handle(Request $request, Closure $next, string $role): Response
 {
     if (!auth()->check()) {
         return redirect()->route('login');
@@ -417,7 +418,7 @@ public function handle(Request $request, Closure $next, ...$roles): Response
     
     $userRole = auth()->user()->role->nama_role;
     
-    if (!in_array($userRole, $roles)) {
+    if (strtolower($userRole) !== strtolower($role)) {
         abort(403, 'Unauthorized access');
     }
     
@@ -427,24 +428,24 @@ public function handle(Request $request, Closure $next, ...$roles): Response
 
 **Penggunaan di routes:**
 ```php
-Route::middleware(['auth', 'role:Admin'])->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
     // Routes untuk admin
 });
 ```
 
-### StatusMiddleware
+### CheckBlacklist
 
-Memastikan user dalam status aktif:
+Memastikan user tidak dalam daftar blacklist:
 
 ```php
-// app/Http/Middleware/StatusMiddleware.php
+// app/Http/Middleware/CheckBlacklist.php
 
 public function handle(Request $request, Closure $next): Response
 {
-    if (auth()->check() && auth()->user()->status !== 'active') {
+    if (auth()->check() && auth()->user()->status === 'blacklist') {
         auth()->logout();
         return redirect()->route('login')
-            ->with('error', 'Akun Anda tidak aktif');
+            ->with('error', 'Akun Anda telah dinonaktifkan.');
     }
     
     return $next($request);
@@ -461,36 +462,34 @@ public function handle(Request $request, Closure $next): Response
 // routes/web.php
 
 // Public routes
-Route::get('/', WelcomeController::class);
+Route::get('/', function () { return redirect()->route('login'); });
 
 // Authenticated routes
-Route::middleware(['auth', 'status'])->group(function () {
-    // Profile (semua role)
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Dashboard & Profile
+    Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/profile', [ProfileController::class, 'edit']);
     
-    // Notifikasi (semua role)
-    Route::resource('notifikasi', NotifikasiController::class);
+    // Notifikasi
+    Route::prefix('notifikasi')->group(function () { /* ... */ });
     
     // Admin routes
-    Route::middleware('role:Admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [Admin\DashboardController::class, 'index']);
-        Route::resource('kategori', Admin\KategoriController::class);
-        Route::resource('alat', Admin\AlatController::class);
+    Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::resource('genre', Admin\GenreController::class);
+        Route::resource('buku', Admin\BukuController::class);
         Route::resource('user', Admin\UserController::class);
         // ... more routes
     });
     
     // Petugas routes
-    Route::middleware('role:Petugas')->prefix('petugas')->name('petugas.')->group(function () {
-        Route::get('/dashboard', [Petugas\DashboardController::class, 'index']);
-        Route::resource('approval', Petugas\ApprovalController::class);
+    Route::middleware('role:petugas')->prefix('petugas')->name('petugas.')->group(function () {
+        Route::get('/approval', [Petugas\ApprovalController::class, 'index']);
         // ... more routes
     });
     
     // Peminjam routes
-    Route::middleware('role:Peminjam')->prefix('peminjam')->name('peminjam.')->group(function () {
-        Route::get('/dashboard', [Peminjam\DashboardController::class, 'index']);
-        Route::resource('katalog', Peminjam\KatalogController::class);
+    Route::middleware('role:peminjam')->prefix('peminjam')->name('peminjam.')->group(function () {
+        Route::get('/katalog', [Peminjam\KatalogController::class, 'index']);
         Route::resource('cart', Peminjam\CartController::class);
         // ... more routes
     });
@@ -533,19 +532,8 @@ resources/views/
 
 **Confirm Dialog:**
 ```blade
-{{-- Menggunakan data-confirm attribute --}}
-<form method="POST" data-confirm="Yakin ingin menghapus?">
-    <button type="submit">Hapus</button>
-</form>
-```
-
-**Page Title:**
-```blade
-<x-app-layout>
-    <x-slot name="pageTitle">Nama Halaman</x-slot>
-    
-    {{-- Content --}}
-</x-app-layout>
+{{-- Menggunakan x-data dari alpine --}}
+<button x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-deletion')">Hapus</button>
 ```
 
 ---
@@ -557,16 +545,16 @@ resources/views/
 1. User mengakses halaman protected
 2. Middleware `auth` cek session
 3. Jika tidak login, redirect ke `/login`
-4. Setelah login, middleware `status` cek status user
+4. Setelah login, middleware `CheckBlacklist` cek status user
 5. Middleware `role` cek akses berdasarkan role
 
 ### Role-based Access Control
 
 | Route Prefix | Role | Middleware |
 |--------------|------|------------|
-| /admin/* | Admin | auth, status, role:Admin |
-| /petugas/* | Petugas | auth, status, role:Petugas |
-| /peminjam/* | Peminjam | auth, status, role:Peminjam |
+| /admin/* | Admin | auth, CheckBlacklist, role:admin |
+| /petugas/* | Petugas | auth, CheckBlacklist, role:petugas |
+| /peminjam/* | Peminjam | auth, CheckBlacklist, role:peminjam |
 
 ### Helper Methods
 
@@ -595,8 +583,8 @@ auth()->user()->isPeminjam();  // true jika peminjam
 🚀 Memulai Comprehensive Seeder...
 📝 Membuat Roles...
 👥 Membuat Users...
-📁 Membuat Kategori...
-🔧 Membuat Alat...
+📁 Membuat Genre...
+🔧 Membuat Buku...
 💰 Membuat Tarif Denda...
 📋 Membuat Peminjaman...
 📅 Membuat Booking...
@@ -607,8 +595,8 @@ auth()->user()->isPeminjam();  // true jika peminjam
 📊 Ringkasan Data:
    - Roles: 3
    - Users: 50
-   - Kategori: 8
-   - Alat: 40
+   - Genre: 8
+   - Buku: 40
    - Denda: 5
    - Peminjaman: 120
    - Pengembalian: 60
@@ -634,7 +622,7 @@ tests/
     └── ...
 ```
 
-### Running Tests
+### Running Tests (Pest PHP 4.3)
 
 ```bash
 # Run all tests
