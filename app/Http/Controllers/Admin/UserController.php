@@ -21,7 +21,8 @@ class UserController extends Controller
         $users = User::with('role')
             ->when($request->search, fn ($q) => $q->where('name', 'like', "%{$request->search}%")
                 ->orWhere('username', 'like', "%{$request->search}%")
-                ->orWhere('email', 'like', "%{$request->search}%"))
+                ->orWhere('email', 'like', "%{$request->search}%")
+                ->orWhere('nomor_telepon', 'like', "%{$request->search}%"))
             ->orderBy($sortBy, $sortDirection)
             ->paginate(15)
             ->withQueryString();
@@ -109,6 +110,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username',
             'email' => 'required|email|unique:users,email',
+            'nomor_telepon' => 'nullable|string|max:20',
             'password' => 'required|string|min:8|confirmed',
             'role_id' => 'required|exists:role,id',
             'status' => 'required|in:active,pending,blacklist',
@@ -118,6 +120,7 @@ class UserController extends Controller
             'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,
+            'nomor_telepon' => $request->nomor_telepon,
             'password' => Hash::make($request->password),
             'role_id' => $request->role_id,
             'status' => $request->status,
@@ -145,12 +148,13 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
             'email' => 'required|email|unique:users,email,' . $user->id,
+            'nomor_telepon' => 'nullable|string|max:20',
             'role_id' => 'required|exists:role,id',
             'status' => 'required|in:active,pending,blacklist',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
-        $data = $request->only(['name', 'username', 'email', 'role_id', 'status']);
+        $data = $request->only(['name', 'username', 'email', 'nomor_telepon', 'role_id', 'status']);
 
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);

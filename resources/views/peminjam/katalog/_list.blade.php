@@ -29,7 +29,7 @@
                                     @endif
                                 </div>
                                 <div>
-                                    <a href="{{ route('peminjam.katalog.show', $buku) }}" class="text-sm font-bold text-gray-900 line-clamp-1 hover:text-indigo-600 transition-colors">{{ $buku->judul }}</a>
+                                    <a href="{{ route('peminjam.katalog.show', $buku->encrypted_id) }}" class="text-sm font-bold text-gray-900 line-clamp-1 hover:text-indigo-600 transition-colors">{{ $buku->judul }}</a>
                                     <p class="text-xs text-gray-400">{{ $buku->penulis ?? 'Anonim' }} • {{ $buku->isbn ?? 'Tanpa ISBN' }}</p>
                                 </div>
                             </div>
@@ -51,38 +51,35 @@
                             @endif
                         </td>
                         <td class="px-6 py-4">
-                            <div class="flex items-center justify-center">
-                                @if($buku->stok > 0)
-                                    <form action="{{ route('peminjam.cart.add', $buku) }}" method="POST" class="flex items-center gap-3">
-                                        @csrf
-                                        <!-- Interactive Qty Selector -->
-                                        <div class="flex items-center bg-gray-50 border border-gray-100 rounded-xl p-0.5 shadow-sm">
-                                            <button type="button" onclick="decrementQty('qty_table_{{ $buku->id }}')" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 12H4"/></svg>
-                                            </button>
-                                            <input type="number" name="jumlah" id="qty_table_{{ $buku->id }}" value="1" min="1" max="{{ $buku->stok }}"
-                                                class="w-10 bg-transparent border-none text-center text-xs font-bold text-gray-900 focus:ring-0 p-0 pointer-events-none">
-                                            <button type="button" onclick="incrementQty('qty_table_{{ $buku->id }}', {{ $buku->stok }})" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-                                            </button>
-                                        </div>
+                                <div class="flex items-center gap-2">
+                                    @if($buku->stok > 0)
+                                        <form action="{{ route('peminjam.cart.add', $buku) }}" method="POST" class="flex items-center gap-2">
+                                            @csrf
+                                            <div class="flex items-center bg-gray-50 border border-gray-100 rounded-xl p-0.5 shadow-sm">
+                                                <button type="button" onclick="decrementQty('qty_table_{{ $buku->id }}')" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 12H4"/></svg>
+                                                </button>
+                                                <input type="number" name="jumlah" id="qty_table_{{ $buku->id }}" value="1" min="1" max="{{ $buku->stok }}"
+                                                    class="w-10 bg-transparent border-none text-center text-xs font-bold text-gray-900 focus:ring-0 p-0 pointer-events-none">
+                                                <button type="button" onclick="incrementQty('qty_table_{{ $buku->id }}', {{ $buku->stok }})" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-indigo-600 hover:bg-white rounded-lg transition-all">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                                                </button>
+                                            </div>
 
-                                        <button type="submit" class="inline-flex items-center justify-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold rounded-xl shadow-lg shadow-indigo-100 transition-all transform hover:-translate-y-0.5">
-                                            <svg class="w-3.5 h-3.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                            </svg>
-                                            Pinjam
-                                        </button>
-                                    </form>
-                                @else
-                                    <a href="{{ route('peminjam.booking.create', $buku) }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-bold rounded-xl shadow-lg shadow-amber-100 transition-all transform hover:-translate-y-0.5">
-                                        <svg class="w-3.5 h-3.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                        </svg>
-                                        Booking
+                                            <button type="submit" class="inline-flex items-center justify-center px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold rounded-xl shadow-sm transition-all">
+                                                Pinjam
+                                            </button>
+                                        </form>
+                                    @else
+                                        <a href="{{ route('peminjam.booking.create', $buku) }}" class="inline-flex items-center justify-center px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-bold rounded-xl shadow-sm transition-all">
+                                            Booking
+                                        </a>
+                                    @endif
+                                    
+                                    <a href="{{ route('peminjam.katalog.show', $buku->encrypted_id) }}" class="inline-flex items-center justify-center px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-[11px] font-bold rounded-xl transition-all" title="Detail Buku">
+                                        Detail
                                     </a>
-                                @endif
-                            </div>
+                                </div>
                         </td>
                     </tr>
                 @empty
@@ -130,7 +127,7 @@
                 <!-- Book Content -->
                 <div class="p-5 flex flex-col flex-1 bg-white">
                     <h3 class="text-sm font-bold text-gray-900 leading-tight mb-2 line-clamp-2 h-10 group-hover:text-indigo-600 transition-colors" title="{{ $buku->judul }}">
-                        <a href="{{ route('peminjam.katalog.show', $buku) }}">{{ $buku->judul }}</a>
+                        <a href="{{ route('peminjam.katalog.show', $buku->encrypted_id) }}">{{ $buku->judul }}</a>
                     </h3>
                     
                     <p class="text-[11px] text-gray-400 flex items-center mb-4">
@@ -164,14 +161,23 @@
                                     </svg>
                                     Tambahkan Pinjaman
                                 </button>
+                                
+                                <a href="{{ route('peminjam.katalog.show', $buku->encrypted_id) }}" class="w-full flex items-center justify-center h-10 bg-gray-50 hover:bg-gray-100 text-gray-600 text-xs font-bold rounded-2xl transition-all">
+                                    Lihat Detail Buku
+                                </a>
                             </form>
                         @else
-                            <a href="{{ route('peminjam.booking.create', $buku) }}" class="w-full inline-flex items-center justify-center h-12 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-2xl shadow-lg shadow-amber-100 transition-all transform hover:-translate-y-1">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
-                                Booking Sekarang
-                            </a>
+                            <div class="flex flex-col gap-2">
+                                <a href="{{ route('peminjam.booking.create', $buku) }}" class="w-full inline-flex items-center justify-center h-12 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-2xl shadow-lg shadow-amber-100 transition-all transform hover:-translate-y-1">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    Booking Sekarang
+                                </a>
+                                <a href="{{ route('peminjam.katalog.show', $buku->encrypted_id) }}" class="w-full flex items-center justify-center h-10 bg-gray-50 hover:bg-gray-100 text-gray-600 text-xs font-bold rounded-2xl transition-all">
+                                    Lihat Detail Buku
+                                </a>
+                            </div>
                         @endif
                     </div>
                 </div>

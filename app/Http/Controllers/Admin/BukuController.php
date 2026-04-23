@@ -33,6 +33,12 @@ class BukuController extends Controller
         return view('admin.buku.index', compact('bukus', 'genres', 'viewMode'));
     }
 
+    public function show(Buku $buku)
+    {
+        $buku->load('genre');
+        return view('admin.buku.show', compact('buku'));
+    }
+
     public function create()
     {
         $genres = Genre::all();

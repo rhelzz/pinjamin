@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Buku;
 use App\Models\Genre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class KatalogController extends Controller
 {
@@ -25,6 +26,12 @@ class KatalogController extends Controller
             ->paginate($perPage)
             ->withQueryString();
 
+        // Enkripsi ID untuk setiap buku
+        $bukus->getCollection()->transform(function ($buku) {
+            $buku->encrypted_id = Crypt::encryptString($buku->id);
+            return $buku;
+        });
+
         $genres = Genre::all();
 
         if ($request->ajax()) {
@@ -34,10 +41,15 @@ class KatalogController extends Controller
         return view('peminjam.katalog.index', compact('bukus', 'genres', 'viewMode'));
     }
 
-    public function show(Buku $buku)
+    public function show($encrypted_id)
     {
-        $buku->load('genre');
-        return view('peminjam.katalog.show', compact('buku'));
+        try {
+            $id = Crypt::decryptString($encrypted_id);
+            $buku = Buku::with('genre')->findOrFail($id);
+            return view('peminjam.katalog.show', compact('buku'));
+        } catch (\Exception $e) {
+            abort(404);
+        }
     }
 
     public function cartOverlay()

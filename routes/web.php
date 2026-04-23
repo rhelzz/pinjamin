@@ -52,7 +52,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('genre', GenreController::class)->except(['show']);
 
     // CRUD Buku
-    Route::resource('buku', AdminBukuController::class)->except(['show']);
+    Route::resource('buku', AdminBukuController::class);
 
     // CRUD User
     Route::resource('user', UserController::class)->except(['show']);
@@ -104,7 +104,7 @@ Route::middleware(['auth', 'role:peminjam'])->prefix('peminjam')->name('peminjam
     // Katalog
     Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
     Route::get('/katalog-cart-overlay', [KatalogController::class, 'cartOverlay'])->name('katalog.cartOverlay');
-    Route::get('/katalog/{buku}', [KatalogController::class, 'show'])->name('katalog.show');
+    Route::get('/katalog/{id}', [KatalogController::class, 'show'])->name('katalog.show');
 
     // Cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
