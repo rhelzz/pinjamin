@@ -16,17 +16,21 @@ class BukuController extends Controller
     {
         $sortBy = $request->get('sort_by', 'id');
         $sortDirection = $request->get('sort_direction', 'asc');
+        $viewMode = $request->get('view', 'card'); // Default ke card
         
+        // Tentukan jumlah per halaman berdasarkan view mode
+        $perPage = ($viewMode === 'table') ? 10 : 4;
+
         $bukus = Buku::with('genre')
             ->search($request->search)
             ->byGenre($request->genre_id)
             ->orderBy($sortBy, $sortDirection)
-            ->paginate(15)
+            ->paginate($perPage)
             ->withQueryString();
 
         $genres = Genre::all();
 
-        return view('admin.buku.index', compact('bukus', 'genres'));
+        return view('admin.buku.index', compact('bukus', 'genres', 'viewMode'));
     }
 
     public function create()
@@ -40,12 +44,16 @@ class BukuController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'genre_id' => 'required|exists:genre,id',
+            'penulis' => 'nullable|string|max:255',
+            'penerbit' => 'nullable|string|max:255',
+            'tahun_terbit' => 'nullable|integer|min:1900|max:' . (date('Y') + 1),
+            'isbn' => 'nullable|string|max:20|unique:buku,isbn',
             'stok' => 'required|integer|min:0',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'deskripsi' => 'nullable|string',
         ]);
 
-        $data = $request->only(['judul', 'genre_id', 'stok', 'deskripsi']);
+        $data = $request->only(['judul', 'genre_id', 'penulis', 'penerbit', 'tahun_terbit', 'isbn', 'stok', 'deskripsi']);
 
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('buku', 'public');

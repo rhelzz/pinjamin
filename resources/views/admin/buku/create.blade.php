@@ -25,7 +25,7 @@
                     <div class="flex items-center space-x-3">
                         <div class="flex-shrink-0 h-12 w-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg shadow-md flex items-center justify-center">
                             <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                             </svg>
                         </div>
                         <div>
@@ -181,30 +181,118 @@
 
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-2">Upload Gambar</label>
-                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-green-400 transition-colors">
-                                <div class="space-y-1 text-center">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    <div class="flex text-sm text-gray-600">
-                                        <label for="gambar" class="relative cursor-pointer bg-white rounded-md font-medium text-green-600 hover:text-green-500 focus-within:outline-none">
-                                            <span>Upload gambar</span>
-                                            <input id="gambar" name="gambar" type="file" accept="image/*" class="sr-only">
-                                        </label>
-                                        <p class="pl-1">atau drag and drop</p>
+                            <div id="dropzone" class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-[2.5rem] hover:border-indigo-400 hover:bg-indigo-50/30 transition-all cursor-pointer relative overflow-hidden group min-h-[300px] items-center">
+                                <!-- Upload Placeholder -->
+                                <div class="space-y-2 text-center transition-all duration-500 group-hover:scale-105" id="upload-placeholder">
+                                    <div class="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-indigo-100 transition-colors">
+                                        <svg class="h-8 w-8 text-indigo-400 group-hover:text-indigo-600 transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
                                     </div>
-                                    <p class="text-xs text-gray-500">PNG, JPG, JPEG maksimal 2MB</p>
+                                    <div class="flex text-sm text-gray-600 justify-center font-semibold">
+                                        <span class="text-indigo-600">Klik untuk pilih</span>
+                                        <p class="pl-1 text-gray-400 font-medium">atau seret gambar ke sini</p>
+                                    </div>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">PNG, JPG up to 2MB</p>
                                 </div>
+
+                                <!-- Image Preview Container -->
+                                <div id="image-preview-container" class="hidden absolute inset-0 w-full h-full bg-gray-50 flex items-center justify-center p-4">
+                                    <div class="relative h-full aspect-[3/4] group/preview">
+                                        <img id="image-preview" src="#" alt="Preview" class="h-full w-full object-cover rounded-2xl shadow-2xl shadow-indigo-200 ring-4 ring-white">
+                                        
+                                        <!-- Hover Overlay -->
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/preview:opacity-100 transition-opacity rounded-2xl flex items-center justify-center backdrop-blur-[2px]">
+                                            <div class="bg-white/20 backdrop-blur-md border border-white/30 px-4 py-2 rounded-full text-white text-xs font-bold uppercase tracking-widest shadow-xl">
+                                                Ganti Gambar
+                                            </div>
+                                        </div>
+
+                                        <!-- Remove Button -->
+                                        <button type="button" id="remove-preview" class="absolute -top-3 -right-3 bg-rose-500 text-white p-2 rounded-full shadow-xl hover:bg-rose-600 transition-all transform hover:scale-110 active:scale-90 z-10">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input id="gambar" name="gambar" type="file" accept="image/*" class="sr-only">
                             </div>
                             @error('gambar')
-                                <p class="mt-2 text-sm text-red-600 flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <p class="mt-3 text-sm text-rose-500 flex items-center font-bold px-1">
+                                    <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
                                     </svg>
                                     {{ $message }}
                                 </p>
                             @enderror
                         </div>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const dropzone = document.getElementById('dropzone');
+                                const input = document.getElementById('gambar');
+                                const placeholder = document.getElementById('upload-placeholder');
+                                const previewContainer = document.getElementById('image-preview-container');
+                                const previewImg = document.getElementById('image-preview');
+                                const removeBtn = document.getElementById('remove-preview');
+
+                                // Click to open file dialog
+                                dropzone.addEventListener('click', () => input.click());
+
+                                // Drag and Drop events
+                                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                                    dropzone.addEventListener(eventName, e => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                    }, false);
+                                });
+
+                                ['dragenter', 'dragover'].forEach(eventName => {
+                                    dropzone.addEventListener(eventName, () => {
+                                        dropzone.classList.add('border-indigo-500', 'bg-indigo-50');
+                                    });
+                                });
+
+                                ['dragleave', 'drop'].forEach(eventName => {
+                                    dropzone.addEventListener(eventName, () => {
+                                        dropzone.classList.remove('border-indigo-500', 'bg-indigo-50');
+                                    });
+                                });
+
+                                dropzone.addEventListener('drop', e => {
+                                    const dt = e.dataTransfer;
+                                    const files = dt.files;
+                                    input.files = files;
+                                    handleFiles(files[0]);
+                                });
+
+                                input.addEventListener('change', function() {
+                                    if (this.files && this.files[0]) {
+                                        handleFiles(this.files[0]);
+                                    }
+                                });
+
+                                function handleFiles(file) {
+                                    if (file && file.type.startsWith('image/')) {
+                                        const reader = new FileReader();
+                                        reader.onload = function(e) {
+                                            previewImg.src = e.target.result;
+                                            placeholder.classList.add('hidden');
+                                            previewContainer.classList.remove('hidden');
+                                        }
+                                        reader.readAsDataURL(file);
+                                    }
+                                }
+
+                                removeBtn.addEventListener('click', (e) => {
+                                    e.stopPropagation();
+                                    input.value = '';
+                                    previewContainer.classList.add('hidden');
+                                    placeholder.classList.remove('hidden');
+                                });
+                            });
+                        </script>
                     </div>
 
                     <!-- Form Actions -->

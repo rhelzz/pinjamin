@@ -11,16 +11,27 @@ class KatalogController extends Controller
 {
     public function index(Request $request)
     {
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'asc');
+        $viewMode = $request->get('view', 'card'); // Default ke card
+        
+        // Tentukan jumlah per halaman
+        $perPage = 4;
+
         $bukus = Buku::with('genre')
             ->search($request->search)
             ->byGenre($request->genre_id)
-            ->latest()
-            ->paginate(12)
+            ->orderBy($sortBy, $sortDirection)
+            ->paginate($perPage)
             ->withQueryString();
 
         $genres = Genre::all();
 
-        return view('peminjam.katalog.index', compact('bukus', 'genres'));
+        if ($request->ajax()) {
+            return view('peminjam.katalog._list', compact('bukus', 'viewMode'))->render();
+        }
+
+        return view('peminjam.katalog.index', compact('bukus', 'genres', 'viewMode'));
     }
 
     public function show(Buku $buku)

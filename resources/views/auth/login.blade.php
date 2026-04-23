@@ -15,223 +15,146 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%);
+        .pastel-gradient {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e0e7ff 100%);
         }
-        .geometric-shapes {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
+        .soft-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
-        .shape {
-            position: absolute;
-            opacity: 0.6;
+        .floating-image {
+            animation: floating 3s ease-in-out infinite;
         }
-        .shape-1 {
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
-            bottom: 10%;
-            left: 5%;
-            transform: rotate(-10deg);
-            border-radius: 15px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
         }
-        .shape-2 {
-            width: 150px;
-            height: 150px;
-            background: linear-gradient(180deg, #7dd3fc 0%, #38bdf8 100%);
-            bottom: 25%;
-            left: 15%;
-            transform: rotate(15deg);
-            border-radius: 12px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        .input-pastel {
+            @apply border-indigo-100 bg-indigo-50/30 focus:bg-white focus:ring-indigo-200 focus:border-indigo-300 transition-all duration-300;
         }
-        .shape-3 {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(180deg, #bae6fd 0%, #7dd3fc 100%);
-            bottom: 35%;
-            left: 8%;
-            transform: rotate(-5deg);
-            border-radius: 10px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
-        .shape-4 {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(180deg, #0ea5e9 0%, #0284c7 100%);
-            bottom: 45%;
-            left: 25%;
-            transform: rotate(20deg);
-            border-radius: 8px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
-        .form-input {
-            transition: all 0.3s ease;
-        }
-        .form-input:focus {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.35);
+        .btn-pastel {
+            background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+            @apply shadow-lg shadow-indigo-200 hover:shadow-indigo-300 hover:-translate-y-0.5 transition-all duration-300;
         }
     </style>
 </head>
-<body class="font-sans antialiased bg-gray-50">
-    <div class="min-h-screen flex">
-        <!-- Left Side - Decorative -->
-        <div class="hidden lg:flex lg:w-1/2 gradient-bg relative overflow-hidden">
-            <!-- Logo -->
-            <div class="absolute top-8 left-8 z-10">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                        </svg>
-                    </div>
-                    <span class="text-white font-bold text-xl">Pinjamin</span>
+<body class="font-sans antialiased bg-[#f8fafc]">
+    <div class="min-h-screen flex items-center justify-center p-4 lg:p-8">
+        <div class="w-full max-w-6xl bg-white rounded-[2.5rem] shadow-2xl shadow-indigo-100/50 flex overflow-hidden min-h-[700px]">
+            <!-- Left Side - Visual -->
+            <div class="hidden lg:flex lg:w-1/2 bg-[#eef2ff] relative items-center justify-center overflow-hidden">
+                <!-- Background Decorative Circles -->
+                <div class="absolute -top-20 -left-20 w-64 h-64 bg-indigo-200/50 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-pink-200/50 rounded-full blur-3xl"></div>
+                
+                <div class="relative z-10 text-center p-12">
+                    <img src="{{ asset('3d-assets-png/Book Reading.png') }}" alt="Reading Book" class="w-full max-w-md mx-auto floating-image mb-8 drop-shadow-2xl">
+                    <h1 class="text-4xl font-bold text-indigo-900 mb-4">Mulai Petualanganmu</h1>
+                    <p class="text-indigo-600/80 text-lg">Akses ribuan referensi produktif dengan satu klik mudah.</p>
                 </div>
             </div>
 
-            <!-- Geometric Shapes -->
-            <div class="geometric-shapes">
-                <div class="shape shape-1"></div>
-                <div class="shape shape-2"></div>
-                <div class="shape shape-3"></div>
-                <div class="shape shape-4"></div>
-            </div>
-
-            <!-- Text Content -->
-            <div class="absolute bottom-16 left-8 right-8 z-10">
-                <h1 class="text-white text-3xl font-bold leading-tight mb-4">
-                    Sistem Peminjaman<br>Alat Produktif
-                </h1>
-                <p class="text-sky-100 text-lg">
-                    Kelola peminjaman alat dengan mudah dan efisien
-                </p>
-            </div>
-        </div>
-
-        <!-- Right Side - Login Form -->
-        <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
-            <div class="w-full max-w-md">
-                <!-- Mobile Logo -->
-                <div class="lg:hidden flex items-center justify-center gap-3 mb-8">
-                    <div class="w-12 h-12 gradient-bg rounded-xl flex items-center justify-center shadow-lg">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                        </svg>
-                    </div>
-                    <span class="text-gray-800 font-bold text-2xl">Pinjamin</span>
-                </div>
-
-                <!-- Header -->
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold text-gray-900">Selamat Datang</h2>
-                    <p class="mt-2 text-gray-600">Masuk ke akun Anda untuk melanjutkan</p>
-                </div>
-
-                <!-- Session Status -->
-                @if (session('status'))
-                    <div class="mb-4 p-4 rounded-lg bg-green-50 border border-green-200">
-                        <p class="text-sm text-green-600">{{ session('status') }}</p>
-                    </div>
-                @endif
-
-                <!-- Form -->
-                <form method="POST" action="{{ route('login') }}" class="space-y-5">
-                    @csrf
-
-                    <!-- Email -->
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                            Email Address
-                        </label>
-                        <input 
-                            id="email" 
-                            type="email" 
-                            name="email" 
-                            value="{{ old('email') }}"
-                            required 
-                            autofocus 
-                            autocomplete="username"
-                            class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-                            placeholder="nama@email.com"
-                        >
-                        @error('email')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+            <!-- Right Side - Form -->
+            <div class="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-16">
+                <div class="w-full max-w-sm">
+                    <!-- Logo & Header -->
+                    <div class="mb-10 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 mb-6 lg:mb-8">
+                            <div class="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                            </div>
+                            <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-violet-600">Pinjamin</span>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800 mb-2">Selamat Datang!</h2>
+                        <p class="text-gray-500">Silakan masuk ke akun Anda untuk melanjutkan.</p>
                     </div>
 
-                    <!-- Password -->
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-                            Password
-                        </label>
-                        <input 
-                            id="password" 
-                            type="password" 
-                            name="password"
-                            required 
-                            autocomplete="current-password"
-                            class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-                            placeholder="••••••••"
-                        >
-                        @error('password')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                    @if (session('status'))
+                        <div class="mb-6 p-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <p class="text-sm text-emerald-700 font-medium">{{ session('status') }}</p>
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('login') }}" class="space-y-6">
+                        @csrf
+
+                        <!-- Email -->
+                        <div class="space-y-2">
+                            <label for="email" class="text-sm font-semibold text-gray-700 ml-1">Email Address</label>
+                            <div class="relative group">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 group-focus-within:text-indigo-500 transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                                    </svg>
+                                </span>
+                                <input 
+                                    id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
+                                    class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-gray-100 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 focus:bg-white transition-all outline-none text-gray-700"
+                                    placeholder="Enter your email"
+                                >
+                            </div>
+                            @error('email')
+                                <p class="text-xs text-rose-500 ml-1 mt-1 font-medium">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Password -->
+                        <div class="space-y-2">
+                            <label for="password" class="text-sm font-semibold text-gray-700 ml-1">Password</label>
+                            <div class="relative group">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 group-focus-within:text-indigo-500 transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                    </svg>
+                                </span>
+                                <input 
+                                    id="password" type="password" name="password" required
+                                    class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-gray-100 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 focus:bg-white transition-all outline-none text-gray-700"
+                                    placeholder="••••••••"
+                                >
+                            </div>
+                            @error('password')
+                                <p class="text-xs text-rose-500 ml-1 mt-1 font-medium">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="flex items-center justify-between px-1">
+                            <label class="flex items-center group cursor-pointer">
+                                <input type="checkbox" name="remember" class="w-4 h-4 text-indigo-600 border-gray-200 rounded-md focus:ring-indigo-500/20">
+                                <span class="ml-2 text-sm text-gray-500 group-hover:text-indigo-600 transition-colors">Ingat saya</span>
+                            </label>
+                            @if (Route::has('password.request'))
+                                <a href="{{ route('password.request') }}" class="text-sm font-semibold text-indigo-600 hover:text-indigo-700">Lupa sandi?</a>
+                            @endif
+                        </div>
+
+                        <button type="submit" class="btn-pastel w-full py-4 text-white font-bold rounded-2xl transform active:scale-[0.98]">
+                            Masuk Sekarang
+                        </button>
+                    </form>
+
+                    <div class="mt-10 text-center">
+                        <p class="text-gray-500">
+                            Belum punya akun?
+                            <a href="{{ route('register') }}" class="text-indigo-600 font-bold hover:underline underline-offset-4 ml-1">Daftar Gratis</a>
+                        </p>
                     </div>
 
-                    <!-- Remember Me & Forgot Password -->
-                    <div class="flex items-center justify-between">
-                        <label class="flex items-center">
-                            <input 
-                                type="checkbox" 
-                                name="remember" 
-                                class="w-4 h-4 text-sky-600 border-gray-300 rounded focus:ring-sky-500 focus:ring-offset-0"
-                            >
-                            <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
-                        </label>
-
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="text-sm text-sky-600 hover:text-sky-700 font-medium">
-                                Lupa password?
-                            </a>
-                        @endif
+                    <!-- Footer -->
+                    <div class="mt-12 text-center">
+                        <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold">
+                            &copy; {{ date('Y') }} Pinjamin &bull; Perpus Digital Modern
+                        </p>
                     </div>
-
-                    <!-- Submit Button -->
-                    <button 
-                        type="submit" 
-                        class="btn-primary w-full py-3 px-4 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
-                    >
-                        Masuk
-                    </button>
-                </form>
-
-                <!-- Register Link -->
-                <div class="mt-8 text-center">
-                    <p class="text-gray-600">
-                        Belum punya akun?
-                        <a href="{{ route('register') }}" class="text-sky-600 hover:text-sky-700 font-semibold ml-1">
-                            Daftar sekarang
-                        </a>
-                    </p>
-                </div>
-
-                <!-- Footer -->
-                <div class="mt-12 text-center">
-                    <p class="text-xs text-gray-400">
-                        &copy; {{ date('Y') }} Pinjamin. All rights reserved.
-                    </p>
                 </div>
             </div>
         </div>

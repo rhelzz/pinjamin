@@ -178,41 +178,118 @@
                             <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wide">Gambar Buku</h4>
                         </div>
 
-                        @if($buku->gambar)
-                            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                                <label class="block text-sm font-semibold text-gray-700 mb-3">Gambar Saat Ini</label>
-                                <img src="{{ asset('storage/' . $buku->gambar) }}" alt="{{ $buku->judul }}" 
-                                    class="w-48 h-48 object-cover rounded-lg shadow-md ring-2 ring-gray-200">
-                            </div>
-                        @endif
-
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Upload Gambar Baru</label>
-                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-indigo-400 transition-colors">
-                                <div class="space-y-1 text-center">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    <div class="flex text-sm text-gray-600">
-                                        <label for="gambar" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
-                                            <span>Upload gambar baru</span>
-                                            <input id="gambar" name="gambar" type="file" accept="image/*" class="sr-only">
-                                        </label>
-                                        <p class="pl-1">atau drag and drop</p>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Gambar Buku</label>
+                            <div id="dropzone" class="relative group cursor-pointer border-2 border-dashed border-gray-200 rounded-[2.5rem] overflow-hidden hover:border-indigo-400 hover:bg-indigo-50/30 transition-all p-8 min-h-[350px] flex items-center justify-center">
+                                <!-- Upload Placeholder (Only shown when no image at all) -->
+                                <div id="upload-placeholder" class="{{ $buku->gambar ? 'hidden' : '' }} text-center space-y-3 transition-all duration-500 group-hover:scale-105">
+                                    <div class="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-2">
+                                        <svg class="h-8 w-8 text-indigo-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
                                     </div>
-                                    <p class="text-xs text-gray-500">PNG, JPG, JPEG maksimal 2MB</p>
-                                    <p class="text-xs text-blue-600 mt-2">Kosongkan jika tidak ingin mengubah gambar</p>
+                                    <p class="text-sm font-bold text-gray-600">Klik atau seret gambar ke sini</p>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">PNG, JPG up to 2MB</p>
                                 </div>
+
+                                <!-- Current Image or New Preview -->
+                                <div id="preview-container" class="{{ $buku->gambar ? '' : 'hidden' }} relative h-[300px] aspect-[3/4] transition-all duration-500">
+                                    <img id="image-preview" src="{{ $buku->gambar ? asset('storage/' . $buku->gambar) : '#' }}" 
+                                        class="h-full w-full object-cover rounded-2xl shadow-2xl shadow-indigo-200 ring-4 ring-white transition-all duration-500">
+                                    
+                                    <!-- Hover Overlay with Glassmorphism -->
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-2xl flex flex-col items-center justify-center backdrop-blur-[2px]">
+                                        <div class="bg-white/20 backdrop-blur-md border border-white/30 px-5 py-2.5 rounded-full text-white text-xs font-bold uppercase tracking-widest shadow-2xl mb-2 transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                                            Ganti Gambar
+                                        </div>
+                                        <p class="text-[10px] text-white/80 font-medium">Klik di mana saja untuk mengubah</p>
+                                    </div>
+
+                                    <!-- Remove/Reset Button -->
+                                    <button type="button" id="remove-preview" class="hidden absolute -top-3 -right-3 bg-rose-500 text-white p-2 rounded-full shadow-xl hover:bg-rose-600 transition-all transform hover:scale-110 active:scale-95 z-10">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <input id="gambar" name="gambar" type="file" accept="image/*" class="sr-only">
+                            </div>
+                            <div class="mt-4 flex items-center justify-between px-2">
+                                <p class="text-[11px] text-indigo-500 font-bold uppercase tracking-tight italic">
+                                    * Format 3:4 direkomendasikan untuk tampilan terbaik
+                                </p>
+                                @if($buku->gambar)
+                                    <span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-1 rounded-md font-bold border border-emerald-100 uppercase">Gambar Tersimpan</span>
+                                @endif
                             </div>
                             @error('gambar')
-                                <p class="mt-2 text-sm text-red-600 flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                    </svg>
-                                    {{ $message }}
-                                </p>
+                                <p class="mt-2 text-sm text-rose-500 font-bold px-1">{{ $message }}</p>
                             @enderror
                         </div>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const dropzone = document.getElementById('dropzone');
+                                const input = document.getElementById('gambar');
+                                const placeholder = document.getElementById('upload-placeholder');
+                                const previewContainer = document.getElementById('preview-container');
+                                const previewImg = document.getElementById('image-preview');
+                                const removeBtn = document.getElementById('remove-preview');
+
+                                dropzone.addEventListener('click', () => input.click());
+
+                                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                                    dropzone.addEventListener(eventName, e => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                    }, false);
+                                });
+
+                                ['dragenter', 'dragover'].forEach(eventName => {
+                                    dropzone.addEventListener(eventName, () => dropzone.classList.add('bg-indigo-50', 'border-indigo-400'));
+                                });
+
+                                ['dragleave', 'drop'].forEach(eventName => {
+                                    dropzone.addEventListener(eventName, () => dropzone.classList.remove('bg-indigo-50', 'border-indigo-400'));
+                                });
+
+                                dropzone.addEventListener('drop', e => {
+                                    const dt = e.dataTransfer;
+                                    input.files = dt.files;
+                                    handleFiles(dt.files[0]);
+                                });
+
+                                input.addEventListener('change', function() {
+                                    if (this.files && this.files[0]) handleFiles(this.files[0]);
+                                });
+
+                                function handleFiles(file) {
+                                    if (file && file.type.startsWith('image/')) {
+                                        const reader = new FileReader();
+                                        reader.onload = function(e) {
+                                            previewImg.src = e.target.result;
+                                            placeholder.classList.add('hidden');
+                                            previewContainer.classList.remove('hidden');
+                                            removeBtn.classList.remove('hidden');
+                                        }
+                                        reader.readAsDataURL(file);
+                                    }
+                                }
+
+                                removeBtn.addEventListener('click', (e) => {
+                                    e.stopPropagation();
+                                    input.value = '';
+                                    @if($buku->gambar)
+                                        previewImg.src = "{{ asset('storage/' . $buku->gambar) }}";
+                                        removeBtn.classList.add('hidden');
+                                    @else
+                                        previewContainer.classList.add('hidden');
+                                        placeholder.classList.remove('hidden');
+                                    @endif
+                                });
+                            });
+                        </script>
                     </div>
 
                     <!-- Form Actions -->

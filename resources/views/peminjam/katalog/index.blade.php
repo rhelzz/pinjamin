@@ -4,188 +4,213 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <h2 class="font-bold text-2xl text-gray-900 leading-tight">Katalog Buku</h2>
-                <p class="mt-1 text-sm text-gray-600">Jelajahi dan pinjam buku produktif yang tersedia</p>
+                <h2 class="font-bold text-3xl text-gray-900 leading-tight tracking-tight">Katalog Buku</h2>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">
+                        {{ $bukus->total() }} Koleksi Tersedia
+                    </span>
+                    <p class="text-sm text-gray-400 font-medium">jelajahi dan pinjam buku favoritmu</p>
+                </div>
             </div>
-            <a href="{{ route('peminjam.cart.index') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+            <a href="{{ route('peminjam.cart.index') }}" class="inline-flex items-center justify-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-2xl shadow-lg shadow-indigo-100 transition-all duration-300 transform hover:-translate-y-1">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
                 Lihat Keranjang
             </a>
         </div>
     </x-slot>
 
-    <div class="pt-0 pb-8">
+    <div class="py-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <!-- Filter & Search Card -->
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-6">
-                <div class="bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 p-6">
-                    <form method="GET" class="flex flex-col md:flex-row gap-3">
-                        <!-- Search Input -->
-                        <div class="flex-1">
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                    </svg>
-                                </div>
-                                <input type="text" name="search" value="{{ request('search') }}" 
-                                    placeholder="Cari nama buku..." 
-                                    class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all">
+            <!-- Filter & Switcher Section (Glassmorphism) -->
+            <div class="bg-white/70 backdrop-blur-md border border-gray-100 rounded-[2rem] p-6 mb-8 shadow-sm transition-all duration-300">
+                <form id="searchForm" method="GET" class="flex flex-col lg:flex-row items-center gap-4">
+                    <!-- Keep current view mode in form -->
+                    <input type="hidden" name="view" id="viewModeInput" value="{{ $viewMode }}">
+
+                    <!-- Search -->
+                    <div class="flex-1 w-full relative">
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400 group-focus-within:text-indigo-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
                             </div>
-                        </div>
-                        
-                        <!-- Category Filter -->
-                        <div class="relative w-full md:w-64">
-                            <select name="genre_id" 
-                                class="block w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all appearance-none bg-white">
-                                <option value="">📁 Semua Genre</option>
-                                @foreach($genres as $genre)
-                                    <option value="{{ $genre->id }}" {{ request('genre_id') == $genre->id ? 'selected' : '' }}>
-                                        {{ $genre->nama_genre }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            <input type="text" name="search" id="searchInput" value="{{ request('search') }}" 
+                                placeholder="Cari judul, penulis, atau genre..." 
+                                class="block w-full pl-11 pr-4 py-3 bg-gray-50/50 border-transparent rounded-[1.5rem] text-sm focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 focus:bg-white transition-all outline-none"
+                                autocomplete="off">
+                            
+                            <!-- Simple Loader -->
+                            <div id="searchLoader" class="absolute inset-y-0 right-4 flex items-center hidden">
+                                <svg class="animate-spin h-5 w-5 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
                             </div>
                         </div>
-                        
-                        <!-- Action Buttons -->
-                        <button type="submit" class="inline-flex items-center justify-center px-5 py-2.5 bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-200 text-white text-sm font-medium rounded-lg shadow-sm transition-all duration-200">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                            </svg>
+                    </div>
+                    
+                    <!-- Filters & View Switcher -->
+                    <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 w-full lg:w-auto">
+                        <select name="genre_id" id="genreSelect"
+                            class="flex-1 lg:w-48 pl-4 pr-10 py-3 bg-gray-50/50 border-transparent rounded-[1.5rem] text-sm focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 focus:bg-white transition-all appearance-none outline-none">
+                            <option value="">📁 Semua Genre</option>
+                            @foreach($genres as $genre)
+                                <option value="{{ $genre->id }}" {{ request('genre_id') == $genre->id ? 'selected' : '' }}>
+                                    {{ $genre->nama_genre }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        <button type="submit" class="inline-flex items-center justify-center px-6 py-3 bg-gray-900 text-white font-bold rounded-[1.5rem] hover:bg-black transition-all">
                             Cari
                         </button>
-                        
-                        @if(request('search') || request('genre_id'))
-                            <a href="{{ route('peminjam.katalog.index') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg transition-all duration-200">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                </svg>
-                                Reset
-                            </a>
-                        @endif
-                    </form>
-                </div>
-            </div>
 
-            <!-- Grid Buku -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                @forelse($bukus as $buku)
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col">
-                        <!-- Image -->
-                        <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden">
-                            @if($buku->gambar)
-                                <img src="{{ asset('storage/' . $buku->gambar) }}" alt="{{ $buku->judul }}" class="w-full h-full object-cover">
-                            @else
-                                <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                            @endif
-                            <!-- Stock Badge -->
-                            <div class="absolute top-3 right-3">
-                                @if($buku->stok > 3)
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 ring-1 ring-green-200">
-                                        Stok: {{ $buku->stok }}
-                                    </span>
-                                @elseif($buku->stok > 0)
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 ring-1 ring-yellow-200">
-                                        Stok: {{ $buku->stok }}
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 ring-1 ring-red-200">
-                                        Habis
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <!-- Content -->
-                        <div class="p-4 flex-1 flex flex-col">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800 w-fit mb-2">
-                                {{ $buku->genre->nama_genre }}
-                            </span>
-                            <h3 class="font-semibold text-gray-900 mb-1">
-                                <a href="{{ route('peminjam.katalog.show', $buku) }}" class="hover:text-indigo-600 transition-colors">{{ $buku->judul }}</a>
-                            </h3>
-                            @if($buku->penulis)
-                                <p class="text-xs text-gray-500 mb-2 font-medium">Oleh: {{ $buku->penulis }}</p>
-                            @endif
-                            <p class="text-sm text-gray-500 mb-4 flex-1 line-clamp-2">{{ Str::limit($buku->deskripsi, 80) }}</p>
-                            
-                            <div class="mt-auto">
-                                @if($buku->stok > 0)
-                                    <form action="{{ route('peminjam.cart.add', $buku) }}" method="POST" class="flex items-center gap-2">
-                                        @csrf
-                                        <input type="number" name="jumlah" value="1" min="1" max="{{ $buku->stok }}"
-                                            class="w-16 rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-xs py-2 text-center">
-                                        <button type="submit"
-                                            class="flex-1 inline-flex items-center justify-center px-3 py-2 text-xs font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm">
-                                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                            </svg>
-                                            Pinjam
-                                        </button>
-                                    </form>
-                                @else
-                                    <a href="{{ route('peminjam.booking.create', $buku) }}"
-                                        class="inline-flex items-center justify-center w-full px-3 py-2 text-xs font-semibold rounded-lg text-white bg-amber-500 hover:bg-amber-600 transition-colors shadow-sm">
-                                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                        </svg>
-                                        Booking
-                                    </a>
-                                @endif
-                            </div>
+                        <!-- VIEW SWITCHER -->
+                        <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-2xl border border-gray-200">
+                            <button type="button" onclick="switchView('card')" 
+                               class="view-btn p-2 rounded-xl transition-all {{ $viewMode === 'card' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-400 hover:text-gray-600' }}"
+                               data-view="card" title="Tampilan Kartu">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                            </button>
+                            <button type="button" onclick="switchView('table')" 
+                               class="view-btn p-2 rounded-xl transition-all {{ $viewMode === 'table' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-400 hover:text-gray-600' }}"
+                               data-view="table" title="Tampilan Tabel">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                            </button>
                         </div>
                     </div>
-                @empty
-                    <div class="col-span-full">
-                        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-12 text-center">
-                            <div class="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-4">
-                                <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-base font-semibold text-gray-900 mb-2">
-                                @if(request('search') || request('genre_id'))
-                                    Tidak Ada Hasil
-                                @else
-                                    Belum Ada Buku
-                                @endif
-                            </h3>
-                            <p class="text-sm text-gray-500 mb-6 max-w-sm mx-auto">
-                                @if(request('search'))
-                                    Tidak ditemukan buku dengan kata kunci "{{ request('search') }}". Coba kata kunci lain.
-                                @elseif(request('genre_id'))
-                                    Tidak ada buku dalam genre yang dipilih.
-                                @else
-                                    Katalog buku sedang kosong.
-                                @endif
-                            </p>
-                            @if(request('search') || request('genre_id'))
-                                <a href="{{ route('peminjam.katalog.index') }}" 
-                                   class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg shadow-sm transition-all">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                    </svg>
-                                    Reset Filter
-                                </a>
-                            @endif
-                        </div>
-                    </div>
-                @endforelse
+                </form>
             </div>
 
-            <!-- Pagination -->
-            @if($bukus->hasPages())
-                <div class="mt-6">
-                    {{ $bukus->links() }}
-                </div>
-            @endif
+            <!-- BOOKS LIST CONTAINER -->
+            <div id="booksListContainer" class="transition-opacity duration-300">
+                @include('peminjam.katalog._list')
+            </div>
+
         </div>
     </div>
+
+    <script>
+        function incrementQty(id, max) {
+            const input = document.getElementById(id);
+            const currentVal = parseInt(input.value);
+            if (currentVal < max) {
+                input.value = currentVal + 1;
+            }
+        }
+
+        function decrementQty(id) {
+            const input = document.getElementById(id);
+            const currentVal = parseInt(input.value);
+            if (currentVal > 1) {
+                input.value = currentVal - 1;
+            }
+        }
+
+        // AJAX Fast Search Logic
+        let searchTimer;
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const genreSelect = document.getElementById('genreSelect');
+        const container = document.getElementById('booksListContainer');
+        const loader = document.getElementById('searchLoader');
+        const viewInput = document.getElementById('viewModeInput');
+
+        async function performSearch(url = null) {
+            if (!url) {
+                const formData = new FormData(searchForm);
+                const params = new URLSearchParams(formData);
+                url = `{{ route('peminjam.katalog.index') }}?${params.toString()}`;
+            }
+
+            loader.classList.remove('hidden');
+            container.style.opacity = '0.5';
+
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                
+                if (response.ok) {
+                    const html = await response.text();
+                    container.innerHTML = html;
+                    
+                    // Update URL without reload
+                    window.history.pushState({}, '', url);
+                    
+                    // Re-init pagination clicks
+                    initPagination();
+                }
+            } catch (error) {
+                console.error('Search failed:', error);
+            } finally {
+                loader.classList.add('hidden');
+                container.style.opacity = '1';
+            }
+        }
+
+        function initPagination() {
+            document.querySelectorAll('.ajax-pagination a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    performSearch(this.href);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+        }
+
+        function switchView(mode) {
+            viewInput.value = mode;
+            // Update UI buttons
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                if (btn.getAttribute('data-view') === mode) {
+                    btn.classList.add('bg-white', 'shadow-sm', 'text-indigo-600');
+                    btn.classList.remove('text-gray-400');
+                } else {
+                    btn.classList.remove('bg-white', 'shadow-sm', 'text-indigo-600');
+                    btn.classList.add('text-gray-400');
+                }
+            });
+            performSearch();
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(() => {
+                    performSearch();
+                }, 300); // Faster debounce for "fast search"
+            });
+        }
+
+        if (genreSelect) {
+            genreSelect.addEventListener('change', () => performSearch());
+        }
+
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            performSearch();
+        });
+
+        // Initialize pagination on load
+        document.addEventListener('DOMContentLoaded', initPagination);
+    </script>
+
+    <style>
+        /* Hide number input spinners */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
 </x-app-layout>
