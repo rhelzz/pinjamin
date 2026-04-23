@@ -92,93 +92,87 @@
     </div>
 @else
     <!-- CARD VIEW -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
         @forelse($bukus as $buku)
-            <div class="group bg-white rounded-[2rem] border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl hover:shadow-indigo-100/50 transition-all duration-500 flex flex-col">
+            <div class="group bg-white rounded-2xl md:rounded-[2rem] border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl hover:shadow-indigo-100/50 transition-all duration-500 flex flex-col">
                 <!-- Book Cover -->
-                <div class="relative aspect-[4/5] overflow-hidden bg-gray-50">
+                <div class="relative aspect-[3/4] md:aspect-[4/5] overflow-hidden bg-gray-50">
                     @if($buku->gambar)
                         <img src="{{ asset('storage/' . $buku->gambar) }}" alt="{{ $buku->judul }}" 
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
                     @else
-                        <div class="w-full h-full bg-gradient-to-br from-indigo-50/50 to-purple-50/50 flex flex-col items-center justify-center p-4 text-center">
-                            <svg class="w-12 h-12 text-indigo-100 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-full h-full bg-gradient-to-br from-indigo-50/50 to-purple-50/50 flex flex-col items-center justify-center p-2 md:p-4 text-center">
+                            <svg class="w-8 h-8 md:w-12 md:h-12 text-indigo-100 mb-1 md:mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                             </svg>
-                            <span class="text-[10px] font-bold text-indigo-200 uppercase tracking-tighter line-clamp-2 px-2">{{ $buku->judul }}</span>
+                            <span class="text-[8px] md:text-[10px] font-bold text-indigo-200 uppercase tracking-tighter line-clamp-2 px-1">{{ $buku->judul }}</span>
                         </div>
                     @endif
                     
                     <!-- Genre Overlay -->
-                    <div class="absolute top-4 left-4">
-                        <span class="px-3 py-1 bg-white/80 backdrop-blur-md rounded-full text-[9px] font-bold text-indigo-600 shadow-sm border border-indigo-50 uppercase tracking-wider">
+                    <div class="absolute top-2 left-2 md:top-4 md:left-4">
+                        <span class="px-2 py-0.5 md:px-3 md:py-1 bg-white/80 backdrop-blur-md rounded-full text-[7px] md:text-[9px] font-bold text-indigo-600 shadow-sm border border-indigo-50 uppercase tracking-wider">
                             {{ $buku->genre->nama_genre }}
                         </span>
                     </div>
 
                     <!-- Stock Indicator -->
-                    <div class="absolute bottom-4 right-4">
-                        <span class="px-2.5 py-1.5 {{ $buku->stok > 0 ? 'bg-emerald-500' : 'bg-rose-500' }} rounded-xl text-white text-[10px] font-bold shadow-lg shadow-indigo-100/20">
+                    <div class="absolute bottom-2 right-2 md:bottom-4 md:right-4">
+                        <span class="px-1.5 py-0.5 md:px-2.5 md:py-1.5 {{ $buku->stok > 0 ? 'bg-emerald-500' : 'bg-rose-500' }} rounded-lg md:rounded-xl text-white text-[8px] md:text-[10px] font-bold shadow-lg shadow-indigo-100/20">
                             {{ $buku->stok > 0 ? $buku->stok . ' Stok' : 'Habis' }}
                         </span>
                     </div>
                 </div>
 
                 <!-- Book Content -->
-                <div class="p-5 flex flex-col flex-1 bg-white">
-                    <h3 class="text-sm font-bold text-gray-900 leading-tight mb-2 line-clamp-2 h-10 group-hover:text-indigo-600 transition-colors" title="{{ $buku->judul }}">
+                <div class="p-3 md:p-5 flex flex-col flex-1 bg-white">
+                    <h3 class="text-xs md:text-sm font-bold text-gray-900 leading-tight mb-1 md:mb-2 line-clamp-2 h-8 md:h-10 group-hover:text-indigo-600 transition-colors" title="{{ $buku->judul }}">
                         <a href="{{ route('peminjam.katalog.show', $buku->encrypted_id) }}">{{ $buku->judul }}</a>
                     </h3>
                     
-                    <p class="text-[11px] text-gray-400 flex items-center mb-4">
-                        <span class="w-1.5 h-1.5 bg-indigo-400 rounded-full mr-2"></span>
+                    <p class="text-[9px] md:text-[11px] text-gray-400 flex items-center mb-3 md:mb-4">
+                        <span class="w-1 h-1 md:w-1.5 md:h-1.5 bg-indigo-400 rounded-full mr-1.5 md:mr-2"></span>
                         <span class="truncate">{{ $buku->penulis ?? 'Anonim' }}</span>
                     </p>
 
                     <!-- Actions -->
-                    <div class="mt-auto space-y-3">
+                    <div class="mt-auto space-y-2 md:space-y-3">
                         @if($buku->stok > 0)
-                            <form action="{{ route('peminjam.cart.add', $buku) }}" method="POST" class="space-y-3">
+                            <form action="{{ route('peminjam.cart.add', $buku) }}" method="POST" class="space-y-2 md:space-y-3">
                                 @csrf
                                 <!-- Modern Qty Selector -->
-                                <div class="flex items-center justify-between bg-gray-50 border border-gray-100 rounded-2xl p-1 shadow-inner">
-                                    <button type="button" onclick="decrementQty('qty_card_{{ $buku->id }}')" class="w-10 h-10 flex items-center justify-center bg-white text-gray-400 hover:text-indigo-600 shadow-sm rounded-xl transition-all active:scale-95">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 12H4"/></svg>
+                                <div class="flex items-center justify-between bg-gray-50 border border-gray-100 rounded-xl md:rounded-2xl p-0.5 md:p-1 shadow-inner">
+                                    <button type="button" onclick="decrementQty('qty_card_{{ $buku->id }}')" class="w-7 h-7 md:w-10 md:h-10 flex items-center justify-center bg-white text-gray-400 hover:text-indigo-600 shadow-sm rounded-lg md:rounded-xl transition-all active:scale-95">
+                                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 12H4"/></svg>
                                     </button>
                                     <div class="flex flex-col items-center">
                                         <input type="number" name="jumlah" id="qty_card_{{ $buku->id }}" value="1" min="1" max="{{ $buku->stok }}"
-                                            class="w-12 bg-transparent border-none text-center text-sm font-black text-gray-900 focus:ring-0 p-0 pointer-events-none">
-                                        <span class="text-[9px] text-gray-400 uppercase font-bold tracking-widest">Qty</span>
+                                            class="w-8 md:w-12 bg-transparent border-none text-center text-[10px] md:text-sm font-black text-gray-900 focus:ring-0 p-0 pointer-events-none">
+                                        <span class="hidden md:block text-[9px] text-gray-400 uppercase font-bold tracking-widest">Qty</span>
                                     </div>
-                                    <button type="button" onclick="incrementQty('qty_card_{{ $buku->id }}', {{ $buku->stok }})" class="w-10 h-10 flex items-center justify-center bg-white text-gray-400 hover:text-indigo-600 shadow-sm rounded-xl transition-all active:scale-95">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                                    <button type="button" onclick="incrementQty('qty_card_{{ $buku->id }}', {{ $buku->stok }})" class="w-7 h-7 md:w-10 md:h-10 flex items-center justify-center bg-white text-gray-400 hover:text-indigo-600 shadow-sm rounded-lg md:rounded-xl transition-all active:scale-95">
+                                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
                                     </button>
                                 </div>
 
-                                <button type="submit" class="w-full flex items-center justify-center h-12 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-2xl shadow-lg shadow-indigo-100 transition-all transform hover:-translate-y-1 active:scale-95">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <button type="submit" class="w-full flex items-center justify-center h-10 md:h-12 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] md:text-xs font-bold rounded-xl md:rounded-2xl shadow-lg shadow-indigo-100 transition-all transform hover:-translate-y-1 active:scale-95">
+                                    <svg class="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 md:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
                                     </svg>
-                                    Tambahkan Pinjaman
+                                    <span class="hidden md:inline">Tambahkan Pinjaman</span>
+                                    <span class="md:hidden">Pinjam</span>
                                 </button>
-                                
-                                <a href="{{ route('peminjam.katalog.show', $buku->encrypted_id) }}" class="w-full flex items-center justify-center h-10 bg-gray-50 hover:bg-gray-100 text-gray-600 text-xs font-bold rounded-2xl transition-all">
-                                    Lihat Detail Buku
-                                </a>
                             </form>
                         @else
                             <div class="flex flex-col gap-2">
-                                <a href="{{ route('peminjam.booking.create', $buku) }}" class="w-full inline-flex items-center justify-center h-12 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-2xl shadow-lg shadow-amber-100 transition-all transform hover:-translate-y-1">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                    </svg>
-                                    Booking Sekarang
-                                </a>
-                                <a href="{{ route('peminjam.katalog.show', $buku->encrypted_id) }}" class="w-full flex items-center justify-center h-10 bg-gray-50 hover:bg-gray-100 text-gray-600 text-xs font-bold rounded-2xl transition-all">
-                                    Lihat Detail Buku
+                                <a href="{{ route('peminjam.booking.create', $buku) }}" class="w-full inline-flex items-center justify-center h-10 md:h-12 bg-amber-500 hover:bg-amber-600 text-white text-[10px] md:text-xs font-bold rounded-xl md:rounded-2xl shadow-lg shadow-amber-100 transition-all transform hover:-translate-y-1">
+                                    Booking
                                 </a>
                             </div>
                         @endif
+                        <a href="{{ route('peminjam.katalog.show', $buku->encrypted_id) }}" class="w-full flex items-center justify-center h-8 md:h-10 bg-gray-50 hover:bg-gray-100 text-gray-600 text-[10px] md:text-xs font-bold rounded-xl md:rounded-2xl transition-all">
+                            Detail
+                        </a>
                     </div>
                 </div>
             </div>

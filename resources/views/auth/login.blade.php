@@ -40,9 +40,15 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased bg-[#f8fafc]">
-    <div class="min-h-screen flex items-center justify-center p-4 lg:p-8">
-        <div class="w-full max-w-6xl bg-white rounded-[2.5rem] shadow-2xl shadow-indigo-100/50 flex overflow-hidden min-h-[700px]">
+<body class="font-sans antialiased bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen relative overflow-x-hidden">
+    <!-- Decorative Background Elements -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-white/20 rounded-full blur-[120px] animate-pulse"></div>
+        <div class="absolute bottom-[10%] right-[10%] w-[30%] h-[30%] bg-blue-400/20 rounded-full blur-[100px]"></div>
+    </div>
+
+    <div class="min-h-screen flex items-center justify-center p-4 lg:p-8 relative z-10">
+        <div class="w-full max-w-6xl bg-white/90 backdrop-blur-xl rounded-[2.5rem] shadow-2xl shadow-black/10 flex overflow-hidden min-h-[700px] border border-white/20">
             <!-- Left Side - Visual -->
             <div class="hidden lg:flex lg:w-1/2 bg-[#eef2ff] relative items-center justify-center overflow-hidden">
                 <!-- Background Decorative Circles -->
@@ -87,9 +93,9 @@
                     <form method="POST" action="{{ route('login') }}" class="space-y-6">
                         @csrf
 
-                        <!-- Email -->
+                        <!-- Username or Email -->
                         <div class="space-y-2">
-                            <label for="email" class="text-sm font-semibold text-gray-700 ml-1">Email Address</label>
+                            <label for="login" class="text-sm font-semibold text-gray-700 ml-1">Username atau Email</label>
                             <div class="relative group">
                                 <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 group-focus-within:text-indigo-500 transition-colors">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,18 +103,21 @@
                                     </svg>
                                 </span>
                                 <input 
-                                    id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
+                                    id="login" type="text" name="login" value="{{ old('login') }}" required autofocus
                                     class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-gray-100 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 focus:bg-white transition-all outline-none text-gray-700"
-                                    placeholder="Enter your email"
+                                    placeholder="Masukkan username atau email"
                                 >
                             </div>
+                            @error('login')
+                                <p class="text-xs text-rose-500 ml-1 mt-1 font-medium">{{ $message }}</p>
+                            @enderror
                             @error('email')
                                 <p class="text-xs text-rose-500 ml-1 mt-1 font-medium">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- Password -->
-                        <div class="space-y-2">
+                        <div class="space-y-2" x-data="{ show: false }">
                             <label for="password" class="text-sm font-semibold text-gray-700 ml-1">Password</label>
                             <div class="relative group">
                                 <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 group-focus-within:text-indigo-500 transition-colors">
@@ -117,10 +126,14 @@
                                     </svg>
                                 </span>
                                 <input 
-                                    id="password" type="password" name="password" required
-                                    class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-gray-100 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 focus:bg-white transition-all outline-none text-gray-700"
+                                    id="password" :type="show ? 'text' : 'password'" name="password" required
+                                    class="w-full pl-11 pr-12 py-3.5 bg-gray-50 border-gray-100 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 focus:bg-white transition-all outline-none text-gray-700"
                                     placeholder="••••••••"
                                 >
+                                <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-indigo-500 transition-colors focus:outline-none">
+                                    <svg x-show="!show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    <svg x-show="show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.025 10.05 0 014.459-5.591M10.148 4.653A11.959 11.959 0 0112 4.5c4.478 0 8.268 2.943 9.542 7a10.025 10.05 0 01-4.132 5.411m0 0L21 21m-2.105-2.105L17.53 17.53m-1.493-1.493L3 3m6.758 11.758a3 3 0 114.243-4.243m-4.242 4.242L9.88 9.88"/></svg>
+                                </button>
                             </div>
                             @error('password')
                                 <p class="text-xs text-rose-500 ml-1 mt-1 font-medium">{{ $message }}</p>

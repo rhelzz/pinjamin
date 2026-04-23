@@ -4,83 +4,74 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <h2 class="font-bold text-3xl text-gray-900 leading-tight tracking-tight">Katalog Buku</h2>
-                <div class="flex items-center gap-2 mt-1">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">
+                <h2 class="font-bold text-2xl md:text-3xl text-gray-900 leading-tight tracking-tight">Katalog Buku</h2>
+                <div class="flex flex-wrap items-center gap-2 mt-1">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] md:text-xs font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">
                         {{ $bukus->total() }} Koleksi Tersedia
                     </span>
-                    <p class="text-sm text-gray-400 font-medium">jelajahi dan pinjam buku favoritmu</p>
+                    <p class="text-xs md:text-sm text-gray-400 font-medium italic">jelajahi dan pinjam buku favoritmu</p>
                 </div>
             </div>
-            <a href="{{ route('peminjam.cart.index') }}" class="inline-flex items-center justify-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-2xl shadow-lg shadow-indigo-100 transition-all duration-300 transform hover:-translate-y-1">
+            <a href="{{ route('peminjam.cart.index') }}" class="inline-flex items-center justify-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-2xl shadow-lg shadow-indigo-100 transition-all duration-300 transform hover:-translate-y-1 active:scale-95">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
-                Lihat Keranjang
+                <span class="md:hidden">Keranjang</span>
+                <span class="hidden md:inline">Lihat Keranjang</span>
             </a>
         </div>
     </x-slot>
 
-    <div class="py-6">
+    <div class="py-4 md:py-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <!-- Filter & Switcher Section (Glassmorphism) -->
-            <div class="bg-white/70 backdrop-blur-md border border-gray-100 rounded-[2rem] p-6 mb-8 shadow-sm transition-all duration-300">
-                <form id="searchForm" method="GET" class="flex flex-col lg:flex-row items-center gap-4">
+            <div class="bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl md:rounded-[2rem] p-4 md:p-6 mb-6 md:mb-8 shadow-sm">
+                <form id="searchForm" method="GET" class="flex flex-col gap-4">
                     <!-- Keep current view mode in form -->
                     <input type="hidden" name="view" id="viewModeInput" value="{{ $viewMode }}">
 
-                    <!-- Search -->
-                    <div class="flex-1 w-full relative">
-                        <div class="relative group">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-400 group-focus-within:text-indigo-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                </svg>
-                            </div>
-                            <input type="text" name="search" id="searchInput" value="{{ request('search') }}" 
-                                placeholder="Cari judul, penulis, atau genre..." 
-                                class="block w-full pl-11 pr-4 py-3 bg-gray-50/50 border-transparent rounded-[1.5rem] text-sm focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 focus:bg-white transition-all outline-none"
-                                autocomplete="off">
-                            
-                            <!-- Simple Loader -->
-                            <div id="searchLoader" class="absolute inset-y-0 right-4 flex items-center hidden">
-                                <svg class="animate-spin h-5 w-5 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
+                    <div class="flex flex-col md:flex-row items-center gap-3">
+                        <!-- Search -->
+                        <div class="flex-1 w-full relative">
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400 group-focus-within:text-indigo-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                </div>
+                                <input type="text" name="search" id="searchInput" value="{{ request('search') }}" 
+                                    placeholder="Cari judul, penulis..." 
+                                    class="block w-full pl-11 pr-4 py-3 bg-gray-50/50 border-transparent rounded-xl md:rounded-[1.5rem] text-sm focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 focus:bg-white transition-all outline-none"
+                                    autocomplete="off">
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Filters & View Switcher -->
-                    <div class="flex flex-wrap lg:flex-nowrap items-center gap-3 w-full lg:w-auto">
-                        <select name="genre_id" id="genreSelect"
-                            class="flex-1 lg:w-48 pl-4 pr-10 py-3 bg-gray-50/50 border-transparent rounded-[1.5rem] text-sm focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 focus:bg-white transition-all appearance-none outline-none">
-                            <option value="">📁 Semua Genre</option>
-                            @foreach($genres as $genre)
-                                <option value="{{ $genre->id }}" {{ request('genre_id') == $genre->id ? 'selected' : '' }}>
-                                    {{ $genre->nama_genre }}
-                                </option>
-                            @endforeach
-                        </select>
 
-                        <button type="submit" class="inline-flex items-center justify-center px-6 py-3 bg-gray-900 text-white font-bold rounded-[1.5rem] hover:bg-black transition-all">
-                            Cari
-                        </button>
+                        <!-- Genre Select & View Switcher (Desktop only view switcher for simplicity, or keep both) -->
+                        <div class="flex items-center gap-2 w-full md:w-auto">
+                            <select name="genre_id" id="genreSelect"
+                                class="flex-1 md:w-48 pl-4 pr-10 py-3 bg-gray-50/50 border-transparent rounded-xl md:rounded-[1.5rem] text-sm focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 focus:bg-white transition-all appearance-none outline-none">
+                                <option value="">📁 Semua Genre</option>
+                                @foreach($genres as $genre)
+                                    <option value="{{ $genre->id }}" {{ request('genre_id') == $genre->id ? 'selected' : '' }}>
+                                        {{ $genre->nama_genre }}
+                                    </option>
+                                @endforeach
+                            </select>
 
-                        <!-- VIEW SWITCHER -->
-                        <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-2xl border border-gray-200">
-                            <button type="button" onclick="switchView('card')" 
-                               class="view-btn p-2 rounded-xl transition-all {{ $viewMode === 'card' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-400 hover:text-gray-600' }}"
-                               data-view="card" title="Tampilan Kartu">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-                            </button>
-                            <button type="button" onclick="switchView('table')" 
-                               class="view-btn p-2 rounded-xl transition-all {{ $viewMode === 'table' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-400 hover:text-gray-600' }}"
-                               data-view="table" title="Tampilan Tabel">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-                            </button>
+                            <!-- VIEW SWITCHER - Hidden on very small mobile to save space if needed, but let's keep it responsive -->
+                            <div class="hidden sm:flex items-center gap-1 bg-gray-100 p-1 rounded-xl md:rounded-2xl border border-gray-200">
+                                <button type="button" onclick="switchView('card')" 
+                                   class="view-btn p-2 rounded-lg md:rounded-xl transition-all {{ $viewMode === 'card' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-400 hover:text-gray-600' }}"
+                                   data-view="card">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                                </button>
+                                <button type="button" onclick="switchView('table')" 
+                                   class="view-btn p-2 rounded-lg md:rounded-xl transition-all {{ $viewMode === 'table' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-400 hover:text-gray-600' }}"
+                                   data-view="table">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </form>

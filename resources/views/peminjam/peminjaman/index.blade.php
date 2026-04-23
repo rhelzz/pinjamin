@@ -19,8 +19,77 @@
     <div class="pt-0 pb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <!-- Main Content Card -->
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <!-- Mobile View (Card Based) - Hidden on LG screens -->
+            <div class="lg:hidden space-y-4">
+                @forelse($peminjamans as $peminjaman)
+                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">ID Pinjam: #{{ $peminjaman->id }}</p>
+                                <div class="text-sm font-bold text-gray-900">{{ $peminjaman->tanggal_pinjam?->format('d M Y') ?? 'Pending' }}</div>
+                            </div>
+                            @php
+                                $statusConfig = [
+                                    'Pending' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-800', 'ring' => 'ring-yellow-200', 'dot' => 'bg-yellow-500'],
+                                    'Dipinjam' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800', 'ring' => 'ring-blue-200', 'dot' => 'bg-blue-500'],
+                                    'Ditolak' => ['bg' => 'bg-red-100', 'text' => 'text-red-800', 'ring' => 'ring-red-200', 'dot' => 'bg-red-500'],
+                                    'Selesai' => ['bg' => 'bg-green-100', 'text' => 'text-green-800', 'ring' => 'ring-green-200', 'dot' => 'bg-green-500'],
+                                ];
+                                $config = $statusConfig[$peminjaman->status] ?? ['bg' => 'bg-gray-100', 'text' => 'text-gray-800', 'ring' => 'ring-gray-200', 'dot' => 'bg-gray-500'];
+                            @endphp
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold {{ $config['bg'] }} {{ $config['text'] }} ring-1 {{ $config['ring'] }}">
+                                {{ $peminjaman->status }}
+                            </span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3 mb-4 py-3 border-y border-gray-100">
+                            <div>
+                                <p class="text-[10px] text-gray-400 uppercase font-bold mb-0.5">Deadline</p>
+                                <p class="text-xs font-semibold text-gray-900">{{ $peminjaman->tanggal_kembali->format('d M Y') }}</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-gray-400 uppercase font-bold mb-0.5">Total Buku</p>
+                                <p class="text-xs font-semibold text-gray-900">{{ $peminjaman->detail->count() }} Item</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] text-gray-500 italic">
+                                @if($peminjaman->status === 'Dipinjam')
+                                    @php
+                                        $deadline = $peminjaman->tanggal_kembali;
+                                        $isLate = now()->gt($deadline);
+                                    @endphp
+                                    @if($isLate)
+                                        <span class="text-red-600 font-bold">Terlambat!</span>
+                                    @else
+                                        Sisa waktu: {{ now()->diffInDays($deadline) }} hari lagi
+                                    @endif
+                                @else
+                                    Dibuat: {{ $peminjaman->created_at->diffForHumans() }}
+                                @endif
+                            </span>
+                            <a href="{{ route('peminjam.peminjaman.show', $peminjaman) }}" class="inline-flex items-center px-4 py-2 bg-indigo-50 text-indigo-700 text-xs font-bold rounded-lg transition-colors">
+                                Detail
+                                <svg class="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                @empty
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 text-center">
+                        <p class="text-sm text-gray-500 italic">Belum ada riwayat peminjaman.</p>
+                    </div>
+                @endforelse
+                
+                @if($peminjamans->hasPages())
+                    <div class="pt-2">
+                        {{ $peminjamans->links() }}
+                    </div>
+                @endif
+            </div>
+
+            <!-- Desktop View (Table Based) - Hidden on small screens -->
+            <div class="hidden lg:block bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                 
                 <!-- Table Section -->
                 <div class="overflow-x-auto">

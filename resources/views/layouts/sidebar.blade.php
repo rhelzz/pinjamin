@@ -1,4 +1,17 @@
-<aside x-data="{ open: true }" class="fixed top-0 left-0 h-screen bg-white/80 backdrop-blur-xl text-gray-700 w-64 flex-shrink-0 flex flex-col shadow-2xl border-r border-gray-200/50 z-40">
+<!-- Mobile Overlay -->
+<div x-show="sidebarOpen" 
+     @click="sidebarOpen = false" 
+     x-transition:enter="transition ease-out duration-300"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-200"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0"
+     class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+     style="display: none;"></div>
+
+<aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+       class="fixed top-0 left-0 h-screen bg-white/80 backdrop-blur-xl text-gray-700 w-64 flex-shrink-0 flex flex-col shadow-2xl border-r border-gray-200/50 z-50 transform transition-transform duration-300 ease-in-out">
     <!-- Logo / Brand -->
     <div class="flex items-center justify-between h-16 px-4 bg-white/50 backdrop-blur-sm border-b border-gray-200/50">
         <a href="{{ route('dashboard') }}" class="flex items-center space-x-2.5 group">
@@ -9,6 +22,10 @@
             </div>
             <span class="text-gray-900 font-bold text-lg tracking-tight">Pinjamin</span>
         </a>
+        <!-- Close button for mobile -->
+        <button @click="sidebarOpen = false" class="lg:hidden p-2 text-gray-500 hover:text-indigo-600 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
     </div>
 
     <!-- Navigation Links with Custom Scrollbar -->

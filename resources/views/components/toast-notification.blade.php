@@ -1,5 +1,5 @@
 {{-- Modern Toast Notification Component --}}
-<div id="toast-container" class="fixed top-20 right-4 z-[100] flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+<div id="toast-container" class="fixed top-4 md:top-20 inset-x-4 md:left-auto md:right-4 z-[100] flex flex-col gap-3 md:max-w-sm pointer-events-none"></div>
 
 {{-- Confirmation Modal --}}
 <div id="confirm-modal" class="fixed inset-0 z-[110] hidden">
@@ -48,41 +48,42 @@ window.Toast = {
         if (!this.container) this.init();
         
         const toast = document.createElement('div');
-        toast.className = `toast-item pointer-events-auto transform transition-all duration-300 ease-out translate-x-full opacity-0`;
+        // Mobile: animate from top, Desktop: animate from right
+        toast.className = `toast-item pointer-events-auto transform transition-all duration-300 ease-out -translate-y-4 md:translate-y-0 md:translate-x-full opacity-0`;
         
         const configs = {
             success: {
                 bg: 'bg-gradient-to-r from-emerald-500 to-green-600',
-                icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+                icon: `<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
             },
             error: {
                 bg: 'bg-gradient-to-r from-red-500 to-rose-600',
-                icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+                icon: `<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
             },
             warning: {
                 bg: 'bg-gradient-to-r from-amber-500 to-orange-600',
-                icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`
+                icon: `<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`
             },
             info: {
                 bg: 'bg-gradient-to-r from-blue-500 to-indigo-600',
-                icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+                icon: `<svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
             }
         };
         
         const config = configs[type] || configs.info;
         
         toast.innerHTML = `
-            <div class="${config.bg} text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 min-w-[280px] backdrop-blur-sm">
-                <div class="flex-shrink-0 bg-white/20 rounded-lg p-1.5">
+            <div class="${config.bg} text-white px-3 md:px-4 py-2.5 md:py-3 rounded-xl shadow-xl flex items-center gap-2 md:gap-3 backdrop-blur-sm border border-white/10">
+                <div class="flex-shrink-0 bg-white/20 rounded-lg p-1 md:p-1.5">
                     ${config.icon}
                 </div>
-                <p class="flex-1 text-sm font-medium">${message}</p>
-                <button class="flex-shrink-0 text-white/80 hover:text-white transition-colors" onclick="this.closest('.toast-item').remove()">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <p class="flex-1 text-[11px] md:text-sm font-bold tracking-tight leading-tight">${message}</p>
+                <button class="flex-shrink-0 text-white/70 hover:text-white transition-colors" onclick="this.closest('.toast-item').remove()">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
-            <div class="h-1 mt-1 rounded-full bg-white/30 overflow-hidden">
-                <div class="h-full ${config.bg} toast-progress" style="animation: shrink ${duration}ms linear forwards"></div>
+            <div class="h-0.5 md:h-1 mt-1 rounded-full bg-white/20 overflow-hidden">
+                <div class="h-full bg-white/40 toast-progress" style="animation: shrink ${duration}ms linear forwards"></div>
             </div>
         `;
         
@@ -90,13 +91,19 @@ window.Toast = {
         
         // Animate in
         requestAnimationFrame(() => {
-            toast.classList.remove('translate-x-full', 'opacity-0');
-            toast.classList.add('translate-x-0', 'opacity-100');
+            toast.classList.remove('-translate-y-4', 'md:translate-x-full', 'opacity-0');
+            toast.classList.add('translate-y-0', 'translate-x-0', 'opacity-100');
         });
         
         // Auto remove
         setTimeout(() => {
-            toast.classList.add('translate-x-full', 'opacity-0');
+            toast.classList.add('opacity-0');
+            // Small offset for remove animation
+            if (window.innerWidth < 768) {
+                toast.classList.add('-translate-y-2');
+            } else {
+                toast.classList.add('translate-x-2');
+            }
             setTimeout(() => toast.remove(), 300);
         }, duration);
     },

@@ -1,14 +1,19 @@
-<nav class="fixed top-0 left-64 right-0 bg-white/70 backdrop-blur-xl border-b border-gray-200/50 shadow-lg z-30">
-    <div class="px-6 lg:px-8">
+<nav class="fixed top-0 left-0 lg:left-64 right-0 bg-white/70 backdrop-blur-xl border-b border-gray-200/50 shadow-lg z-30 transition-all duration-300">
+    <div class="px-4 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex items-center space-x-3">
+                <!-- Hamburger Menu for Mobile -->
+                <button @click="sidebarOpen = true" class="lg:hidden p-2 -ml-2 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-lg transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+                </button>
+
                 <!-- Page Icon -->
-                <div class="p-2 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg shadow-md">
+                <div class="hidden sm:flex p-2 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg shadow-md">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                 </div>
-                <h1 class="text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                <h1 class="text-sm sm:text-base lg:text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent truncate max-w-[150px] sm:max-w-none">
                     {{ $pageTitle ?? config('app.name', 'Pinjamin') }}
                 </h1>
             </div>

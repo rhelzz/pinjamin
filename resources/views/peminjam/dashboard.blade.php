@@ -4,8 +4,8 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="font-bold text-xl text-gray-800 leading-tight">Dashboard Peminjam</h2>
-                <p class="mt-0.5 text-sm text-gray-500">Kelola peminjaman buku sekolah Anda</p>
+                <h2 class="font-bold text-lg md:text-xl text-gray-800 leading-tight">Dashboard Peminjam</h2>
+                <p class="mt-0.5 text-xs md:text-sm text-gray-500">Kelola peminjaman buku sekolah Anda</p>
             </div>
             <div class="hidden sm:flex items-center space-x-2">
                 <span class="text-xs font-medium text-gray-600 bg-white/80 backdrop-blur-sm border border-gray-200/50 px-3 py-1.5 rounded-full shadow-sm">
@@ -19,15 +19,15 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <!-- Welcome Hero Section -->
-            <div class="mb-6 gradient-purple wave-pattern rounded-2xl shadow-xl p-6 text-white">
+            <div class="mb-6 gradient-purple wave-pattern rounded-2xl shadow-xl p-5 md:p-6 text-white">
                 <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between">
                     <div>
-                        <p class="text-sm font-medium text-purple-100 mb-1">Selamat Datang!</p>
-                        <h3 class="text-2xl font-bold mb-1">Halo, {{ Auth::user()->name }}!</h3>
-                        <p class="text-purple-100 text-sm">Mulai pinjam buku dengan mengunjungi katalog buku kami</p>
+                        <p class="text-xs md:text-sm font-medium text-purple-100 mb-1">Selamat Datang!</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-1">Halo, {{ Auth::user()->name }}!</h3>
+                        <p class="text-purple-100 text-xs md:text-sm">Mulai pinjam buku dengan mengunjungi katalog</p>
                     </div>
                     <div class="mt-4 md:mt-0">
-                        <a href="{{ route('peminjam.katalog.index') }}" class="inline-flex items-center px-5 py-2.5 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white text-sm font-medium rounded-xl transition-all shadow-lg hover:shadow-xl">
+                        <a href="{{ route('peminjam.katalog.index') }}" class="inline-flex items-center justify-center w-full md:w-auto px-5 py-2.5 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white text-sm font-medium rounded-xl transition-all shadow-lg hover:shadow-xl">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/>
                             </svg>
@@ -38,37 +38,29 @@
             </div>
 
             <!-- Stats Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 
                 <!-- Peminjaman Aktif -->
-                <div class="stat-card rounded-xl p-5 border border-gray-100/50 shadow-lg group relative overflow-hidden">
+                <div class="stat-card rounded-xl p-4 md:p-5 border border-gray-100/50 shadow-lg group relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-28 h-28 bg-blue-100 rounded-full -mr-14 -mt-14 opacity-40"></div>
-                    <div class="absolute bottom-0 left-0 w-24 h-24 bg-blue-200 rounded-full -ml-12 -mb-12 opacity-30"></div>
                     <div class="relative z-10">
                         <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-14 h-14 gradient-blue rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex items-center space-x-3 md:space-x-4">
+                                <div class="w-12 h-12 md:w-14 md:h-14 gradient-blue rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                    <svg class="w-6 h-6 md:w-7 md:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Sedang Aktif</p>
-                                    <p class="text-3xl font-bold text-blue-600">{{ $peminjamanAktif }}</p>
-                                    <p class="text-sm text-gray-400">Peminjaman</p>
-                                </div>
-                            </div>
-                            <div class="hidden sm:block">
-                                <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
-                                    <svg class="w-8 h-8 text-blue-200" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                                    </svg>
+                                    <p class="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Sedang Aktif</p>
+                                    <p class="text-2xl md:text-3xl font-bold text-blue-600">{{ $peminjamanAktif }}</p>
+                                    <p class="text-xs md:text-sm text-gray-400">Peminjaman</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="mt-4 pt-3 border-t border-gray-100">
-                        <a href="{{ route('peminjam.peminjaman.index') }}" class="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-700 group/link">
+                        <a href="{{ route('peminjam.peminjaman.index') }}" class="inline-flex items-center text-xs md:text-sm font-medium text-indigo-600 hover:text-indigo-700 group/link">
                             <span>Lihat riwayat peminjaman</span>
                             <svg class="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -78,34 +70,26 @@
                 </div>
 
                 <!-- Total Peminjaman -->
-                <div class="stat-card rounded-xl p-5 border border-gray-100/50 shadow-lg group relative overflow-hidden">
+                <div class="stat-card rounded-xl p-4 md:p-5 border border-gray-100/50 shadow-lg group relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-28 h-28 bg-green-100 rounded-full -mr-14 -mt-14 opacity-40"></div>
-                    <div class="absolute bottom-0 left-0 w-24 h-24 bg-green-200 rounded-full -ml-12 -mb-12 opacity-30"></div>
                     <div class="relative z-10">
                         <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-14 h-14 gradient-green rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="flex items-center space-x-3 md:space-x-4">
+                                <div class="w-12 h-12 md:w-14 md:h-14 gradient-green rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                    <svg class="w-6 h-6 md:w-7 md:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Total</p>
-                                    <p class="text-3xl font-bold text-green-600">{{ $totalPeminjaman }}</p>
-                                    <p class="text-sm text-gray-400">Seluruh Peminjaman</p>
-                                </div>
-                            </div>
-                            <div class="hidden sm:block">
-                                <div class="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center">
-                                    <svg class="w-8 h-8 text-green-200" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                                    </svg>
+                                    <p class="text-[10px] md:text-xs font-medium text-gray-500 uppercase tracking-wide">Total</p>
+                                    <p class="text-2xl md:text-3xl font-bold text-green-600">{{ $totalPeminjaman }}</p>
+                                    <p class="text-xs md:text-sm text-gray-400">Seluruh Peminjaman</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="mt-4 pt-3 border-t border-gray-100">
-                        <a href="{{ route('peminjam.peminjaman.index') }}" class="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-700 group/link">
+                        <a href="{{ route('peminjam.peminjaman.index') }}" class="inline-flex items-center text-xs md:text-sm font-medium text-indigo-600 hover:text-indigo-700 group/link">
                             <span>Lihat semua transaksi</span>
                             <svg class="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -117,7 +101,7 @@
             </div>
 
             <!-- Quick Actions -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 
                 <!-- Katalog Buku -->
                 <div class="glass-card rounded-2xl p-5 border border-gray-100/50 shadow-lg hover:shadow-xl transition-shadow">

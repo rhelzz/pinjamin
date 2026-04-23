@@ -24,6 +24,7 @@
 - [Tentang Aplikasi](#-tentang-aplikasi)
 - [Arsitektur & Komponen Utama](#-arsitektur--komponen-utama)
 - [Fitur Berdasarkan Role](#-fitur-berdasarkan-role)
+- [Tampilan Aplikasi](#-tampilan-aplikasi)
 - [Persyaratan Sistem](#-persyaratan-sistem)
 - [Instalasi Cepat](#-instalasi-cepat)
 - [Menjalankan Aplikasi](#-menjalankan-aplikasi)
@@ -84,6 +85,46 @@ Logika bisnis dipisah dengan rapi berdasarkan Role untuk keamanan (Namespace Sep
 - **Booking (Reservasi)**: Memesan buku yang sedang tidak tersedia (jika diaktifkan).
 - **Riwayat Peminjaman**: Melihat status buku yang sedang dipinjam (Menunggu Persetujuan, Dipinjam, Selesai, Ditolak).
 - **Notifikasi Terpadu**: Menerima peringatan ketika masa pinjam akan habis atau jika pinjaman disetujui/ditolak.
+
+---
+
+## 📸 Tampilan Aplikasi
+
+### 🔐 Autentikasi & Profil
+| Login | Register | Edit Profil |
+|-------|----------|-------------|
+| ![Login](dokumentasi_readme/Auth/Login.png) | ![Register](dokumentasi_readme/Auth/Register.png) | ![Profile](dokumentasi_readme/Global_UI/Profile_Edit.png) |
+
+### 🧑‍🎓 Antarmuka Peminjam
+| Dashboard | Katalog Buku | Keranjang |
+|-----------|--------------|-----------|
+| ![Dashboard Peminjam](dokumentasi_readme/Peminjam/Dashboard.png) | ![Katalog](dokumentasi_readme/Peminjam/Katalog.png) | ![Keranjang](dokumentasi_readme/Peminjam/Keranjang.png) |
+
+| Booking | Riwayat Peminjaman | Notifikasi |
+|---------|--------------------|------------|
+| ![Booking](dokumentasi_readme/Peminjam/Booking.png) | ![Riwayat](dokumentasi_readme/Peminjam/Riwayat_Peminjaman.png) | ![Notifikasi](dokumentasi_readme/Peminjam/Notifikasi.png) |
+
+### 👨‍💼 Antarmuka Petugas
+| Dashboard | Persetujuan | Pengembalian |
+|-----------|-------------|--------------|
+| ![Dashboard Petugas](dokumentasi_readme/Petugas/Dashboard.png) | ![Persetujuan](dokumentasi_readme/Petugas/Persetujuan.png) | ![Pengembalian](dokumentasi_readme/Petugas/Pengembalian.png) |
+
+| Laporan | Notifikasi |
+|---------|------------|
+| ![Laporan](dokumentasi_readme/Petugas/Laporan.png) | ![Notifikasi Petugas](dokumentasi_readme/Petugas/Notifikasi.png) |
+
+### 👑 Antarmuka Admin
+| Dashboard | Manajemen User | Approval User |
+|-----------|----------------|---------------|
+| ![Dashboard Admin](dokumentasi_readme/Admin/Dashboard.png) | ![User](dokumentasi_readme/Admin/Manajemen_User.png) | ![Approval](dokumentasi_readme/Admin/Approval_User.png) |
+
+| Manajemen Buku | Manajemen Genre | Manajemen Denda |
+|----------------|-----------------|-----------------|
+| ![Buku](dokumentasi_readme/Admin/Manajemen_Buku.png) | ![Genre](dokumentasi_readme/Admin/Manajemen_Genre.png) | ![Denda](dokumentasi_readme/Admin/Manajemen_Denda.png) |
+
+| Log Aktivitas | Peminjaman Global | Notifikasi |
+|---------------|-------------------|------------|
+| ![Log](dokumentasi_readme/Admin/Log_Aktivitas.png) | ![Global](dokumentasi_readme/Admin/Data_Peminjaman_Global.png) | ![Notifikasi Admin](dokumentasi_readme/Admin/Notifikasi.png) |
 
 ---
 

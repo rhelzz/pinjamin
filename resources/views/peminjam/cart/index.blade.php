@@ -4,28 +4,26 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <h2 class="font-bold text-2xl text-gray-900 leading-tight">Keranjang Peminjaman</h2>
-                <p class="mt-1 text-sm text-gray-600">Kelola daftar buku yang akan dipinjam</p>
+                <h2 class="font-bold text-xl md:text-2xl text-gray-900 leading-tight">Keranjang Peminjaman</h2>
+                <p class="mt-1 text-xs md:text-sm text-gray-600">Kelola daftar buku yang akan dipinjam</p>
             </div>
             <div class="flex items-center gap-2">
                 <form action="{{ route('peminjam.cart.clear') }}" method="POST" 
-                    data-confirm="Apakah Anda yakin ingin mengosongkan seluruh keranjang?"
-                    data-confirm-title="Kosongkan Keranjang"
-                    data-confirm-type="danger">
+                    data-confirm="Apakah Anda yakin ingin mengosongkan seluruh keranjang?">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="inline-flex items-center justify-center px-5 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 text-sm font-semibold rounded-lg transition-all duration-200">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button type="submit" class="inline-flex items-center justify-center p-2.5 md:px-5 md:py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 text-sm font-semibold rounded-lg transition-all" title="Kosongkan Keranjang">
+                        <svg class="w-5 h-5 md:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                         </svg>
-                        Kosongkan Keranjang
+                        <span class="hidden md:inline">Kosongkan Keranjang</span>
                     </button>
                 </form>
-                <a href="{{ route('peminjam.katalog.index') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg transition-all duration-200">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="{{ route('peminjam.katalog.index') }}" class="inline-flex items-center justify-center p-2.5 md:px-5 md:py-2.5 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 text-sm font-semibold rounded-lg transition-all" title="Kembali ke Katalog">
+                    <svg class="w-5 h-5 md:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
-                    Kembali ke Katalog
+                    <span class="hidden md:inline">Kembali</span>
                 </a>
             </div>
         </div>
@@ -35,9 +33,41 @@
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             
             @if($bukus->count() > 0)
-                <!-- Cart Table -->
-                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-6">
-                    <div class="overflow-x-auto">
+                <!-- Cart Items (Responsive) -->
+                <div class="mb-6 space-y-4 lg:space-y-0 lg:bg-white lg:border lg:border-gray-200 lg:rounded-xl lg:shadow-sm lg:overflow-hidden">
+                    <!-- Mobile View (Cards) -->
+                    <div class="lg:hidden space-y-3">
+                        @foreach($bukus as $buku)
+                            <div class="bg-white border border-gray-200 rounded-xl p-3 flex gap-3 items-center">
+                                <div class="flex-shrink-0 h-16 w-12 bg-gray-100 rounded-lg overflow-hidden">
+                                    @if($buku->gambar)
+                                        <img src="{{ asset('storage/' . $buku->gambar) }}" class="h-full w-full object-cover">
+                                    @else
+                                        <div class="h-full w-full flex items-center justify-center text-gray-300">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="text-sm font-bold text-gray-900 line-clamp-1">{{ $buku->judul }}</h4>
+                                    <p class="text-[10px] text-indigo-600 font-bold mb-2">{{ $buku->genre->nama_genre }}</p>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-semibold text-gray-600">Qty: {{ $cart[$buku->id]['jumlah'] }}</span>
+                                        <form action="{{ route('peminjam.cart.remove', $buku) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-rose-600 hover:text-rose-800 p-1">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Desktop View (Table) -->
+                    <div class="hidden lg:block overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead>
                                 <tr class="bg-gradient-to-r from-gray-50 to-white">
@@ -102,69 +132,65 @@
 
                 <!-- Checkout Form -->
                 <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                    <div class="bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 px-6 py-4">
-                        <h3 class="text-lg font-semibold text-gray-900">Ajukan Peminjaman</h3>
-                        <p class="text-sm text-gray-500 mt-1">Lengkapi informasi untuk mengajukan peminjaman</p>
+                    <div class="bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 px-4 md:px-6 py-4">
+                        <h3 class="text-base md:text-lg font-semibold text-gray-900">Ajukan Peminjaman</h3>
+                        <p class="text-xs md:text-sm text-gray-500 mt-1">Lengkapi informasi untuk mengajukan peminjaman</p>
                     </div>
-                    <div class="p-6">
+                    <div class="p-4 md:p-6">
                         <form action="{{ route('peminjam.cart.checkout') }}" method="POST">
                             @csrf
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
                                 <!-- Tanggal Peminjaman (Readonly) -->
                                 <div>
-                                    <label for="tanggal_pinjam" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <label for="tanggal_pinjam" class="block text-sm font-bold text-gray-700 mb-2">
                                         Tanggal Peminjaman
                                     </label>
                                     <input type="date" id="tanggal_pinjam" name="tanggal_pinjam"
                                         value="{{ date('Y-m-d') }}"
                                         min="{{ date('Y-m-d') }}"
                                         readonly
-                                        class="w-full rounded-lg border-gray-300 bg-gray-50 text-gray-600 shadow-sm cursor-not-allowed">
-                                    <p class="mt-2 text-xs text-gray-500">Tanggal peminjaman otomatis diset hari ini</p>
+                                        class="w-full rounded-lg border-gray-300 bg-gray-50 text-gray-500 shadow-sm cursor-not-allowed text-sm">
                                 </div>
 
                                 <!-- Tanggal Rencana Kembali -->
                                 <div>
-                                    <label for="tanggal_kembali" class="block text-sm font-medium text-gray-700 mb-2">
-                                        Tanggal Rencana Kembali <span class="text-red-500">*</span>
+                                    <label for="tanggal_kembali" class="block text-sm font-bold text-gray-700 mb-2">
+                                        Rencana Kembali <span class="text-red-500">*</span>
                                     </label>
                                     <input type="date" name="tanggal_kembali" id="tanggal_kembali"
                                         value="{{ old('tanggal_kembali', date('Y-m-d', strtotime('+1 day'))) }}"
                                         min="{{ date('Y-m-d', strtotime('+1 day')) }}"
-                                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                                    @error('tanggal_kembali')
-                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                    <p class="mt-2 text-xs text-gray-500" id="info_durasi">Durasi pinjam: 1 hari</p>
+                                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" required>
+                                    <p class="mt-2 text-[10px] md:text-xs text-gray-500" id="info_durasi">Durasi pinjam: 1 hari</p>
                                 </div>
                             </div>
 
                             <!-- Summary -->
-                            <div class="mb-6 p-5 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-100">
+                            <div class="mb-6 p-4 md:p-5 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-100">
                                 <div class="flex items-center mb-3">
-                                    <div class="flex-shrink-0 w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-4 h-4 md:w-5 md:h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                                         </svg>
                                     </div>
-                                    <h4 class="ml-3 text-sm font-semibold text-gray-900">Ringkasan Peminjaman</h4>
+                                    <h4 class="ml-3 text-sm font-bold text-gray-900 uppercase tracking-tight">Ringkasan</h4>
                                 </div>
-                                <div class="grid grid-cols-2 gap-4">
+                                <div class="grid grid-cols-2 gap-3 md:gap-4">
                                     <div class="bg-white rounded-lg p-3 border border-indigo-100">
-                                        <p class="text-xs text-gray-500 mb-1">Total Item</p>
-                                        <p class="text-lg font-bold text-indigo-600">{{ count($cart) }} <span class="text-sm font-normal text-gray-500">jenis buku</span></p>
+                                        <p class="text-[10px] text-gray-400 font-bold uppercase mb-1">Total Buku</p>
+                                        <p class="text-base md:text-lg font-black text-indigo-600">{{ count($cart) }}</p>
                                     </div>
                                     <div class="bg-white rounded-lg p-3 border border-indigo-100">
-                                        <p class="text-xs text-gray-500 mb-1">Total Unit</p>
-                                        <p class="text-lg font-bold text-indigo-600">{{ array_sum(array_column($cart, 'jumlah')) }} <span class="text-sm font-normal text-gray-500">unit</span></p>
+                                        <p class="text-[10px] text-gray-400 font-bold uppercase mb-1">Total Unit</p>
+                                        <p class="text-base md:text-lg font-black text-indigo-600">{{ array_sum(array_column($cart, 'jumlah')) }}</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="flex items-center justify-between pt-4 border-t border-gray-200">
-                                <p class="text-xs text-gray-500">Pastikan data sudah benar sebelum mengajukan</p>
-                                <button type="submit" class="inline-flex items-center px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 text-white rounded-lg font-semibold shadow-sm hover:shadow-md transition-all duration-200">
+                            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-4 border-t border-gray-200">
+                                <p class="text-[10px] md:text-xs text-gray-500 text-center md:text-left">Pastikan data sudah benar sebelum mengajukan</p>
+                                <button type="submit" class="w-full md:w-auto inline-flex items-center justify-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg shadow-indigo-100 transition-all active:scale-95">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>

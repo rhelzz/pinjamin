@@ -29,9 +29,15 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased bg-[#fdf2f8]">
-    <div class="min-h-screen flex items-center justify-center p-4 lg:p-8">
-        <div class="w-full max-w-6xl bg-white rounded-[2.5rem] shadow-2xl shadow-pink-100/50 flex overflow-hidden min-h-[800px]">
+<body class="font-sans antialiased bg-gradient-to-tr from-rose-100 via-orange-50 to-amber-100 min-h-screen relative overflow-x-hidden">
+    <!-- Decorative Background Elements -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-[20%] right-[5%] w-[35%] h-[35%] bg-pink-200/40 rounded-full blur-[100px] animate-bounce-slow"></div>
+        <div class="absolute -bottom-[5%] -left-[5%] w-[30%] h-[30%] bg-amber-200/40 rounded-full blur-[80px]"></div>
+    </div>
+
+    <div class="min-h-screen flex items-center justify-center p-4 lg:p-8 relative z-10">
+        <div class="w-full max-w-6xl bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-2xl shadow-rose-200/50 flex overflow-hidden min-h-[800px] border border-white/40">
             <!-- Left Side - Visual -->
             <div class="hidden lg:flex lg:w-1/2 bg-[#fff1f2] relative items-center justify-center overflow-hidden">
                 <!-- Background Decorative Circles -->
@@ -105,16 +111,22 @@
                         </div>
 
                         <!-- Password -->
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="space-y-1.5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" x-data="{ show: false }">
+                            <div class="space-y-1.5 relative">
                                 <label for="password" class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Sandi</label>
-                                <input id="password" type="password" name="password" required
-                                    class="w-full px-4 py-3 bg-gray-50 border-gray-100 rounded-2xl focus:ring-4 focus:ring-pink-500/10 focus:border-pink-500 focus:bg-white transition-all outline-none text-gray-700"
-                                    placeholder="••••••••">
+                                <div class="relative">
+                                    <input id="password" :type="show ? 'text' : 'password'" name="password" required
+                                        class="w-full pl-4 pr-10 py-3 bg-gray-50 border-gray-100 rounded-2xl focus:ring-4 focus:ring-pink-500/10 focus:border-pink-500 focus:bg-white transition-all outline-none text-gray-700"
+                                        placeholder="••••••••">
+                                    <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-pink-500 transition-colors focus:outline-none">
+                                        <svg x-show="!show" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                        <svg x-show="show" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.025 10.05 0 014.459-5.591M10.148 4.653A11.959 11.959 0 0112 4.5c4.478 0 8.268 2.943 9.542 7a10.025 10.05 0 01-4.132 5.411m0 0L21 21m-2.105-2.105L17.53 17.53m-1.493-1.493L3 3m6.758 11.758a3 3 0 114.243-4.243m-4.242 4.242L9.88 9.88"/></svg>
+                                    </button>
+                                </div>
                             </div>
                             <div class="space-y-1.5">
                                 <label for="password_confirmation" class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Konfirmasi</label>
-                                <input id="password_confirmation" type="password" name="password_confirmation" required
+                                <input id="password_confirmation" :type="show ? 'text' : 'password'" name="password_confirmation" required
                                     class="w-full px-4 py-3 bg-gray-50 border-gray-100 rounded-2xl focus:ring-4 focus:ring-pink-500/10 focus:border-pink-500 focus:bg-white transition-all outline-none text-gray-700"
                                     placeholder="••••••••">
                             </div>
